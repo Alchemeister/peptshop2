@@ -1,0 +1,784 @@
+@media (max-width: 1100px) {
+  .ps-header-inner {
+    grid-template-columns: minmax(8rem, 1fr) minmax(12rem, 0.8fr) auto auto;
+    gap: 0.8rem;
+  }
+
+  .ps-desktop-nav {
+    gap: 0;
+  }
+
+  .ps-desktop-nav a {
+    padding-inline: 0.6rem;
+  }
+
+  .ps-home-hero {
+    grid-template-columns: minmax(0, 1.15fr) minmax(19rem, 0.85fr);
+  }
+
+  .ps-product-ledger-row {
+    grid-template-columns: 2rem 4rem minmax(9rem, 1fr) minmax(7rem, 0.65fr) minmax(6rem, 0.55fr) auto;
+  }
+
+  .ps-ledger-formats {
+    display: none;
+  }
+
+  .ps-vendor-row {
+    grid-template-columns: 2rem 3.5rem minmax(10rem, 1fr) minmax(8rem, 0.65fr) auto auto;
+  }
+
+  .ps-vendor-fulfillment {
+    display: none;
+  }
+
+  .ps-coa-table-head,
+  .ps-coa-row {
+    grid-template-columns: minmax(9rem, 1fr) minmax(8rem, 0.8fr) minmax(9rem, 0.8fr) minmax(6rem, 0.55fr) auto;
+  }
+
+  .ps-coa-table-head > span:nth-child(4),
+  .ps-coa-row > div:nth-child(4) {
+    display: none;
+  }
+
+  .ps-portal-shell {
+    grid-template-columns: 12.5rem minmax(0, 1fr);
+  }
+
+  .ps-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ps-admin-vendor-list > article {
+    grid-template-columns: 2.5rem minmax(8rem, 1fr) auto auto;
+  }
+
+  .ps-admin-vendor-list dl {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .ps-header-inner,
+  .ps-site-header-home .ps-header-inner {
+    grid-template-columns: minmax(8rem, 1fr) auto;
+  }
+
+  .ps-header-search,
+  .ps-desktop-nav {
+    display: none;
+  }
+
+  .ps-mobile-menu-button {
+    display: grid;
+  }
+
+  .ps-mobile-nav {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--ps-line);
+    background: var(--ps-paper);
+    padding: 0.7rem 1rem 1rem;
+  }
+
+  .ps-site-header-home .ps-mobile-nav {
+    border-top-color: rgba(255, 255, 255, 0.14);
+    background: #171b20;
+  }
+
+  .ps-mobile-nav a {
+    border-bottom: 1px solid var(--ps-line);
+    padding: 0.9rem 0;
+    color: var(--ps-ink);
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .ps-site-header-home .ps-mobile-nav a {
+    border-bottom-color: rgba(255, 255, 255, 0.11);
+    color: #ffffff;
+  }
+
+  .ps-home-hero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    padding-top: 8rem;
+  }
+
+  .ps-home-hero h1 {
+    max-width: 11ch;
+  }
+
+  .ps-featured-market-card {
+    width: min(100%, 30rem);
+    min-height: 31rem;
+    transform: none;
+  }
+
+  .ps-home-ticker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ps-home-ticker > div:nth-child(3) {
+    border-top: 1px solid var(--ps-line);
+  }
+
+  .ps-home-ticker > div:nth-child(4) {
+    border-top: 1px solid var(--ps-line);
+  }
+
+  .ps-section-intro,
+  .ps-page-title-row,
+  .ps-page-masthead-split {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .ps-evidence-band {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-evidence-sheet {
+    width: min(100%, 32rem);
+  }
+
+  .ps-footer-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ps-footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .ps-catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ps-vendor-row {
+    grid-template-columns: 2rem 3.5rem minmax(9rem, 1fr) minmax(7rem, 0.55fr) auto;
+  }
+
+  .ps-vendor-row > .ps-trust-label {
+    display: none;
+  }
+
+  .ps-vendor-profile-head {
+    grid-template-columns: 5rem minmax(0, 1fr);
+  }
+
+  .ps-vendor-profile-mark {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .ps-vendor-profile-score {
+    grid-column: 2;
+    align-items: flex-start;
+  }
+
+  .ps-vendor-profile-score > strong {
+    font-size: 2.4rem;
+  }
+
+  .ps-vendor-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-vendor-policy {
+    grid-column: auto;
+  }
+
+  .ps-vendor-policy ul {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-evidence-toolbar {
+    grid-template-columns: minmax(14rem, 1fr) auto;
+  }
+
+  .ps-evidence-toolbar > a:last-child {
+    display: none;
+  }
+
+  .ps-verify-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-verify-visual {
+    min-height: 18rem;
+    border-top: 1px solid var(--ps-line);
+    border-left: 0;
+  }
+
+  .ps-cart-layout,
+  .ps-checkout-layout,
+  .ps-order-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-order-summary-panel,
+  .ps-checkout-summary {
+    position: static;
+  }
+
+  .ps-checkout-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ps-editorial-body,
+  .ps-article-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-editorial-body > aside,
+  .ps-article-layout > aside {
+    position: static;
+    flex-flow: row wrap;
+    border-bottom: 1px solid var(--ps-line);
+    padding-bottom: 1rem;
+  }
+
+  .ps-editorial-body > aside > p,
+  .ps-article-layout > aside > span {
+    width: 100%;
+  }
+
+  .ps-faq-page > header {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-faq-page > header > label {
+    grid-column: 1;
+    grid-row: auto;
+    max-width: 28rem;
+    margin-top: 1rem;
+  }
+
+  .ps-faq-layout,
+  .ps-contact-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-faq-layout > aside,
+  .ps-contact-layout > aside {
+    max-width: 30rem;
+  }
+
+  .ps-library-feature {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-library-feature-art {
+    min-height: 18rem;
+  }
+
+  .ps-auth-page {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-auth-brand-panel {
+    min-height: 33rem;
+  }
+
+  .ps-auth-form-panel {
+    min-height: 36rem;
+  }
+
+  .ps-api-page {
+    grid-template-columns: 12rem minmax(0, 1fr);
+  }
+
+  .ps-portal-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-portal-sidebar {
+    position: static;
+    height: auto;
+    padding: 0.8rem 1rem;
+  }
+
+  .ps-portal-role,
+  .ps-portal-sidebar nav,
+  .ps-portal-sidebar-footer {
+    display: none;
+  }
+
+  .ps-portal-topbar {
+    top: 0;
+  }
+
+  .ps-portal-two-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .ps-page-masthead {
+    padding-top: 3rem;
+  }
+
+  .ps-page-masthead h1,
+  .ps-form-page > header h1,
+  .ps-editorial-page > header h1,
+  .ps-article-page > header h1,
+  .ps-library-page > header h1,
+  .ps-contact-page > header h1,
+  .ps-faq-page > header h1 {
+    font-size: clamp(2.8rem, 14vw, 5rem);
+  }
+
+  .ps-home-hero {
+    padding-inline: 1rem;
+  }
+
+  .ps-home-hero h1 {
+    font-size: clamp(3.5rem, 17vw, 5.7rem);
+  }
+
+  .ps-hero-search {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .ps-hero-search button {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+
+  .ps-home-ticker > div {
+    min-height: 5rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.1rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .ps-product-ledger-row {
+    min-height: 6.5rem;
+    grid-template-columns: 1.6rem 3.6rem minmax(0, 1fr) auto;
+    gap: 0.65rem;
+  }
+
+  .ps-ledger-market,
+  .ps-ledger-price {
+    display: none;
+  }
+
+  .ps-product-ledger-row img {
+    width: 3rem;
+    height: 4rem;
+  }
+
+  .ps-evidence-sheet {
+    box-shadow: 0.6rem 0.6rem 0 #ffa300;
+  }
+
+  .ps-process-list li {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.8rem;
+  }
+
+  .ps-process-list p {
+    grid-column: 2;
+  }
+
+  .ps-footer-lead {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ps-footer-column:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .ps-footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-bottom: 5rem;
+  }
+
+  .ps-catalog-tools {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .ps-stock-switch {
+    grid-column: 1 / -1;
+  }
+
+  .ps-filter-strip {
+    align-items: stretch;
+  }
+
+  .ps-filter-strip > svg {
+    display: none;
+  }
+
+  .ps-filter-strip > button {
+    justify-content: space-between;
+  }
+
+  .ps-catalog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-catalog-card-visual {
+    min-height: 15rem;
+  }
+
+  .ps-state-tabs {
+    position: static;
+    width: fit-content;
+    margin: 1rem 1rem 0 auto;
+  }
+
+  .ps-offer-heading,
+  .ps-offer-action {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ps-offer-heading > button {
+    align-self: flex-start;
+  }
+
+  .ps-offer-action > button {
+    justify-content: center;
+  }
+
+  .ps-vendor-row {
+    min-height: 6.5rem;
+    grid-template-columns: 1.5rem 3rem minmax(0, 1fr) auto;
+    gap: 0.6rem;
+  }
+
+  .ps-vendor-row .ps-vendor-rating {
+    display: none;
+  }
+
+  .ps-vendor-monogram {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .ps-vendor-profile-head {
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .ps-vendor-profile-mark {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1rem;
+  }
+
+  .ps-vendor-profile-title h1 {
+    font-size: 2.4rem;
+  }
+
+  .ps-vendor-profile-score {
+    grid-column: 1 / -1;
+  }
+
+  .ps-vendor-catalog-head {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .ps-vendor-catalog-head label {
+    min-width: 0;
+  }
+
+  .ps-compact-product-list > a {
+    grid-template-columns: 2.7rem minmax(0, 1fr) auto;
+    gap: 0.6rem;
+  }
+
+  .ps-compact-product-list > a span {
+    display: none;
+  }
+
+  .ps-evidence-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-evidence-toolbar > a {
+    justify-content: center;
+  }
+
+  .ps-coa-table-head {
+    display: none;
+  }
+
+  .ps-coa-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+    gap: 1rem;
+    padding-block: 1rem;
+  }
+
+  .ps-coa-row > div:nth-child(3),
+  .ps-coa-row > div:nth-child(4) {
+    display: none;
+  }
+
+  .ps-mobile-label {
+    display: block;
+    color: var(--ps-faint);
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .ps-evidence-method {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .ps-evidence-method a {
+    grid-column: 2;
+  }
+
+  .ps-verify-copy {
+    padding: 1.5rem;
+  }
+
+  .ps-verify-copy h1 {
+    font-size: clamp(3rem, 14vw, 5rem);
+  }
+
+  .ps-verify-result {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .ps-verify-result > div:nth-child(3),
+  .ps-verify-result > button {
+    grid-column: 2;
+    align-items: flex-start;
+    justify-self: start;
+  }
+
+  .ps-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-field-wide {
+    grid-column: auto;
+  }
+
+  .ps-form-submit-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ps-form-submit-row button {
+    justify-content: center;
+  }
+
+  .ps-cart-line {
+    grid-template-columns: 3.7rem minmax(0, 1fr) auto;
+    gap: 0.7rem;
+    padding-block: 0.8rem;
+  }
+
+  .ps-cart-line-image {
+    width: 3.7rem;
+    height: 4.8rem;
+  }
+
+  .ps-quantity-control {
+    grid-column: 2;
+    width: fit-content;
+  }
+
+  .ps-cart-line-total {
+    grid-column: 3;
+    grid-row: 1 / 3;
+  }
+
+  .ps-checkout-head ol {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .ps-checkout-head li {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ps-payment-notes {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-order-status-page > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ps-editorial-body > div > section {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.7rem;
+  }
+
+  .ps-faq-list article > p {
+    margin-left: 2.8rem;
+    margin-right: 0;
+  }
+
+  .ps-library-feature {
+    min-height: auto;
+  }
+
+  .ps-library-feature-art {
+    min-height: 14rem;
+  }
+
+  .ps-article-index {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-article-index > a:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .ps-article-index > a:nth-child(even) {
+    padding-left: 0;
+  }
+
+  .ps-auth-page {
+    display: block;
+  }
+
+  .ps-auth-brand-panel {
+    min-height: 28rem;
+  }
+
+  .ps-auth-brand-panel h1 {
+    font-size: 2.8rem;
+  }
+
+  .ps-api-page {
+    display: block;
+  }
+
+  .ps-api-page > aside {
+    position: static;
+    height: auto;
+  }
+
+  .ps-api-page > aside > span,
+  .ps-api-page > aside nav {
+    display: none;
+  }
+
+  .ps-portal-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ps-portal-topbar-actions {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .ps-metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-order-table > div {
+    grid-template-columns: minmax(5rem, 0.7fr) minmax(6rem, 1fr) minmax(4rem, 0.5fr) auto;
+  }
+
+  .ps-order-table > div > :nth-child(2),
+  .ps-order-table > div > :nth-child(5) {
+    display: none;
+  }
+
+  .ps-seller-operations {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-admin-command-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ps-admin-command-row > button {
+    min-height: 2.7rem;
+    justify-content: center;
+  }
+
+  .ps-admin-vendor-list > article {
+    grid-template-columns: 2.5rem minmax(7rem, 1fr) auto;
+  }
+
+  .ps-admin-vendor-list article > .ps-trust-label {
+    display: none;
+  }
+
+  .ps-link-table > div {
+    grid-template-columns: minmax(7rem, 1fr) auto auto;
+  }
+
+  .ps-link-table > div > :nth-child(2),
+  .ps-link-table > div > :nth-child(4) {
+    display: none;
+  }
+
+  .ps-preview-tools {
+    right: 0.6rem;
+    bottom: 0.6rem;
+  }
+
+  .ps-preview-tools-panel {
+    width: calc(100vw - 1.2rem);
+    max-height: calc(100dvh - 1.2rem);
+  }
+}
+
+@media (max-width: 420px) {
+  .ps-header-inner {
+    min-height: 4.2rem;
+  }
+
+  .ps-home-proof-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ps-featured-market-copy > div {
+    gap: 1rem;
+  }
+
+  .ps-footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-footer-column:last-child,
+  .ps-footer-brand {
+    grid-column: auto;
+  }
+
+  .ps-cart-vendor-head {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .ps-checkout-head li {
+    font-size: 0.59rem;
+  }
+
+  .ps-order-table > div {
+    grid-template-columns: minmax(4.5rem, 0.7fr) minmax(4rem, 0.5fr) auto;
+  }
+
+  .ps-order-table > div > :nth-child(4) {
+    display: none;
+  }
+}
