@@ -27,61 +27,61 @@ const contentByPath: Record<string, { kicker: string; title: string; intro: stri
   '/about': {
     kicker: 'Why PeptShop exists',
     title: 'A clearer market for research compounds.',
-    intro: 'PeptShop organizes products, vendors, pricing, fulfillment signals, and public evidence into one comparison surface.',
+    intro: 'PeptShop is a marketplace for research-use-only peptides and compounds. It organizes products, vendors, pricing, fulfillment signals, and public evidence into one comparison surface so buyers can make informed decisions.',
     sections: [
-      ['Independent comparison', 'Listings are structured so a buyer can compare complete pack prices and vendor context without piecing together multiple sites.'],
-      ['Evidence in context', 'COAs stay connected to compounds, vendors, and batches so the source of a claim remains visible.'],
-      ['Accountable fulfillment', 'Order milestones, shipping updates, and delivery confirmation are recorded in one customer flow.'],
+      ['Independent comparison', 'Listings are structured so a buyer can compare complete pack prices and per-mg pricing across vendors without piecing together multiple sites. Finnrick Analytics aggregates pricing, purity, and reputation data so the comparison is always apples-to-apples.'],
+      ['Evidence in context', 'COAs (Certificates of Analysis) stay connected to compounds, vendors, and batches so the source of a purity claim remains visible. Buyers can verify what is in the vial before purchasing.'],
+      ['Crypto escrow protection', 'Every transaction uses crypto escrow — your payment is held until you confirm the order arrived and the CoA matches. The vendor does not get paid until you are satisfied.'],
     ],
   },
   '/shipping': {
     kicker: 'Fulfillment guide',
     title: 'Know where an order ships from.',
-    intro: 'Warehouse origin, available destinations, rates, and estimated dispatch are shown before checkout whenever a vendor supplies them.',
+    intro: 'Warehouse origin, available destinations, rates, and estimated dispatch are shown before checkout whenever a vendor supplies them. Each vendor ships from their own facility using their chosen carrier.',
     sections: [
-      ['Warehouse origin', 'Marketplace listings identify the fulfillment region attached to the offer.'],
-      ['Destination rules', 'The private checkout adapter evaluates vendor rules against the delivery country.'],
-      ['Tracking events', 'Customers can return to the private order page for tracking and delivery status.'],
+      ['Warehouse origin', 'Marketplace listings identify the fulfillment region attached to the offer. Vendors may ship domestically (2-3 business days) or overseas (7-14 business days).'],
+      ['Destination rules', 'It is the buyer\'s responsibility to understand and comply with all applicable local, state, national, and international laws regarding the purchase, possession, and use of research compounds.'],
+      ['Tracking events', 'Customers can return to the private order page for tracking and delivery status. Title and risk of loss pass to the buyer when the carrier accepts the package.'],
     ],
   },
   '/privacy': {
     kicker: 'Privacy policy',
     title: 'Minimal data, specific purposes.',
-    intro: 'PeptShop collects only the information required to operate marketplace browsing, checkout, fulfillment, and support.',
+    intro: 'PeptShop collects only the information required to operate marketplace browsing, checkout, fulfillment, and support. We do not require a real name or phone number for buyers.',
     sections: [
-      ['Order data', 'Contact and delivery details are used to process the order and provide fulfillment updates.'],
-      ['Access controls', 'Sensitive marketplace functions are restricted to the customer, relevant vendor, and authorized operators.'],
-      ['Data requests', 'Customers may contact support to ask about access, correction, or removal where applicable.'],
+      ['What we collect', 'Account data (email, display name, password hash — for vendors only; buyers can check out without an account), order data (shipping name, address, email, cart contents), payment data (crypto payments are settled via NOWPayments and referenced by transaction ID — we do not store card numbers), messages (disputes and order-related messaging), usage data (pages viewed, referrer, device type via server logs), and cookies (session and cart persistence).'],
+      ['What we do not collect', 'We do not require a real name for buyers. We do not require a phone number. We do not sell, rent, or trade your personal data to third parties for marketing. We do not require KYC identity verification to browse, compare, or order.'],
+      ['Your rights', 'You can request a copy of, or deletion of, your personal data by emailing privacy@peptshop.io. We respond within 30 days. Order records are retained for at least 3 years for tax and dispute-resolution purposes.'],
     ],
   },
   '/privacy-policy': {
     kicker: 'Privacy policy',
     title: 'Minimal data, specific purposes.',
-    intro: 'PeptShop collects only the information required to operate marketplace browsing, checkout, fulfillment, and support.',
+    intro: 'PeptShop collects only the information required to operate marketplace browsing, checkout, fulfillment, and support. We do not require a real name or phone number for buyers.',
     sections: [
-      ['Order data', 'Contact and delivery details are used to process the order and provide fulfillment updates.'],
-      ['Access controls', 'Sensitive marketplace functions are restricted to the customer, relevant vendor, and authorized operators.'],
-      ['Data requests', 'Customers may contact support to ask about access, correction, or removal where applicable.'],
+      ['What we collect', 'Account data (email, display name, password hash — for vendors only; buyers can check out without an account), order data (shipping name, address, email, cart contents), payment data (crypto payments are settled via NOWPayments and referenced by transaction ID — we do not store card numbers), messages (disputes and order-related messaging), usage data (pages viewed, referrer, device type via server logs), and cookies (session and cart persistence).'],
+      ['What we do not collect', 'We do not require a real name for buyers. We do not require a phone number. We do not sell, rent, or trade your personal data to third parties for marketing. We do not require KYC identity verification to browse, compare, or order.'],
+      ['Your rights', 'You can request a copy of, or deletion of, your personal data by emailing privacy@peptshop.io. We respond within 30 days. Order records are retained for at least 3 years for tax and dispute-resolution purposes.'],
     ],
   },
   '/terms': {
     kicker: 'Terms of service',
     title: 'Marketplace terms in plain language.',
-    intro: 'These terms govern use of the marketplace, including listings, checkout, fulfillment records, reviews, and evidence submissions.',
+    intro: 'These terms govern use of PeptShop, a marketplace for research-use-only products. By accessing or using PeptShop you agree to these terms. You must be at least 18 years old to use the service.',
     sections: [
-      ['Marketplace role', 'PeptShop provides marketplace infrastructure and does not manufacture the products listed by vendors.'],
-      ['Research use only', 'Products are offered for legitimate laboratory research and are not for human consumption.'],
-      ['Orders and disputes', 'Order-specific policies, evidence, and communication determine the available resolution process.'],
+      ['Research use only', 'PeptShop is a marketplace for research-use-only products. By using the service you confirm that you will use all purchased products solely for legitimate in-vitro research, laboratory, or educational purposes in compliance with all applicable laws. Products are not intended for human consumption, diagnosis, treatment, cure, or mitigation of any disease.'],
+      ['Orders & payment', 'All prices are listed in USD. Crypto payment amounts are computed at checkout based on the live exchange rate. Payment is complete when the transaction is confirmed on-chain. Orders are non-cancellable once payment is confirmed. If a vendor cannot fulfill an order, the buyer receives a full refund.'],
+      ['Disputes', 'If something goes wrong with an order, open a dispute from the order page. PeptShop will mediate between buyer and vendor. Resolution may include a full or partial refund, a replacement, or a release of funds to the vendor, depending on the evidence.'],
     ],
   },
   '/disclaimers': {
     kicker: 'Important information',
     title: 'Research use and marketplace disclaimers.',
-    intro: 'Review these limitations before browsing, submitting evidence, or placing an order.',
+    intro: 'All products listed on PeptShop are sold strictly for in-vitro research, laboratory, and educational purposes. They are not intended for human consumption, diagnosis, treatment, cure, or mitigation of any disease or medical condition.',
     sections: [
-      ['Not for human consumption', 'Marketplace products are offered solely for laboratory and in-vitro research.'],
-      ['No medical guidance', 'PeptShop does not provide medical advice, diagnosis, treatment, or dosage instructions.'],
-      ['Evidence limitations', 'A published laboratory document is provided for review and does not create a safety or suitability guarantee.'],
+      ['Research use only', 'All products listed on PeptShop are sold strictly for in-vitro research, laboratory, and educational purposes. They are not intended for human consumption, diagnosis, treatment, cure, or mitigation of any disease or medical condition. By using this site you confirm that you are a qualified researcher, laboratory professional, or educational institution purchasing for legitimate research purposes only.'],
+      ['No medical advice', 'Content on PeptShop — including product descriptions, dosage suggestions, research summaries, and blog posts — is for informational purposes only. It is not medical, legal, or professional advice. Always consult a qualified professional before making research, clinical, or procurement decisions.'],
+      ['No vendor endorsement', 'PeptShop is a marketplace. We verify vendor identity and CoA documentation, but we do not independently re-test every batch. Vendor claims, purity numbers, and product descriptions are the vendor\'s responsibility. PeptShop facilitates transactions and dispute resolution but does not take possession of, manufacture, or repackage any product. Our total aggregate liability for any claim is limited to the fees we received from the disputed transaction.'],
     ],
   },
 }
@@ -107,11 +107,15 @@ export function ContentPage(props: PageComponentProps) {
 function FaqPage() {
   const [open, setOpen] = useState(0)
   const items = [
-    ['What does PeptShop sell?', 'PeptShop is a marketplace for research compounds supplied by independent vendors. Products are intended for laboratory research only.'],
-    ['How are vendors compared?', 'Public profiles combine marketplace history, fulfillment signals, customer reviews, available shipping regions, and supporting evidence.'],
-    ['What is a COA?', 'A certificate of analysis is a laboratory record. PeptShop displays available records with their compound, vendor, lab, and batch context.'],
-    ['Do I need an account to order?', 'The current customer flow uses private order access rather than a traditional customer account.'],
-    ['How do I track an order?', 'Use the private order status page with the identifier and contact details supplied during checkout.'],
+    ['Why per-mg pricing?', 'Most peptide vendors sell in multi-vial packs at different dosages sizes. Per-mg pricing lets you compare the true cost across vendors and pack sizes — so a 10-vial pack of 5 mg BPC-157 from one vendor is directly comparable to a 10-vial pack of 2 mg from another. We display both the full pack price and the per-mg price on every listing.'],
+    ['What is a COA and why does it matter?', 'A Certificate of Analysis (CoA) is a laboratory test report that confirms the identity, purity, and sometimes the concentration of a compound. Every vendor on PeptShop is required to provide a CoA for each batch. We display these CoAs publicly on each product page, linked to the vendor and batch, so you can verify what is in the vial before you buy.'],
+    ['How does crypto escrow work?', 'When you place an order, your crypto payment is held in escrow — not sent directly to the vendor. The vendor ships the order. When you receive it and confirm the product matches the listing and CoA, the funds are released to the vendor. If something is wrong, you can open a dispute and the funds stay in escrow until PeptShop mediates a resolution.'],
+    ['Are these products safe?', 'All products on PeptShop are sold strictly for in-vitro research, laboratory, and educational purposes. They are not intended for human consumption, diagnosis, treatment, cure, or mitigation of any disease. Safety in a research context depends on proper handling, storage, and laboratory protocols. PeptShop verifies vendor identity and CoA documentation but does not independently re-test every batch.'],
+    ['What is Finnrick Analytics?', 'Finnrick Analytics is the data layer behind PeptShop. It aggregates pricing, purity data, vendor reputation signals, and marketplace history into a structured comparison surface. When you see per-mg pricing, vendor reputation scores, or purity trends on PeptShop, that data is sourced and organized by Finnrick Analytics.'],
+    ['Do I need KYC to use PeptShop?', 'No. PeptShop does not require KYC (Know Your Customer) identity verification to browse, compare, or place an order. You can check out without creating an account. Vendors who list products on the marketplace go through a separate onboarding and verification process, but buyers do not need to submit identity documents.'],
+    ['What cryptocurrencies can I use?', 'PeptShop accepts crypto payments via NOWPayments, which supports Bitcoin (BTC), Ethereum (ETH), Monero (XMR), Litecoin (LTC), and many other coins. The exact amount is calculated at checkout based on the live exchange rate. Payment is confirmed when the transaction is verified on-chain.'],
+    ['How do I verify purity claims?', 'Every product listing links to the vendor\'s CoA for that specific batch. The CoA shows the analytical method used (typically HPLC or mass spectrometry), the measured purity percentage, and the batch identifier. You can cross-reference the batch ID on the CoA with the batch ID on the physical product you receive. If they do not match, open a dispute immediately.'],
+    ['How does PeptShop compare prices across vendors?', 'PeptShop normalizes all vendor offerings to a per-mg price, so you can compare a 2 mg × 10-vial pack from one vendor against a 5 mg × 10-vial pack from another on equal footing. We also display the total pack price, shipping cost, free shipping thresholds, and any volume discounts. The comparison table on each product page shows all active vendors side by side, sorted by per-mg price.'],
   ]
   return <div className="ps-faq-page ps-section-shell"><header><span className="ps-kicker">Help center</span><h1>Questions, answered clearly.</h1><label><Search size={18} /><input placeholder="Search help topics" /></label></header><div className="ps-faq-layout"><aside><CircleHelp size={25} /><h2>Need a specific answer?</h2><p>Contact support with an order number when your question is tied to a purchase.</p><button type="button">Contact support <ArrowRight size={16} /></button></aside><div className="ps-faq-list">{items.map(([question, answer], index) => <article key={question}><button type="button" onClick={() => setOpen(open === index ? -1 : index)} aria-expanded={open === index}><span>{String(index + 1).padStart(2, '0')}</span><strong>{question}</strong><ChevronDown size={18} /></button>{open === index ? <p>{answer}</p> : null}</article>)}</div></div></div>
 }
