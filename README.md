@@ -36,6 +36,8 @@ The build checks the public/private boundary, TypeScript, and the production Vit
 - `src/pages/portal-pages.tsx`: login, seller, admin, staff, and affiliate workspaces.
 - `src/admin-pricing.tsx`: editable admin pricing and availability presentation.
 - `src/admin-pricing.module.css`: scoped pricing workspace styles used by preview and production.
+- `src/order-status.module.css`: production order lookup, access gate, timeline, and shipment styles.
+- `src/email-theme.ts`: presentation-only color tokens used by the private email renderer.
 - `src/styles/`: tokens, storefront styles, portal styles, and responsive rules.
 - `src/contracts.ts`: view models and callback boundary supplied by the private application.
 - `src/route-manifest.ts`: every route family owned by this presentation repository.
