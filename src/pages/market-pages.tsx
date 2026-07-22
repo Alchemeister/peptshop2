@@ -130,28 +130,51 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
   )
 }
 
-export function ProductPage({ actions, models, query, theme }: PageComponentProps) {
-  const [selectedDose, setSelectedDose] = useState(mockProduct.dosages[1])
+// Product detail lookup: maps product name → extra fields not in ProductSummary
+const productDetails: Record<string, { cas: string; formula: string; description: string }> = {
+  'BPC-157': { cas: '137525-51-0', formula: 'C62H98N16O22', description: 'Synthetic pentadecapeptide derived from human gastric juice. Research suggests it promotes healing of tendons, muscles, and the nervous system.' },
+  'Tirzepatide': { cas: '2023788-19-2', formula: 'C225H348N48O68', description: 'Dual GIP/GLP-1 receptor agonist. Research suggests significant effects on glycemic control and weight reduction.' },
+  'NAD+': { cas: '53-84-9', formula: 'C21H27N7O14P2', description: 'Essential coenzyme in redox reactions and cellular energy metabolism. Research suggests benefits for aging, DNA repair, and mitochondrial function.' },
+  'MOTS-c': { cas: '2030360-70-3', formula: 'C102H153N29O32S2', description: 'Mitochondrial-derived peptide. Research suggests metabolic regulation, insulin sensitivity, and exercise capacity benefits.' },
+  'Tesamorelin': { cas: '106129-60-4', formula: 'C169H277N51O44', description: 'Growth hormone releasing hormone analog. Research suggests reduction in visceral adipose tissue and metabolic improvement.' },
+  'SS-31': { cas: '927967-26-2', formula: 'C50H70N12O7', description: 'Mitochondria-targeted peptide. Research suggests protection against oxidative stress and mitochondrial dysfunction.' },
+  'Semaglutide': { cas: '910463-19-5', formula: 'C187H291N45O52', description: 'GLP-1 receptor agonist. Research suggests significant effects on glycemic control, weight management, and cardiovascular outcomes.' },
+  'Epitalon': { cas: '103640-04-0', formula: 'C14H22N4O9', description: 'Synthetic tetrapeptide. Research suggests telomere lengthening and anti-aging effects via melatonin regulation.' },
+  'GHK-Cu': { cas: '89030-95-5', formula: 'C14H24CuN6O4', description: 'Copper peptide complex. Research suggests wound healing, collagen stimulation, and anti-inflammatory properties.' },
+  'AOD-9604': { cas: '221231-10-3', formula: 'C78H123N23O23', description: 'Modified fragment of human growth hormone. Research suggests lipolytic effects without impacting insulin or growth.' },
+  'TB-500': { cas: '1035302-50-1', formula: 'C18H31N7O8S', description: 'Synthetic version of thymosin beta-4. Research suggests tissue repair, inflammation reduction, and wound healing.' },
+  'Melanotan II': { cas: '121062-08-6', formula: 'C50H69N11O9', description: 'Synthetic analog of alpha-MSH. Research suggests skin pigmentation and libido enhancement effects.' },
+  'PT-141': { cas: '189691-06-3', formula: 'C50H68N12O8', description: 'Synthetic peptide analog. Research suggests sexual arousal enhancement via melanocortin receptor activation.' },
+  'Hexarelin': { cas: '140703-51-1', formula: 'C49H57N11O8', description: 'Synthetic hexapeptide. Research suggests growth hormone secretion stimulation and cardioprotective effects.' },
+  'CJC-1295': { cas: '863288-34-0', formula: 'C152H252N44O40', description: 'Growth hormone releasing hormone analog. Research suggests sustained GH release and IGF-1 elevation.' },
+  'Ipamorelin': { cas: '170851-70-4', formula: 'C38H49N9O5', description: 'Synthetic pentapeptide. Research suggests selective GH release without cortisol or prolactin impact.' },
+  'Retatrutide': { cas: '2373529-69-8', formula: 'C221H346N48O63', description: 'Triple agonist (GLP-1/GIP/GcgR). Research suggests unprecedented weight loss and metabolic improvement.' },
+  'BPC-157 / TB-500 Blend': { cas: 'N/A', formula: 'Blend', description: 'Combined formulation of BPC-157 and TB-500. Research suggests synergistic tissue repair and anti-inflammatory effects.' },
+}
+
+export function ProductPage({ actions, models, query, theme, pathname }: PageComponentProps) {
+  // Parse product name from URL (/catalog/:name)
+  const productName = decodeURIComponent(pathname.split('/catalog/')[1]?.split('?')[0] ?? '')
+  const source = models.products.find((p) => p.name === productName || p.slug === productName) ?? models.products[0]
+  const details = productDetails[source?.name ?? ''] ?? { cas: 'N/A', formula: 'N/A', description: 'Product information supplied by the private application adapter.' }
+  const dosages = source?.formats ?? ['2 mg', '5 mg', '10 mg']
+
+  const [selectedDose, setSelectedDose] = useState(dosages[1] ?? dosages[0])
   const [dialogOpen, setDialogOpen] = useState(false)
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const empty = query.get('state') === 'empty'
-  const source = models.products[0]
 
   return (
     <div className="ps-product-route">
-      <div className="ps-state-tabs" aria-label="Product preview states">
-        <button type="button" aria-pressed={!empty} onClick={() => actions.navigate('/catalog/BPC-157')}>Available</button>
-        <button type="button" aria-pressed={empty} onClick={() => actions.navigate('/catalog/BPC-157?state=empty')}>No offers</button>
-      </div>
       <ProductPageFrame theme={theme}>
         <ProductPageHero
-          productName={source?.name ?? mockProduct.name}
-          dosageLabel={mockProduct.dosageLabel}
-          cas={mockProduct.cas}
-          formula={mockProduct.formula}
-          imageSrc={source?.imageSrc ?? mockProduct.imageSrc}
+          productName={source?.name ?? 'Product'}
+          dosageLabel="Dose per vial"
+          cas={details.cas}
+          formula={details.formula}
+          imageSrc={source?.imageSrc ?? '/images/products/bpc-157.png'}
           backControl={
             <ProductBackControlFrame>
               <button type="button" aria-label="Return to catalog" onClick={() => actions.navigate('/products')}>
@@ -161,7 +184,7 @@ export function ProductPage({ actions, models, query, theme }: PageComponentProp
           }
           dosageSelector={
             <ProductDosageSelectorFrame>
-              {mockProduct.dosages.map((dose) => (
+              {dosages.map((dose) => (
                 <ProductDosageOptionFrame key={dose} selected={dose === selectedDose} onClick={() => setSelectedDose(dose)}>
                   {dose}
                 </ProductDosageOptionFrame>
@@ -171,7 +194,7 @@ export function ProductPage({ actions, models, query, theme }: PageComponentProp
         />
 
         {empty ? (
-          <ProductUnavailableState productName={source?.name ?? mockProduct.name} onNotify={() => setDialogOpen(true)} />
+          <ProductUnavailableState productName={source?.name ?? 'Product'} onNotify={() => setDialogOpen(true)} />
         ) : (
           <ProductOffersSection dosage={selectedDose}>
             <VendorOfferCardFrame>
@@ -207,7 +230,7 @@ export function ProductPage({ actions, models, query, theme }: PageComponentProp
         )}
 
         <ProductAboutSection>
-          <p>{mockProduct.description}</p>
+          <p>{details.description}</p>
           <p>Live descriptions, studies, catalog rules, and evidence links are supplied by the private application adapter.</p>
         </ProductAboutSection>
       </ProductPageFrame>
@@ -220,10 +243,10 @@ export function ProductPage({ actions, models, query, theme }: PageComponentProp
               <div className="ps-modal-success"><Check size={22} /><h2>Alert saved in preview</h2><p>No request was sent from this mock workspace.</p></div>
             ) : (
               <>
-                <CompoundWaitlistTitle productName={source?.name ?? mockProduct.name} />
+                <CompoundWaitlistTitle productName={source?.name ?? 'Product'} />
                 <CompoundWaitlistDescription />
                 <CompoundWaitlistForm
-                  productName={source?.name ?? mockProduct.name}
+                  productName={source?.name ?? 'Product'}
                   email={email}
                   isIdle
                   onEmailChange={(event) => setEmail(event.currentTarget.value)}
