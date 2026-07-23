@@ -883,6 +883,7 @@
   font-size: 0.62rem;
   font-style: normal;
   font-weight: 720;
+  text-transform: uppercase;
 }
 
 .ps-catalog-card-visual > i {
@@ -3670,7 +3671,7 @@
 .ps-classic-hero {
   overflow: hidden;
   background: linear-gradient(135deg, #fff8ed 0%, #ffffff 50%, #eef2ff 100%);
-  padding-block: 5rem;
+  padding-block: 7rem;
 }
 
 .ps-classic-hero-grid {
@@ -3690,7 +3691,7 @@
 
 .ps-classic-hero-logo {
   width: auto;
-  height: 7.5rem;
+  height: 6rem;
   margin-bottom: 1rem;
   object-fit: contain;
   animation: ps-classic-fade-up 500ms ease-out both;
@@ -3837,7 +3838,7 @@
   color: #0f172a;
   text-decoration: none;
   box-shadow: 0 20px 50px -12px rgb(0 0 0 / 0.1);
-  animation: ps-classic-card-sway 12s ease-in-out infinite;
+  animation: ps-classic-card-sway 6s ease-in-out infinite;
   transform-origin: center;
   transition: box-shadow 300ms ease;
 }
@@ -3970,13 +3971,13 @@
   top: 50%;
   left: 50%;
   z-index: -1;
-  width: 24rem;
-  height: 24rem;
+  width: 18rem;
+  height: 18rem;
   border-radius: 999px;
-  background: rgb(255 200 100 / 0.35);
-  filter: blur(60px);
+  background: rgb(255 220 150 / 0.4);
+  filter: blur(48px);
   transform: translate(-50%, -50%);
-  animation: ps-classic-float 10s ease-in-out infinite;
+  animation: ps-classic-float 6s ease-in-out infinite;
 }
 
 .ps-classic-empty-card {
@@ -4493,7 +4494,7 @@
     transform: rotate(0deg) translateY(0);
   }
   50% {
-    transform: rotate(0.8deg) translateY(-2px);
+    transform: rotate(2deg) translateY(-4px);
   }
 }
 

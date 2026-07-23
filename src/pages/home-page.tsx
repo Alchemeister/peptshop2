@@ -32,8 +32,8 @@ export function HomePage({ actions, models }: PageComponentProps) {
             <img
               src="/peptshop-logo.svg"
               alt="PeptShop"
-              width="200"
-              height="120"
+              width="160"
+              height="96"
               className="ps-classic-hero-logo"
             />
             <p className="ps-classic-hero-intro">
