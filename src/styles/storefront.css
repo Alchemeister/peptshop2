@@ -33,9 +33,9 @@
 }
 
 .ps-hero-logo {
-  width: clamp(8rem, 16vw, 12.5rem);
-  margin-bottom: 0.75rem;
-  opacity: 0.9;
+  width: clamp(10rem, 18vw, 15rem);
+  margin-bottom: 1rem;
+  opacity: 0.95;
 }
 
 .ps-home-overline {
@@ -405,32 +405,35 @@
 .ps-home-ticker {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-bottom: 1px solid var(--ps-line);
-  background: var(--ps-paper);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0c0e12;
+  color: #ffffff;
   padding-inline: max(1rem, calc((100vw - 80rem) / 2));
 }
 
 .ps-home-ticker > div {
   display: flex;
-  min-height: 5rem;
+  min-height: 5.5rem;
   align-items: baseline;
   gap: 0.55rem;
-  border-left: 1px solid var(--ps-line);
-  padding: 0.8rem 1.5rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.9rem 1.5rem;
 }
 
 .ps-home-ticker > div:last-child {
-  border-right: 1px solid var(--ps-line);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .ps-home-ticker strong {
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   letter-spacing: -0.04em;
+  color: #ffffff;
 }
 
 .ps-home-ticker span {
-  color: var(--ps-muted);
-  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.74rem;
 }
 
 .ps-home-products {
@@ -990,11 +993,22 @@
 .ps-catalog-card-visual {
   position: relative;
   display: grid;
-  min-height: 17rem;
+  min-height: 16rem;
   place-items: center;
   overflow: hidden;
   border-bottom: 1px solid var(--ps-line);
   background: var(--ps-surface);
+}
+
+.ps-catalog-card-visual::before {
+  position: absolute;
+  width: 11rem;
+  height: 11rem;
+  border-radius: 50%;
+  background: var(--ps-accent);
+  content: '';
+  filter: blur(36px);
+  opacity: 0.18;
 }
 
 .ps-catalog-card-visual::after {
@@ -1005,7 +1019,7 @@
   background: var(--ps-accent);
   content: '';
   filter: blur(32px);
-  opacity: 0.15;
+  opacity: 0.12;
 }
 
 .ps-catalog-card-visual > span,
@@ -1035,7 +1049,7 @@
   position: relative;
   z-index: 1;
   width: 7.5rem;
-  height: 12rem;
+  height: 12.5rem;
   object-fit: contain;
   filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.12));
 }
