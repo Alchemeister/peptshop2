@@ -129,9 +129,9 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       ) : null}
 
       {visibleProducts.length ? (
-        <div className="ps-catalog-grid">
-          {visibleProducts.map((product) => (
-            <CatalogCard key={product.id} product={product} navigate={actions.navigate} />
+        <div className="ps-product-ledger" style={{ marginTop: '1.5rem' }}>
+          {visibleProducts.map((product, index) => (
+            <CatalogLedgerRow key={product.id} index={index + 1} product={product} navigate={actions.navigate} />
           ))}
         </div>
       ) : (
@@ -146,23 +146,31 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
   )
 }
 
-function CatalogCard({ product, navigate }: { product: ProductSummary; navigate: (href: string) => void }) {
+function CatalogLedgerRow({ index, product, navigate }: { index: number; product: ProductSummary; navigate: (href: string) => void }) {
+  const available = product.availability === 'available'
   return (
-    <FrontendLink href={`/products/${product.slug}`} navigate={navigate} className="ps-catalog-card">
-      <div className="ps-catalog-card-visual">
-        <span>{product.category}</span>
-        <img src={product.imageSrc} alt={`${product.name} vial`} />
-        <i>{product.coaCount} COAs</i>
+    <FrontendLink href={`/products/${product.slug}`} navigate={navigate} className="ps-product-ledger-row">
+      <span className="ps-ledger-index">{String(index).padStart(2, '0')}</span>
+      <img src={product.imageSrc} alt={`${product.name} vial`} />
+      <div className="ps-ledger-name">
+        <span>Compound</span>
+        <strong>{product.name}</strong>
       </div>
-      <div className="ps-catalog-card-copy">
-        <h2>{product.name}</h2>
-        <p>{product.formats.join(' · ')}</p>
-        <div>
-          <span>{product.vendorCount ? `${product.vendorCount} vendors` : 'Join watchlist'}</span>
-          {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
-          <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
-        </div>
+      <div className="ps-ledger-formats">
+        <span>Formats</span>
+        <strong>{product.formats.slice(0, 3).join(' · ')}</strong>
       </div>
+      <div className="ps-ledger-market">
+        <span>Vendors</span>
+        <strong>{product.vendorCount} {product.vendorCount === 1 ? 'vendor' : 'vendors'}</strong>
+      </div>
+      <div className="ps-ledger-price">
+        <span>{available ? 'From' : 'Price'}</span>
+        <strong>
+          {product.startingPrice === null ? '—' : `$${product.startingPrice.toFixed(2)}/mg`}
+        </strong>
+      </div>
+      <ArrowRight size={18} className="ps-ledger-arrow" />
     </FrontendLink>
   )
 }

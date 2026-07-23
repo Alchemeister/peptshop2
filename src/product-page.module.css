@@ -166,7 +166,7 @@
   z-index: -1;
   border-radius: 16px;
   background: var(--ps-accent);
-  transform: rotate(3deg);
+  transform: rotate(0deg);
 }
 
 .productVisual img {
@@ -174,7 +174,6 @@
   max-height: 29rem;
   object-fit: contain;
   filter: drop-shadow(0 28px 24px rgba(37, 42, 49, 0.22));
-  transform: rotate(-4deg) translateY(-0.5rem);
 }
 
 .dosageRail {
