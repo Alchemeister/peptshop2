@@ -6,7 +6,7 @@
   gap: clamp(2rem, 6vw, 6rem);
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(118deg, #101319 0%, #171b21 56%, #25272a 100%);
+  background: linear-gradient(118deg, #08090c 0%, #0c0e12 50%, #101319 100%);
   padding: 3rem max(1rem, calc((100vw - 75rem) / 2)) 3rem;
   color: #ffffff;
 }
@@ -18,7 +18,7 @@
 }
 
 .ps-hero-logo {
-  width: clamp(13rem, 22vw, 19rem);
+  width: clamp(15rem, 26vw, 22rem);
   margin-bottom: 1rem;
   opacity: 0.95;
 }
@@ -33,8 +33,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem 1.25rem;
+  margin-top: 0.5rem;
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -57,7 +58,7 @@
 .ps-home-hero h1 {
   max-width: 10ch;
   margin: 0.7rem 0 0;
-  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+  font-size: clamp(3.2rem, 7.5vw, 6.5rem);
   font-weight: 610;
   letter-spacing: -0.07em;
   line-height: 0.86;
@@ -72,22 +73,22 @@
   max-width: 40rem;
   margin: 1.3rem 0 0;
   color: rgba(255, 255, 255, 0.64);
-  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
   line-height: 1.55;
 }
 
 .ps-hero-search {
   display: grid;
-  max-width: 40rem;
-  min-height: 3.25rem;
-  margin-top: 1.1rem;
+  max-width: 42rem;
+  min-height: 4rem;
+  margin-top: 1.3rem;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.7rem;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
-  padding: 0.35rem 0.4rem 0.35rem 1rem;
+  padding: 0.4rem 0.4rem 0.4rem 1.1rem;
   backdrop-filter: blur(12px);
 }
 
@@ -101,7 +102,7 @@
   outline: 0;
   background: transparent;
   color: #ffffff;
-  font-size: 0.91rem;
+  font-size: 1.05rem;
 }
 
 .ps-hero-search input::placeholder {
@@ -116,9 +117,9 @@
   border: 0;
   border-radius: 9px;
   background: var(--ps-accent);
-  padding: 0 1rem;
+  padding: 0 1.2rem;
   color: #15181d;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 780;
 }
 
@@ -126,9 +127,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem 1.25rem;
-  margin-top: 1.1rem;
+  margin-top: 1.3rem;
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 620;
 }
 
@@ -144,7 +145,7 @@
 
 .ps-featured-market-card {
   display: flex;
-  min-height: 30rem;
+  min-height: 34rem;
   flex-direction: column;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.17);
