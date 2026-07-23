@@ -253,7 +253,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <span><FileCheck2 size={15} /><small>Purity</small>≥{vendor.purity}%</span>
                         <span><PackageCheck size={15} /><small>Batch</small>{vendor.batch}</span>
                         <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
-                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/coas/${vendor.slug}/${source?.slug ?? 'bpc-157'}`)}>
+                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate('/coas')}>
                           <FileCheck2 size={13} /> COA
                         </button>
                       </div>
@@ -295,9 +295,6 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                     <span>Total</span>
                     <strong>${(unitPrice * quantity).toFixed(2)}</strong>
                   </div>
-                  <button type="button" className="ps-checkout-btn" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', selectedVendor?.id ?? 'vendor-northstar')}>
-                    <ShoppingBag size={18} /> Add ${(unitPrice * quantity).toFixed(2)}
-                  </button>
                   <div className="ps-cart-summary-badges">
                     <span><ShieldCheck size={14} /> Escrow protected</span>
                     <span><FileCheck2 size={14} /> Batch verified</span>
