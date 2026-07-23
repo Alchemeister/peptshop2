@@ -729,6 +729,94 @@
   margin-inline: 0.3rem;
 }
 
+.ps-region-dropdown {
+  position: relative;
+}
+
+.ps-region-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--ps-line);
+  border-radius: 8px;
+  background: var(--ps-surface);
+  padding: 0.5rem 0.75rem;
+  color: var(--ps-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.ps-region-trigger:hover {
+  border-color: var(--ps-ink);
+  color: var(--ps-ink);
+}
+
+.ps-region-trigger.is-active {
+  border-color: var(--ps-accent);
+  color: var(--ps-accent);
+  background: color-mix(in srgb, var(--ps-accent) 8%, var(--ps-surface));
+}
+
+.ps-region-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.ps-region-menu {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  z-index: 51;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  border: 1px solid var(--ps-line);
+  border-radius: 10px;
+  background: var(--ps-paper);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 0.35rem;
+  min-width: 10rem;
+}
+
+.ps-region-menu button {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  padding: 0.5rem 0.6rem;
+  color: var(--ps-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.ps-region-menu button:hover {
+  background: var(--ps-surface);
+  color: var(--ps-ink);
+}
+
+.ps-region-menu button.is-selected {
+  background: color-mix(in srgb, var(--ps-accent) 12%, var(--ps-surface));
+  color: var(--ps-accent);
+  font-weight: 700;
+}
+
+.ps-region-menu button svg {
+  opacity: 0;
+}
+
+.ps-region-menu button.is-selected svg {
+  opacity: 1;
+}
+
 .ps-region-badge {
   display: inline-block;
   border: 1px solid var(--ps-line);

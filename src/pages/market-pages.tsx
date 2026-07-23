@@ -43,8 +43,9 @@ import {
 export function CatalogPage({ actions, models }: PageComponentProps) {
   const [query, setQuery] = useState('')
   const [filterOpen, setFilterOpen] = useState(false)
-  const [stockOnly, setStockOnly] = useState(false)
+  const [stockOnly, setStockOnly] = useState(true)
   const [regionFilter, setRegionFilter] = useState<'all' | 'us' | 'eu'>('all')
+  const [regionOpen, setRegionOpen] = useState(false)
   const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name')
   const visibleProducts = useMemo(() => {
     const normalized = query.trim().toLowerCase()
@@ -81,6 +82,34 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
           />
           {query ? <button type="button" onClick={() => setQuery('')} aria-label="Clear search"><X size={16} /></button> : null}
         </label>
+        <div className={`ps-region-dropdown ${regionOpen ? 'is-open' : ''}`}>
+          <button
+            type="button"
+            className={`ps-region-trigger ${regionFilter !== 'all' ? 'is-active' : ''}`}
+            onClick={() => setRegionOpen((open) => !open)}
+            aria-expanded={regionOpen}
+          >
+            <MapPin size={15} />
+            {regionFilter === 'all' ? 'All regions' : regionFilter === 'us' ? 'US warehouse' : 'EU warehouse'}
+            <ChevronDown size={15} />
+          </button>
+          {regionOpen ? (
+            <>
+              <div className="ps-region-overlay" onClick={() => setRegionOpen(false)} />
+              <div className="ps-region-menu">
+                <button type="button" className={regionFilter === 'all' ? 'is-selected' : ''} onClick={() => { setRegionFilter('all'); setRegionOpen(false) }}>
+                  <Check size={15} /> All regions
+                </button>
+                <button type="button" className={regionFilter === 'us' ? 'is-selected' : ''} onClick={() => { setRegionFilter('us'); setRegionOpen(false) }}>
+                  <Check size={15} /> US warehouse
+                </button>
+                <button type="button" className={regionFilter === 'eu' ? 'is-selected' : ''} onClick={() => { setRegionFilter('eu'); setRegionOpen(false) }}>
+                  <Check size={15} /> EU warehouse
+                </button>
+              </div>
+            </>
+          ) : null}
+        </div>
         <button type="button" className="ps-filter-button" onClick={() => setFilterOpen((open) => !open)} aria-expanded={filterOpen}>
           <SlidersHorizontal size={17} /> Filters <ChevronDown size={15} />
         </button>
@@ -96,10 +125,6 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
           <button type="button" className={sortBy === 'name' ? 'is-active' : ''} onClick={() => setSortBy('name')}>Sort <span>A–Z</span></button>
           <button type="button" className={sortBy === 'price-low' ? 'is-active' : ''} onClick={() => setSortBy('price-low')}>Price <span>Low–High</span></button>
           <button type="button" className={sortBy === 'price-high' ? 'is-active' : ''} onClick={() => setSortBy('price-high')}>Price <span>High–Low</span></button>
-          <span className="ps-filter-divider" />
-          <button type="button" className={regionFilter === 'all' ? 'is-active' : ''} onClick={() => setRegionFilter('all')}>Region <span>All</span></button>
-          <button type="button" className={regionFilter === 'us' ? 'is-active' : ''} onClick={() => setRegionFilter('us')}>Region <span>US</span></button>
-          <button type="button" className={regionFilter === 'eu' ? 'is-active' : ''} onClick={() => setRegionFilter('eu')}>Region <span>EU</span></button>
         </div>
       ) : null}
 
