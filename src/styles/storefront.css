@@ -1,7 +1,7 @@
 .ps-home-hero {
   position: relative;
   display: grid;
-  min-height: clamp(40rem, 84vh, 60rem);
+  min-height: clamp(40rem, 92vh, 60rem);
   grid-template-columns: minmax(0, 1.2fr) minmax(21rem, 0.8fr);
   gap: clamp(2rem, 6vw, 6rem);
   align-items: center;
