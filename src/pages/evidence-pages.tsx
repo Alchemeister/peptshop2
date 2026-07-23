@@ -33,6 +33,9 @@ export function EvidencePage({ actions, models, pathname }: PageComponentProps) 
         <div className="ps-coa-table-head" role="row">
           <span>Compound</span><span>Vendor</span><span>Laboratory</span><span>Tested</span><span>Result</span><span />
         </div>
+        {models.coas.length === 0 ? (
+          <div className="ps-coa-empty-state"><FileCheck2 size={28} /><p>No certificates have been published yet.</p><small>COAs from verified labs will appear here once vendors upload batch evidence.</small></div>
+        ) : null}
         {models.coas.map((coa) => (
           <div className="ps-coa-row" role="row" key={coa.id}>
             <div><span className="ps-mobile-label">Compound</span><strong>{coa.product}</strong><small>{coa.batch}</small></div>
