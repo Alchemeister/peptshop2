@@ -1769,18 +1769,6 @@ export const mockModels: PeptShopViewModels = {
       imageSrc: '/vial-default.png',
       availability: 'watchlist',
     },
-    {
-      id: 'p43',
-      name: 'Epitech',
-      slug: 'epitech',
-      category: 'Healing & Recovery',
-      formats: ['5 mg'],
-      startingPrice: 25.0,
-      vendorCount: 1,
-      coaCount: 0,
-      imageSrc: '/vial-default.png',
-      availability: 'available',
-    },
   ],
   vendors: [
     {
