@@ -29,7 +29,6 @@ import {
   CompoundWaitlistDescription,
   CompoundWaitlistForm,
   CompoundWaitlistTitle,
-  ProductAboutSection,
   ProductBackControlFrame,
   ProductDosageOptionFrame,
   ProductDosageSelectorFrame,
@@ -299,7 +298,8 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
           dosageLabel="Dose per vial"
           cas={details.cas}
           formula={details.formula}
-          imageSrc={source?.imageSrc ?? '/images/products/bpc-157.png'}
+          overview={details.description}
+          imageSrc={source?.imageSrc ?? '/vial.svg'}
           backControl={
             <ProductBackControlFrame>
               <button type="button" aria-label="Return to catalog" onClick={() => actions.navigate('/products')}>
@@ -425,11 +425,6 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
             </section>
           </>
         )}
-
-        <ProductAboutSection>
-          <p>{details.description}</p>
-                  <p>For in-vitro research use only. Not for human consumption.</p>
-        </ProductAboutSection>
       </ProductPageFrame>
 
       {dialogOpen ? (

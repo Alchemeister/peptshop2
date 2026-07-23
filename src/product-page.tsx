@@ -23,6 +23,7 @@ type ProductPageHeroProps = {
   formula?: string | null
   imageAlt?: string
   imageSrc?: string | null
+  overview?: string | null
   productName: string
 }
 
@@ -118,6 +119,7 @@ export function ProductPageHero({
   formula,
   imageAlt,
   imageSrc,
+  overview,
   productName,
 }: ProductPageHeroProps) {
   const hasFacts = Boolean(cas || formula)
@@ -128,7 +130,11 @@ export function ProductPageHero({
         <div className={styles.backControl}>{backControl}</div>
         <div className={styles.heroTitleBlock}>
           <h1>{productName}</h1>
-          <p>Compare verified listings, pack sizes, and fulfillment terms before you buy.</p>
+          {overview ? (
+            <p className={styles.heroOverview}>{overview}</p>
+          ) : (
+            <p>Compare verified listings, pack sizes, and fulfillment terms before you buy.</p>
+          )}
         </div>
 
         {hasFacts ? (
