@@ -33,7 +33,7 @@
 }
 
 .ps-hero-logo {
-  width: clamp(10rem, 18vw, 15rem);
+  width: clamp(11rem, 19vw, 16rem);
   margin-bottom: 1rem;
   opacity: 0.95;
 }
@@ -441,6 +441,8 @@
 
 .ps-home-products {
   padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  background: linear-gradient(180deg, #0c0e12 0%, #1a1d22 100%);
+  color: #ffffff;
 }
 
 .ps-section-intro {
