@@ -23,7 +23,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import type { PageComponentProps, ProductSummary, VendorSummary } from '../contracts'
-import { mockProduct, mockVendor } from '../mock-data'
+import { mockAdminPricingItems, mockProduct, mockVendor } from '../mock-data'
 import { FrontendLink } from '../navigation'
 import {
   CompoundWaitlistDescription,
@@ -268,6 +268,19 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const dosages = source?.formats ?? ['2 mg', '5 mg', '10 mg']
 
   // Build vendor offers from mock vendors, priced per product
+  // Look up actual admin pricing for per-dose prices
+  const lookupAdminPrice = (dose: string, vendorMultiplier = 1): number => {
+    const doseNum = parseInt(dose) || 5
+    const adminItem = mockAdminPricingItems.find(
+      (item) => item.name === source?.name && item.dosage.includes(`${doseNum} mg`)
+    )
+    if (adminItem && adminItem.tiers[0]) {
+      return adminItem.tiers[0].price * vendorMultiplier
+    }
+    // Fallback to startingPrice if no admin match
+    return (source?.startingPrice ?? 42) * vendorMultiplier
+  }
+
   const productVendors = useMemo(() => {
     const vendorData = [
       { id: 'vendor-northstar', name: 'Northstar Research', slug: 'northstar-research', location: 'United States', rating: 4.9, reviewCount: 184, coaCount: 32, fulfillment: '1–2 days', purity: 99.5, batch: 'PS-p1-2mg-A', offerPrice: source?.startingPrice ?? 42 } as any,
@@ -287,14 +300,14 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const empty = query.get('state') === 'empty'
   const selectedVendor = productVendors.find((v) => v.id === selectedVendorId) ?? productVendors[0]
 
-  // Scale price by dosage — higher mg = higher price
-  const doseMultiplier = selectedDose.includes('10') ? 2.5
-    : selectedDose.includes('5') ? 1.5
+  // Get price from admin pricing data based on selected dose
+  const vendorMult = selectedVendor?.id === 'vendor-retalux' ? 1.05
+    : selectedVendor?.id === 'vendor-axiom' ? 0.85
     : 1
-  const doseAdjustedPrice = (selectedVendor?.offerPrice ?? 0) * doseMultiplier
+  const dosePrice = lookupAdminPrice(selectedDose, vendorMult)
   const unitPrice = selectedPackSize === 20
-    ? doseAdjustedPrice * 1.9
-    : doseAdjustedPrice
+    ? dosePrice * 1.9
+    : dosePrice
 
   return (
     <div className="ps-product-route">
@@ -343,7 +356,10 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         </button>
                       </div>
                       <div className="ps-offer-options">
-                        {(() => { const vPrice = vendor.offerPrice * doseMultiplier; return (<>
+                        {(() => {
+                          const vMult = vendor.id === 'vendor-retalux' ? 1.05 : vendor.id === 'vendor-axiom' ? 0.85 : 1
+                          const vPrice = lookupAdminPrice(selectedDose, vMult)
+                          return (<>
                         <VendorOfferOptionFrame selected={selectedVendorId === vendor.id && selectedPackSize === 10} onClick={() => { setSelectedVendorId(vendor.id); setSelectedPackSize(10) }}>
                           <strong>10 vials</strong>
                           <span>${vPrice.toFixed(2)}</span>
@@ -369,7 +385,11 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                           <button type="button" onClick={() => { setSelectedVendorId(vendor.id); setQuantity((value) => value + 1) }} aria-label="Increase quantity"><Plus size={15} /></button>
                         </div>
                         <button type="button" className="ps-add-to-cart-btn" onClick={() => { setSelectedVendorId(vendor.id); actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id) }}>
-                          <ShoppingBag size={17} /> Add ${((selectedPackSize === 20 ? vendor.offerPrice * doseMultiplier * 1.9 : vendor.offerPrice * doseMultiplier) * (selectedVendorId === vendor.id ? quantity : 1)).toFixed(2)}
+                          <ShoppingBag size={17} /> Add ${(() => {
+                            const vMult = vendor.id === 'vendor-retalux' ? 1.05 : vendor.id === 'vendor-axiom' ? 0.85 : 1
+                            const vPrice = lookupAdminPrice(selectedDose, vMult)
+                            return ((selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * (selectedVendorId === vendor.id ? quantity : 1)).toFixed(2)
+                          })()}
                         </button>
                       </div>
                     </VendorOfferCardFrame>
