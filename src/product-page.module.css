@@ -156,7 +156,7 @@
   place-items: center;
   overflow: hidden;
   border-left: 1px solid var(--ps-line);
-  background: var(--ps-surface);
+  background: transparent;
   isolation: isolate;
 }
 
