@@ -63,6 +63,12 @@
   .ps-header-inner,
   .ps-site-header-home .ps-header-inner {
     grid-template-columns: minmax(8rem, 1fr) auto;
+    min-height: 5.5rem;
+  }
+
+  .ps-brand img {
+    width: 11rem;
+    height: 3.2rem;
   }
 
   .ps-header-search,
@@ -756,6 +762,11 @@
 @media (max-width: 420px) {
   .ps-header-inner {
     min-height: 4.2rem;
+  }
+
+  .ps-brand img {
+    width: 9rem;
+    height: 2.6rem;
   }
 
   .ps-home-proof-row {

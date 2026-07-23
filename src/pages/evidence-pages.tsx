@@ -10,7 +10,7 @@ import {
   Search,
   ShieldCheck,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { PageComponentProps } from '../contracts'
 import { FrontendLink } from '../navigation'
 
@@ -88,6 +88,9 @@ function VerifyPage({ actions }: Pick<PageComponentProps, 'actions'>) {
 
 function SubmitCoaPage({ actions }: Pick<PageComponentProps, 'actions'>) {
   const [submitted, setSubmitted] = useState(false)
+  useEffect(() => {
+    if (submitted) window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [submitted])
   if (submitted) {
     return <div className="ps-flow-success"><CheckCircle2 size={28} /><span className="ps-kicker">Submission received</span><h1>COA ready for review</h1><p>Your submission has been queued for review and will be published in the evidence library once verified.</p><button type="button" onClick={() => setSubmitted(false)}>Submit another</button></div>
   }
