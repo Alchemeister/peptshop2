@@ -267,12 +267,11 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const details = productDetails[source?.name ?? ''] ?? { cas: 'N/A', formula: 'N/A', description: 'Research compound available from vetted suppliers with transparent per-mg pricing and batch-level evidence.' }
   const dosages = source?.formats ?? ['2 mg', '5 mg', '10 mg']
 
-  // Build vendor offers from mock vendors, priced per product
-  // Look up actual admin pricing for per-dose prices
-  const lookupAdminPrice = (dose: string, vendorMultiplier = 1): number => {
+  // Build vendor offers from admin pricing data — real per-vendor, per-dose prices
+  const lookupVendorPrice = (dose: string, vendorId: string): number => {
     const doseNum = parseInt(dose) || 5
     const adminItem = mockAdminPricingItems.find(
-      (item) => item.name === source?.name && (
+      (item) => item.vendorId === vendorId && item.name === source?.name && (
         item.dosage.includes(`${doseNum} mg`) ||
         item.dosage.includes(`${doseNum} mL`) ||
         item.dosage.includes(`${doseNum}mg`) ||
@@ -280,19 +279,42 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
       )
     )
     if (adminItem && adminItem.tiers[0]) {
-      return adminItem.tiers[0].price * vendorMultiplier
+      return adminItem.tiers[0].price
     }
-    // Fallback to startingPrice if no admin match
-    return (source?.startingPrice ?? 42) * vendorMultiplier
+    // Fallback: try any vendor with this product+dose, use as base
+    const anyVendorItem = mockAdminPricingItems.find(
+      (item) => item.name === source?.name && (
+        item.dosage.includes(`${doseNum} mg`) ||
+        item.dosage.includes(`${doseNum} mL`) ||
+        item.dosage.includes(`${doseNum}mg`) ||
+        item.dosage.includes(`${doseNum}mL`)
+      )
+    )
+    if (anyVendorItem && anyVendorItem.tiers[0]) {
+      return anyVendorItem.tiers[0].price
+    }
+    // Last resort fallback
+    return source?.startingPrice ?? 42
   }
 
+  // Vendor display data — mapped to real admin vendor IDs
+  const vendorDisplayMap: Record<string, { name: string; slug: string; location: string; rating: number; reviewCount: number; coaCount: number; fulfillment: string; purity: number; batch: string }> = {
+    'vendor-retalux': { name: 'Retalux', slug: 'retalux', location: 'United States', rating: 4.8, reviewCount: 142, coaCount: 24, fulfillment: '2–3 days', purity: 99.2, batch: 'RX-p2-2mg-B' },
+    'vendor-axiom-peptides': { name: 'Axiom Peptides', slug: 'axiom-peptides', location: 'European Union', rating: 4.7, reviewCount: 98, coaCount: 15, fulfillment: '3–5 days', purity: 99.0, batch: 'AX-p3-2mg-C' },
+    'vendor-lumira': { name: 'Lumira', slug: 'lumira', location: 'Canada', rating: 4.6, reviewCount: 76, coaCount: 12, fulfillment: '2–4 days', purity: 99.1, batch: 'LM-p4-2mg-D' },
+    'vendor-nova-bio-research': { name: 'Nova Bio Research', slug: 'nova-bio-research', location: 'United Kingdom', rating: 4.5, reviewCount: 54, coaCount: 8, fulfillment: '4–6 days', purity: 98.8, batch: 'NB-p5-2mg-E' },
+  }
+
+  // Find which admin vendors actually sell this product
   const productVendors = useMemo(() => {
-    const vendorData = [
-      { id: 'vendor-northstar', name: 'Northstar Research', slug: 'northstar-research', location: 'United States', rating: 4.9, reviewCount: 184, coaCount: 32, fulfillment: '1–2 days', purity: 99.5, batch: 'PS-p1-2mg-A', offerPrice: source?.startingPrice ?? 42 } as any,
-      { id: 'vendor-retalux', name: 'Retalux', slug: 'retalux', location: 'United States', rating: 4.8, reviewCount: 142, coaCount: 24, fulfillment: '2–3 days', purity: 99.2, batch: 'RX-p2-2mg-B', offerPrice: (source?.startingPrice ?? 42) * 1.05 } as any,
-      { id: 'vendor-axiom', name: 'Axiom Peptides', slug: 'axiom-peptides', location: 'European Union', rating: 4.7, reviewCount: 98, coaCount: 15, fulfillment: '3–5 days', purity: 99.0, batch: 'AX-p3-2mg-C', offerPrice: (source?.startingPrice ?? 42) * 0.85 } as any,
-    ]
-    return vendorData.slice(0, Math.max(1, source?.vendorCount ?? 1))
+    const vendorIdsWithProduct = [...new Set(
+      mockAdminPricingItems
+        .filter((item) => item.name === source?.name)
+        .map((item) => item.vendorId)
+    )]
+    return vendorIdsWithProduct
+      .map((vid) => ({ id: vid, ...(vendorDisplayMap[vid] ?? { name: vid, slug: vid, location: 'Unknown', rating: 4.5, reviewCount: 50, coaCount: 5, fulfillment: '2–3 days', purity: 99.0, batch: 'XX' }) }))
+      .slice(0, Math.max(1, source?.vendorCount ?? 1))
   }, [source])
 
   const [selectedDose, setSelectedDose] = useState(dosages[1] ?? dosages[0])
@@ -305,11 +327,8 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const empty = query.get('state') === 'empty'
   const selectedVendor = productVendors.find((v) => v.id === selectedVendorId) ?? productVendors[0]
 
-  // Get price from admin pricing data based on selected dose
-  const vendorMult = selectedVendor?.id === 'vendor-retalux' ? 1.05
-    : selectedVendor?.id === 'vendor-axiom' ? 0.85
-    : 1
-  const dosePrice = lookupAdminPrice(selectedDose, vendorMult)
+  // Get price from admin pricing data based on selected dose + vendor
+  const dosePrice = lookupVendorPrice(selectedDose, selectedVendor?.id ?? 'vendor-retalux')
   const unitPrice = selectedPackSize === 20
     ? dosePrice * 1.9
     : dosePrice
@@ -362,8 +381,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                       </div>
                       <div className="ps-offer-options">
                         {(() => {
-                          const vMult = vendor.id === 'vendor-retalux' ? 1.05 : vendor.id === 'vendor-axiom' ? 0.85 : 1
-                          const vPrice = lookupAdminPrice(selectedDose, vMult)
+                          const vPrice = lookupVendorPrice(selectedDose, vendor.id)
                           return (<>
                         <VendorOfferOptionFrame selected={selectedVendorId === vendor.id && selectedPackSize === 10} onClick={() => { setSelectedVendorId(vendor.id); setSelectedPackSize(10) }}>
                           <strong>10 vials</strong>
@@ -391,8 +409,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         </div>
                         <button type="button" className="ps-add-to-cart-btn" onClick={() => { setSelectedVendorId(vendor.id); actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id) }}>
                           <ShoppingBag size={17} /> Add ${(() => {
-                            const vMult = vendor.id === 'vendor-retalux' ? 1.05 : vendor.id === 'vendor-axiom' ? 0.85 : 1
-                            const vPrice = lookupAdminPrice(selectedDose, vMult)
+                            const vPrice = lookupVendorPrice(selectedDose, vendor.id)
                             return ((selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * (selectedVendorId === vendor.id ? quantity : 1)).toFixed(2)
                           })()}
                         </button>
