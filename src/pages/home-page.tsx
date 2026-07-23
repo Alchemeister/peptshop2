@@ -197,9 +197,9 @@ export function HomePage({ actions, models }: PageComponentProps) {
           <span className="ps-kicker">Evidence</span>
           <h2>Every batch. Every claim. Public.</h2>
           <p>
-            Vendors publish certificates of analysis for every batch. Verify purity,
-            compare labs, and trace what you buy to independent test results — all
-            before checkout.
+            Vendors and independent labs publish certificates of analysis for every
+            batch. Verify purity, compare labs, and trace what you buy to independent
+            test results — all before checkout.
           </p>
           <div className="ps-button-row">
             <FrontendLink
