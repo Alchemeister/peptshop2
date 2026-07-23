@@ -33,7 +33,7 @@
 }
 
 .ps-hero-logo {
-  width: clamp(11rem, 19vw, 16rem);
+  width: clamp(13rem, 22vw, 19rem);
   margin-bottom: 1rem;
   opacity: 0.95;
 }
