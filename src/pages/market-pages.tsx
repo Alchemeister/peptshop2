@@ -240,11 +240,11 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         </button>
                       </div>
                       <div className="ps-offer-options">
-                        <VendorOfferOptionFrame selected={selectedPackSize === 10} onClick={() => setSelectedPackSize(10)}>
+                        <VendorOfferOptionFrame selected={selectedVendorId === vendor.id && selectedPackSize === 10} onClick={() => { setSelectedVendorId(vendor.id); setSelectedPackSize(10) }}>
                           <strong>10 vials</strong>
                           <span>${vendor.offerPrice.toFixed(2)}</span>
                         </VendorOfferOptionFrame>
-                        <VendorOfferOptionFrame selected={selectedPackSize === 20} onClick={() => setSelectedPackSize(20)}>
+                        <VendorOfferOptionFrame selected={selectedVendorId === vendor.id && selectedPackSize === 20} onClick={() => { setSelectedVendorId(vendor.id); setSelectedPackSize(20) }}>
                           <strong>20 vials</strong>
                           <span>${(vendor.offerPrice * 1.9).toFixed(2)}</span>
                         </VendorOfferOptionFrame>
@@ -259,11 +259,11 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                       </div>
                       <div className="ps-offer-action">
                         <div>
-                          <button type="button" onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label="Decrease quantity"><Minus size={15} /></button>
-                          <span>{quantity}</span>
-                          <button type="button" onClick={() => setQuantity((value) => value + 1)} aria-label="Increase quantity"><Plus size={15} /></button>
+                          <button type="button" onClick={() => { setSelectedVendorId(vendor.id); setQuantity((value) => Math.max(1, value - 1)) }} aria-label="Decrease quantity"><Minus size={15} /></button>
+                          <span>{selectedVendorId === vendor.id ? quantity : 1}</span>
+                          <button type="button" onClick={() => { setSelectedVendorId(vendor.id); setQuantity((value) => value + 1) }} aria-label="Increase quantity"><Plus size={15} /></button>
                         </div>
-                        <button type="button" className="ps-add-to-cart-btn" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id)}>
+                        <button type="button" className="ps-add-to-cart-btn" onClick={() => { setSelectedVendorId(vendor.id); actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id) }}>
                           <ShoppingBag size={17} /> Add ${((selectedPackSize === 20 ? vendor.offerPrice * 1.9 : vendor.offerPrice) * quantity).toFixed(2)}
                         </button>
                       </div>
