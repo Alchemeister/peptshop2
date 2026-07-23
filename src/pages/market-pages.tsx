@@ -44,11 +44,13 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
   const [query, setQuery] = useState('')
   const [filterOpen, setFilterOpen] = useState(false)
   const [stockOnly, setStockOnly] = useState(false)
+  const [regionFilter, setRegionFilter] = useState<'all' | 'us' | 'eu'>('all')
   const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name')
   const visibleProducts = useMemo(() => {
     const normalized = query.trim().toLowerCase()
     const filtered = models.products.filter((product) => {
       if (stockOnly && product.availability !== 'available') return false
+      if (regionFilter === 'eu' && product.vendorCount < 3) return false // EU = Axiom (3rd vendor)
       return !normalized || `${product.name} ${product.category}`.toLowerCase().includes(normalized)
     })
     return filtered.sort((left, right) => {
@@ -56,7 +58,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       if (sortBy === 'price-high') return (right.startingPrice ?? 0) - (left.startingPrice ?? 0)
       return left.name.localeCompare(right.name)
     })
-  }, [models.products, query, stockOnly, sortBy])
+  }, [models.products, query, stockOnly, sortBy, regionFilter])
 
   return (
     <div className="ps-catalog-page ps-section-shell">
@@ -94,6 +96,10 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
           <button type="button" className={sortBy === 'name' ? 'is-active' : ''} onClick={() => setSortBy('name')}>Sort <span>A–Z</span></button>
           <button type="button" className={sortBy === 'price-low' ? 'is-active' : ''} onClick={() => setSortBy('price-low')}>Price <span>Low–High</span></button>
           <button type="button" className={sortBy === 'price-high' ? 'is-active' : ''} onClick={() => setSortBy('price-high')}>Price <span>High–Low</span></button>
+          <span className="ps-filter-divider" />
+          <button type="button" className={regionFilter === 'all' ? 'is-active' : ''} onClick={() => setRegionFilter('all')}>Region <span>All</span></button>
+          <button type="button" className={regionFilter === 'us' ? 'is-active' : ''} onClick={() => setRegionFilter('us')}>Region <span>US</span></button>
+          <button type="button" className={regionFilter === 'eu' ? 'is-active' : ''} onClick={() => setRegionFilter('eu')}>Region <span>EU</span></button>
         </div>
       ) : null}
 
@@ -128,6 +134,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
         <p>{product.formats.join(' · ')}</p>
         <div>
           <span>{product.vendorCount ? `${product.vendorCount} vendors` : 'Join watchlist'}</span>
+          {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
           <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
         </div>
       </div>
@@ -324,30 +331,6 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 </aside>
               </div>
             </ProductOffersSection>
-
-            {/* COA section — per-vendor, per-compound */}
-            <section className="ps-product-coa-section">
-              <h2><FileCheck2 size={18} /> Certificates of Analysis · {source?.name ?? 'Product'}</h2>
-              <div className="ps-coa-list">
-                {productVendors.map((vendor) => (
-                  <div key={vendor.id} className="ps-coa-item">
-                    <div>
-                      <FileCheck2 size={16} />
-                      <div>
-                        <strong>{vendor.name} — Batch {vendor.batch}</strong>
-                        <small style={{ display: 'block', color: 'var(--ps-muted)', fontSize: '0.75rem' }}>Purity ≥{vendor.purity}% · {source?.name ?? 'BPC-157'} · {selectedDose}</small>
-                      </div>
-                    </div>
-                    <span>Janoshik Lab #{vendor.id === 'vendor-northstar' ? 'JH-2025-0142' : vendor.id === 'vendor-retalux' ? 'JH-2025-0098' : 'Pending'}</span>
-                    {vendor.id === 'vendor-axiom' ? (
-                      <button type="button" onClick={() => setDialogOpen(true)}><Bell size={14} /> Notify me</button>
-                    ) : (
-                      <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
           </>
         )}
 
