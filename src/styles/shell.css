@@ -117,16 +117,13 @@
 }
 
 .ps-desktop-nav a {
-  border: 1px solid var(--ps-line);
-  border-radius: 10px;
-  padding: 1rem 1.4rem;
-  background: var(--ps-paper);
-  color: var(--ps-ink);
-  font-size: 1.0625rem;
-  font-weight: 750;
+  border-radius: 8px;
+  padding: 1.2rem 1.6rem;
+  color: var(--ps-muted);
+  font-size: 1.25rem;
+  font-weight: 700;
   text-decoration: none;
-  letter-spacing: -0.015em;
-  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+  letter-spacing: -0.01em;
 }
 
 .ps-desktop-nav a:hover,
@@ -137,15 +134,12 @@
 }
 
 .ps-site-header-home .ps-desktop-nav a {
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .ps-site-header-home .ps-desktop-nav a:hover,
 .ps-site-header-home .ps-desktop-nav a[aria-current="page"] {
-  border-color: var(--ps-accent);
-  background: rgba(255, 163, 0, 0.18);
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 
