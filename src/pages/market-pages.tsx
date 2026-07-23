@@ -174,9 +174,9 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   // Build vendor offers from mock vendors, priced per product
   const productVendors = useMemo(() => {
     const vendorData = [
-      { id: 'vendor-northstar', name: 'Northstar Research', slug: 'northstar-research', location: 'United States', rating: 4.9, reviewCount: 184, fulfillment: '1–2 days', purity: 99.5, batch: 'PS-p1-2mg-A', offerPrice: source?.startingPrice ?? 42 },
-      { id: 'vendor-retalux', name: 'Retalux', slug: 'retalux', location: 'United States', rating: 4.8, reviewCount: 142, fulfillment: '2–3 days', purity: 99.2, batch: 'RX-p2-2mg-B', offerPrice: (source?.startingPrice ?? 42) * 1.05 },
-      { id: 'vendor-axiom', name: 'Axiom Peptides', slug: 'axiom-peptides', location: 'European Union', rating: 4.7, reviewCount: 98, fulfillment: '3–5 days', purity: 99.0, batch: 'AX-p3-2mg-C', offerPrice: (source?.startingPrice ?? 42) * 0.85 },
+      { id: 'vendor-northstar', name: 'Northstar Research', slug: 'northstar-research', location: 'United States', rating: 4.9, reviewCount: 184, coaCount: 32, fulfillment: '1–2 days', purity: 99.5, batch: 'PS-p1-2mg-A', offerPrice: source?.startingPrice ?? 42 } as any,
+      { id: 'vendor-retalux', name: 'Retalux', slug: 'retalux', location: 'United States', rating: 4.8, reviewCount: 142, coaCount: 24, fulfillment: '2–3 days', purity: 99.2, batch: 'RX-p2-2mg-B', offerPrice: (source?.startingPrice ?? 42) * 1.05 } as any,
+      { id: 'vendor-axiom', name: 'Axiom Peptides', slug: 'axiom-peptides', location: 'European Union', rating: 4.7, reviewCount: 98, coaCount: 15, fulfillment: '3–5 days', purity: 99.0, batch: 'AX-p3-2mg-C', offerPrice: (source?.startingPrice ?? 42) * 0.85 } as any,
     ]
     return vendorData.slice(0, Math.max(1, source?.vendorCount ?? 1))
   }, [source])
@@ -413,8 +413,8 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
       <nav className="ps-subnav" aria-label="Vendor profile sections">
         <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}`} navigate={actions.navigate} aria-current={!catalogMode ? 'page' : undefined}>Overview</FrontendLink>
         <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
-        <button type="button">COAs <span>32</span></button>
-        <button type="button">Reviews <span>184</span></button>
+        <button type="button">COAs <span>{(vendor as any)?.coaCount ?? 0}</span></button>
+        <button type="button">Reviews <span>{vendor?.reviewCount ?? 0}</span></button>
       </nav>
       {catalogMode ? (
         <div className="ps-vendor-catalog">
@@ -430,7 +430,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
       ) : (
         <div className="ps-vendor-overview-grid">
           <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>{vendor?.location ?? 'US'} fulfillment with evidence linked at the batch level.</h2><p>{vendor?.name ?? 'This vendor'} ships from {vendor?.location ?? 'the US'} with {vendor?.fulfillment ?? '1–2 day'} dispatch. All listings include batch-level COA evidence.</p><div className="ps-button-row"><FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} className="ps-primary-action">View catalog <ArrowRight size={17} /></FrontendLink><button type="button"><Bell size={16} /> Follow vendor</button></div></section>
-          <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>2,310</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>1.4 days</dd></div><div><dt>Published COAs</dt><dd>32</dd></div></dl></aside>
+          <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>{vendor?.orderCount?.toLocaleString() ?? '2,310'}</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>{vendor?.fulfillment ?? '1–2 days'}</dd></div><div><dt>Published COAs</dt><dd>{(vendor as any)?.coaCount ?? 0}</dd></div></dl></aside>
           <section className="ps-vendor-policy"><h2>Fulfillment notes</h2><ul><li><Truck size={17} /><div><strong>Ships from {vendor?.location ?? 'USA'}</strong><span>Tracking supplied after dispatch.</span></div></li><li><CircleDollarSign size={17} /><div><strong>Transparent pack pricing</strong><span>Marketplace totals include PeptShop pricing rules.</span></div></li><li><FileCheck2 size={17} /><div><strong>Batch evidence</strong><span>Available certificates are attached to eligible listings.</span></div></li></ul></section>
         </div>
       )}
