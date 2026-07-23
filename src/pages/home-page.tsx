@@ -18,7 +18,14 @@ export function HomePage({ actions, models }: PageComponentProps) {
       }
       return right.vendorCount - left.vendorCount
     })
-    .slice(0, 3)
+    .slice(0, 6)
+  const allProducts = [...models.products]
+    .sort((left, right) => {
+      if (left.availability !== right.availability) {
+        return left.availability === 'available' ? -1 : 1
+      }
+      return right.vendorCount - left.vendorCount
+    })
   const featuredVendors = models.vendors.slice(0, 3)
   const heroProduct = popularProducts.find((product) => product.availability === 'available')
   const heroVendors = featuredVendors.slice(0, Math.min(2, heroProduct?.vendorCount ?? 0))
@@ -31,8 +38,8 @@ export function HomePage({ actions, models }: PageComponentProps) {
             <img
               src="/peptshop-logo.svg"
               alt="PeptShop"
-              width="160"
-              height="96"
+              width="200"
+              height="120"
               className="ps-classic-hero-logo"
             />
             <p className="ps-classic-hero-intro">
@@ -167,6 +174,27 @@ export function HomePage({ actions, models }: PageComponentProps) {
         </div>
       </section>
 
+      <section className="ps-classic-section ps-classic-catalog-section">
+        <div className="ps-classic-container">
+          <div className="ps-classic-section-heading">
+            <div>
+              <h2>Full Catalog</h2>
+              <p>{allProducts.length} research compounds — compare vendors, pricing, and CoAs.</p>
+            </div>
+          </div>
+          <div className="ps-classic-product-grid ps-classic-product-grid-full">
+            {allProducts.map((product) => (
+              <ClassicProductCard key={product.id} product={product} navigate={actions.navigate} />
+            ))}
+          </div>
+          <div className="ps-classic-catalog-cta">
+            <FrontendLink href="/products" navigate={actions.navigate} className="ps-classic-button-primary">
+              Browse Full Catalog <ArrowRight size={18} />
+            </FrontendLink>
+          </div>
+        </div>
+      </section>
+
       <section id="how-it-works" className="ps-classic-how">
         <div className="ps-classic-container">
           <h2>How PeptShop Works</h2>
@@ -241,7 +269,7 @@ function ClassicProductCard({
       navigate={navigate}
       className="ps-classic-product-card"
     >
-      <div className="ps-classic-product-image">
+      <div className="ps-classic-product-image" data-vial={product.slug}>
         <img src={product.imageSrc} alt={`${product.name} vial`} />
       </div>
       <div className="ps-classic-product-meta">

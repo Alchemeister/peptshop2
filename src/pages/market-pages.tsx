@@ -112,8 +112,8 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
 
 function CatalogCard({ product, navigate }: { product: ProductSummary; navigate: (href: string) => void }) {
   return (
-    <FrontendLink href={`/catalog/${encodeURIComponent(product.name)}`} navigate={navigate} className="ps-catalog-card">
-      <div className="ps-catalog-card-visual">
+    <FrontendLink href={`/products/${product.slug}`} navigate={navigate} className="ps-catalog-card">
+      <div className="ps-catalog-card-visual" data-vial={product.slug}>
         <span>{product.category}</span>
         <img src={product.imageSrc} alt={`${product.name} vial`} />
         <i>{product.coaCount} COAs</i>
@@ -153,11 +153,28 @@ const productDetails: Record<string, { cas: string; formula: string; description
 }
 
 export function ProductPage({ actions, models, query, theme, pathname }: PageComponentProps) {
-  // Parse product name from URL (/catalog/:name)
-  const productName = decodeURIComponent(pathname.split('/catalog/')[1]?.split('?')[0] ?? '')
-  const source = models.products.find((p) => p.name === productName || p.slug === productName) ?? models.products[0]
+  // Parse product name from URL — supports both /catalog/:name and /products/:slug
+  let productName = ''
+  if (pathname.includes('/catalog/')) {
+    productName = decodeURIComponent(pathname.split('/catalog/')[1]?.split('?')[0] ?? '')
+  } else if (pathname.includes('/products/')) {
+    productName = decodeURIComponent(pathname.split('/products/')[1]?.split('?')[0] ?? '')
+  } else if (pathname.includes('/peptides/')) {
+    productName = decodeURIComponent(pathname.split('/peptides/')[1]?.split('?')[0] ?? '')
+  }
+  const source = models.products.find((p) => p.name === productName || p.slug === productName) ?? models.products.find((p) => p.name === 'BPC-157')!
   const details = productDetails[source?.name ?? ''] ?? { cas: 'N/A', formula: 'N/A', description: 'Product information supplied by the private application adapter.' }
   const dosages = source?.formats ?? ['2 mg', '5 mg', '10 mg']
+
+  // Build vendor offers from mock vendors, priced per product
+  const productVendors = useMemo(() => {
+    const vendorData = [
+      { id: 'vendor-northstar', name: 'Northstar Research', slug: 'northstar-research', location: 'United States', rating: 4.9, reviewCount: 184, fulfillment: '1–2 days', purity: 99.5, batch: 'PS-p1-2mg-A', offerPrice: source?.startingPrice ?? 42 },
+      { id: 'vendor-retalux', name: 'Retalux', slug: 'retalux', location: 'United States', rating: 4.8, reviewCount: 142, fulfillment: '2–3 days', purity: 99.2, batch: 'RX-p2-2mg-B', offerPrice: (source?.startingPrice ?? 42) * 1.05 },
+      { id: 'vendor-axiom', name: 'Axiom Peptides', slug: 'axiom-peptides', location: 'European Union', rating: 4.7, reviewCount: 98, fulfillment: '3–5 days', purity: 99.0, batch: 'AX-p3-2mg-C', offerPrice: (source?.startingPrice ?? 42) * 0.85 },
+    ]
+    return vendorData.slice(0, Math.max(1, source?.vendorCount ?? 1))
+  }, [source])
 
   const [selectedDose, setSelectedDose] = useState(dosages[1] ?? dosages[0])
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -196,37 +213,106 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
         {empty ? (
           <ProductUnavailableState productName={source?.name ?? 'Product'} onNotify={() => setDialogOpen(true)} />
         ) : (
-          <ProductOffersSection dosage={selectedDose}>
-            <VendorOfferCardFrame>
-              <div className="ps-offer-heading">
-                <div><h3>{mockVendor.name}</h3><p><MapPin size={14} /> {mockVendor.status}</p></div>
-                <button type="button" onClick={() => actions.navigate('/vendors/northstar-research')}><Star size={15} /> 4.9 <span>184 reviews</span></button>
-              </div>
-              <div className="ps-offer-options">
-                <VendorOfferOptionFrame selected>
-                  <strong>10 vials</strong><span>{mockVendor.price}</span>
-                </VendorOfferOptionFrame>
-                <VendorOfferOptionFrame selected={false}>
-                  <strong>20 vials</strong><span>$348.00</span>
-                </VendorOfferOptionFrame>
-              </div>
-              <div className="ps-offer-facts">
-                <span><FileCheck2 size={15} /><small>Purity</small>{mockVendor.purity}</span>
-                <span><PackageCheck size={15} /><small>Batch</small>{mockVendor.batch}</span>
-                <span><Truck size={15} /><small>Dispatch</small>1 to 2 days</span>
-              </div>
-              <div className="ps-offer-action">
-                <div>
-                  <button type="button" onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label="Decrease quantity"><Minus size={15} /></button>
-                  <span>{quantity}</span>
-                  <button type="button" onClick={() => setQuantity((value) => value + 1)} aria-label="Increase quantity"><Plus size={15} /></button>
+          <>
+            <ProductOffersSection dosage={selectedDose}>
+              <div className="ps-offer-grid">
+                <div className="ps-offer-list">
+                  {productVendors.map((vendor, index) => (
+                    <VendorOfferCardFrame key={vendor.id}>
+                      <div className="ps-offer-heading">
+                        <div>
+                          <h3>{vendor.name}</h3>
+                          <p><MapPin size={14} /> {vendor.location} · {vendor.fulfillment}</p>
+                        </div>
+                        <button type="button" onClick={() => actions.navigate(`/vendors/${vendor.slug}`)}>
+                          <Star size={15} /> {vendor.rating.toFixed(1)} <span>{vendor.reviewCount} reviews</span>
+                        </button>
+                      </div>
+                      <div className="ps-offer-options">
+                        <VendorOfferOptionFrame selected={index === 0}>
+                          <strong>10 vials</strong>
+                          <span>${vendor.offerPrice.toFixed(2)}</span>
+                        </VendorOfferOptionFrame>
+                        <VendorOfferOptionFrame selected={false}>
+                          <strong>20 vials</strong>
+                          <span>${(vendor.offerPrice * 1.9).toFixed(2)}</span>
+                        </VendorOfferOptionFrame>
+                      </div>
+                      <div className="ps-offer-facts">
+                        <span><FileCheck2 size={15} /><small>Purity</small>≥{vendor.purity}%</span>
+                        <span><PackageCheck size={15} /><small>Batch</small>{vendor.batch}</span>
+                        <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
+                      </div>
+                      {index === 0 ? (
+                        <div className="ps-offer-action">
+                          <div>
+                            <button type="button" onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label="Decrease quantity"><Minus size={15} /></button>
+                            <span>{quantity}</span>
+                            <button type="button" onClick={() => setQuantity((value) => value + 1)} aria-label="Increase quantity"><Plus size={15} /></button>
+                          </div>
+                          <button type="button" className="ps-add-to-cart-btn" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id)}>
+                            <ShoppingBag size={17} /> Add ${(vendor.offerPrice * quantity).toFixed(2)}
+                          </button>
+                        </div>
+                      ) : null}
+                    </VendorOfferCardFrame>
+                  ))}
                 </div>
-                <button type="button" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', 'vendor-northstar')}>
-                  <ShoppingBag size={17} /> Add ${184 * quantity}.00
-                </button>
+
+                {/* Cart summary card */}
+                <aside className="ps-cart-summary-card">
+                  <h3>Order summary</h3>
+                  <div className="ps-cart-summary-product">
+                    <img src={source?.imageSrc ?? '/images/products/bpc-157.png'} alt="" data-vial={source?.slug} />
+                    <div>
+                      <strong>{source?.name ?? 'Product'}</strong>
+                      <span>{selectedDose} · 10-vial pack</span>
+                    </div>
+                  </div>
+                  <div className="ps-cart-summary-row">
+                    <span>Unit price</span>
+                    <strong>${productVendors[0]?.offerPrice.toFixed(2) ?? '0.00'}</strong>
+                  </div>
+                  <div className="ps-cart-summary-row">
+                    <span>Quantity</span>
+                    <strong>{quantity} pack{quantity > 1 ? 's' : ''}</strong>
+                  </div>
+                  <div className="ps-cart-summary-divider" />
+                  <div className="ps-cart-summary-total">
+                    <span>Total</span>
+                    <strong>${((productVendors[0]?.offerPrice ?? 0) * quantity).toFixed(2)}</strong>
+                  </div>
+                  <button type="button" className="ps-checkout-btn" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', productVendors[0]?.id ?? 'vendor-northstar')}>
+                    <ShoppingBag size={18} /> Add to cart
+                  </button>
+                  <div className="ps-cart-summary-badges">
+                    <span><ShieldCheck size={14} /> Escrow protected</span>
+                    <span><FileCheck2 size={14} /> Batch verified</span>
+                  </div>
+                </aside>
               </div>
-            </VendorOfferCardFrame>
-          </ProductOffersSection>
+            </ProductOffersSection>
+
+            {/* COA section — only shown when coaCount > 0 */}
+            {(source?.coaCount ?? 0) > 0 ? (
+              <section className="ps-product-coa-section">
+                <h2><FileCheck2 size={18} /> Certificates of Analysis ({source?.coaCount})</h2>
+                <div className="ps-coa-list">
+                  <div className="ps-coa-item">
+                    <div><FileCheck2 size={16} /><strong>Batch {mockVendor.batch}</strong></div>
+                    <span>Purity: {mockVendor.purity}</span>
+                    <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
+                  </div>
+                </div>
+              </section>
+            ) : (
+              <section className="ps-product-coa-section ps-coa-empty">
+                <h2><FileCheck2 size={18} /> Certificates of Analysis</h2>
+                <p>No published COAs yet for {source?.name ?? 'this product'}. COAs will appear here when vendors upload batch evidence.</p>
+                <button type="button" onClick={() => actions.navigate('/coa/submit-coa')}>Submit a COA <ArrowRight size={14} /></button>
+              </section>
+            )}
+          </>
         )}
 
         <ProductAboutSection>
@@ -318,7 +404,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
           <div className="ps-vendor-catalog-head"><div><span className="ps-kicker">Vendor catalog</span><h2>Available from Northstar</h2></div><label><Search size={16} /><input placeholder="Search this catalog" /></label></div>
           <div className="ps-compact-product-list">
             {models.products.filter((product) => product.availability === 'available').slice(0, 5).map((product) => (
-              <FrontendLink key={product.id} href={`/catalog/${product.name}`} navigate={actions.navigate}>
+              <FrontendLink key={product.id} href={`/products/${product.slug}`} navigate={actions.navigate}>
                 <img src={product.imageSrc} alt="" /><strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount} COAs</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
               </FrontendLink>
             ))}
