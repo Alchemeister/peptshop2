@@ -182,8 +182,12 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const [submitted, setSubmitted] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const [selectedVendorId, setSelectedVendorId] = useState(productVendors[0]?.id ?? '')
+  const [selectedPackSize, setSelectedPackSize] = useState<10 | 20>(10)
   const empty = query.get('state') === 'empty'
   const selectedVendor = productVendors.find((v) => v.id === selectedVendorId) ?? productVendors[0]
+  const unitPrice = selectedPackSize === 20
+    ? (selectedVendor?.offerPrice ?? 0) * 1.9
+    : (selectedVendor?.offerPrice ?? 0)
 
   return (
     <div className="ps-product-route">
@@ -226,16 +230,16 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                           <h3>{vendor.name}</h3>
                           <p><MapPin size={14} /> {vendor.location} · {vendor.fulfillment}</p>
                         </div>
-                        <button type="button" onClick={() => actions.navigate(`/vendors/${vendor.slug}`)}>
+                        <button type="button" onClick={(e) => { e.stopPropagation(); actions.navigate(`/vendors/${vendor.slug}`) }}>
                           <Star size={15} /> {vendor.rating.toFixed(1)} <span>{vendor.reviewCount} reviews</span>
                         </button>
                       </div>
                       <div className="ps-offer-options">
-                        <VendorOfferOptionFrame selected={selectedVendorId === vendor.id}>
+                        <VendorOfferOptionFrame selected={selectedPackSize === 10} onClick={() => setSelectedPackSize(10)}>
                           <strong>10 vials</strong>
                           <span>${vendor.offerPrice.toFixed(2)}</span>
                         </VendorOfferOptionFrame>
-                        <VendorOfferOptionFrame selected={false}>
+                        <VendorOfferOptionFrame selected={selectedPackSize === 20} onClick={() => setSelectedPackSize(20)}>
                           <strong>20 vials</strong>
                           <span>${(vendor.offerPrice * 1.9).toFixed(2)}</span>
                         </VendorOfferOptionFrame>
@@ -255,7 +259,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                           <button type="button" onClick={() => setQuantity((value) => value + 1)} aria-label="Increase quantity"><Plus size={15} /></button>
                         </div>
                         <button type="button" className="ps-add-to-cart-btn" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id)}>
-                          <ShoppingBag size={17} /> Add ${(vendor.offerPrice * quantity).toFixed(2)}
+                          <ShoppingBag size={17} /> Add ${((selectedPackSize === 20 ? vendor.offerPrice * 1.9 : vendor.offerPrice) * quantity).toFixed(2)}
                         </button>
                       </div>
                     </VendorOfferCardFrame>
@@ -269,13 +273,13 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                     <img src={source?.imageSrc ?? '/images/products/bpc-157.png'} alt="" />
                     <div>
                       <strong>{source?.name ?? 'Product'}</strong>
-                      <span>{selectedDose} · 10-vial pack</span>
+                      <span>{selectedDose} · {selectedPackSize}-vial pack</span>
                       <small>From {selectedVendor?.name ?? '—'}</small>
                     </div>
                   </div>
                   <div className="ps-cart-summary-row">
                     <span>Unit price</span>
-                    <strong>${(selectedVendor?.offerPrice ?? 0).toFixed(2)}</strong>
+                    <strong>${unitPrice.toFixed(2)}</strong>
                   </div>
                   <div className="ps-cart-summary-row">
                     <span>Quantity</span>
@@ -284,10 +288,10 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                   <div className="ps-cart-summary-divider" />
                   <div className="ps-cart-summary-total">
                     <span>Total</span>
-                    <strong>${((selectedVendor?.offerPrice ?? 0) * quantity).toFixed(2)}</strong>
+                    <strong>${(unitPrice * quantity).toFixed(2)}</strong>
                   </div>
                   <button type="button" className="ps-checkout-btn" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', selectedVendor?.id ?? 'vendor-northstar')}>
-                    <ShoppingBag size={18} /> Add to cart
+                    <ShoppingBag size={18} /> Add ${(unitPrice * quantity).toFixed(2)}
                   </button>
                   <div className="ps-cart-summary-badges">
                     <span><ShieldCheck size={14} /> Escrow protected</span>
