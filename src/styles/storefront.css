@@ -1,7 +1,7 @@
 .ps-home-hero {
   position: relative;
   display: grid;
-  min-height: min(58rem, 100dvh);
+  min-height: min(48rem, calc(100dvh - 5rem));
   grid-template-columns: minmax(0, 1.2fr) minmax(21rem, 0.8fr);
   gap: clamp(2rem, 6vw, 6rem);
   align-items: center;
@@ -9,7 +9,7 @@
   background:
     radial-gradient(circle at 78% 28%, rgba(255, 163, 0, 0.18), transparent 22rem),
     linear-gradient(118deg, #101319 0%, #171b21 56%, #25272a 100%);
-  padding: 4rem max(1rem, calc((100vw - 75rem) / 2)) 5rem;
+  padding: 3rem max(1rem, calc((100vw - 75rem) / 2)) 3rem;
   color: #ffffff;
 }
 
@@ -205,7 +205,6 @@
   flex: 1;
   place-items: center;
   overflow: hidden;
-  background: #14171b;
 }
 
 .ps-featured-vial::before,
@@ -239,7 +238,6 @@
   width: min(54%, 12rem);
   max-height: 15rem;
   object-fit: contain;
-  mix-blend-mode: multiply;
   filter: drop-shadow(0 24px 22px rgba(0, 0, 0, 0.34));
 }
 
@@ -497,11 +495,7 @@
   width: 3.5rem;
   height: 4.6rem;
   object-fit: contain;
-  mix-blend-mode: multiply;
   filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.34));
-  background: #14171b;
-  border-radius: 6px;
-  padding: 0.2rem;
 }
 
 .ps-ledger-name,
@@ -999,7 +993,7 @@
   place-items: center;
   overflow: hidden;
   border-bottom: 1px solid var(--ps-line);
-  background: #14171b;
+  background: var(--ps-surface);
 }
 
 .ps-catalog-card-visual::after {
@@ -1042,7 +1036,6 @@
   width: 7.5rem;
   height: 12rem;
   object-fit: contain;
-  mix-blend-mode: multiply;
   filter: drop-shadow(0 20px 17px rgba(0, 0, 0, 0.34));
 }
 
@@ -1615,9 +1608,6 @@
   width: 2.5rem;
   height: 3.5rem;
   object-fit: contain;
-  mix-blend-mode: multiply;
-  background: #14171b;
-  border-radius: 4px;
 }
 
 .ps-compact-product-list span {
@@ -4294,7 +4284,6 @@
   max-width: 100%;
   height: 8rem;
   object-fit: contain;
-  mix-blend-mode: multiply;
 }
 
 .ps-classic-product-meta {
@@ -4888,12 +4877,12 @@
   align-items: center;
   justify-content: center;
   padding: 0.75rem;
-  background: linear-gradient(180deg, #181b21 0%, #14161a 100%);
+  background: linear-gradient(180deg, #fafafa 0%, #f5f5f5 100%);
   border-radius: 10px 10px 0 0;
 }
 .ps-catalog-card-visual {
   min-height: 12rem;
-  background: linear-gradient(180deg, #181b21 0%, #14161a 100%);
+  background: linear-gradient(180deg, #fafafa 0%, #f5f5f5 100%);
 }
 .cs-catalog-card-visual::after {
   display: none;
@@ -5018,9 +5007,7 @@
   width: 48px;
   height: 48px;
   object-fit: contain;
-  mix-blend-mode: multiply;
   border-radius: 8px;
-  background: #14171b;
   flex-shrink: 0;
 }
 .ps-cart-summary-product > div {

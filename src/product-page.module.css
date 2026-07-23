@@ -156,7 +156,7 @@
   place-items: center;
   overflow: hidden;
   border-left: 1px solid var(--ps-line);
-  background: #14171b;
+  background: var(--ps-surface);
   isolation: isolate;
 }
 
@@ -173,7 +173,6 @@
   width: min(74%, 21rem);
   max-height: 29rem;
   object-fit: contain;
-  mix-blend-mode: multiply;
   filter: drop-shadow(0 28px 24px rgba(37, 42, 49, 0.22));
 }
 
