@@ -41,12 +41,12 @@ export function AuthPage({ actions, pathname }: PageComponentProps) {
     <div className="ps-auth-page">
       <section className="ps-auth-brand-panel">
         <FrontendLink href="/" navigate={actions.navigate} className="ps-brand ps-brand-inverse"><img src="/peptshop-logo.svg" alt="" /><span>peptshop</span></FrontendLink>
-        <div><span className="ps-kicker">Partner access</span><h1>Operate the market without exposing the machinery.</h1><p>Seller and operator sessions are authenticated by the private application. This repository owns only the visible interface.</p></div>
-        <dl><div><dt>Workspace</dt><dd>Seller and admin</dd></div><div><dt>Data source</dt><dd>Private adapters</dd></div></dl>
+        <div><span className="ps-kicker">Partner access</span><h1>Operate the market without exposing the machinery.</h1><p>Seller and operator sessions are authenticated securely.</p></div>
+        <dl><div><dt>Workspace</dt><dd>Seller and admin</dd></div><div><dt>Data source</dt><dd>Secure backend</dd></div></dl>
       </section>
       <section className="ps-auth-form-panel">
         {submitted ? (
-          <div className="ps-auth-message"><span><Mail size={21} /></span><small>Secure sign-in</small><h2>Check your email</h2><p>The production auth service sends a private sign-in link when the address is authorized.</p><button type="button" onClick={() => setSubmitted(false)}>Use another email</button></div>
+          <div className="ps-auth-message"><span><Mail size={21} /></span><small>Secure sign-in</small><h2>Check your email</h2><p>If this email is authorized, a sign-in link has been sent.</p><button type="button" onClick={() => setSubmitted(false)}>Use another email</button></div>
         ) : (
           <form onSubmit={(event) => { event.preventDefault(); const data = new FormData(event.currentTarget); actions.submitLogin(String(data.get('email') ?? '')); setSubmitted(true) }}>
             <span className="ps-kicker">{resetMode ? 'Account recovery' : 'Authorized access'}</span>
@@ -55,7 +55,7 @@ export function AuthPage({ actions, pathname }: PageComponentProps) {
             <label>Email address<div><Mail size={17} /><input name="email" type="email" placeholder="Email address" required /></div></label>
             {pathname === '/auth/update-password' ? <label>New password<div><KeyRound size={17} /><input name="password" type="password" placeholder="New password" required /></div></label> : null}
             <button type="submit">Continue securely <ArrowRight size={17} /></button>
-            <small><LockKeyhole size={14} /> Authentication runs outside the public frontend package.</small>
+            <small><LockKeyhole size={14} /> Authentication runs securely outside the public storefront.</small>
           </form>
         )}
       </section>
@@ -115,7 +115,7 @@ function AdminOverviewPage(props: PageComponentProps) {
       {vendorModal ? (
         <div className="ps-modal-backdrop ps-portal-modal-backdrop" role="presentation">
           <section className="ps-modal ps-vendor-modal" role="dialog" aria-modal="true" aria-label="Add vendor">
-            {created ? <div className="ps-modal-success"><Check size={23} /><h2>Vendor staged in preview</h2><p>The private admin adapter will create the real vendor and authorization records.</p><button type="button" onClick={() => setVendorModal(false)}>Close</button></div> : <><header><div><span className="ps-kicker">Admin action</span><h2>Add a vendor</h2><p>Create the marketplace identity first. Login access and private configuration remain separate.</p></div><button type="button" onClick={() => setVendorModal(false)} aria-label="Close vendor form">×</button></header><form onSubmit={(event) => { event.preventDefault(); props.actions.createVendor(event.currentTarget); setCreated(true) }}><div className="ps-form-grid"><label>Public vendor name<input name="displayName" placeholder="Vendor name" required /></label><label>Internal identifier<input name="slug" placeholder="vendor-slug" required /></label><label>Primary warehouse<select name="warehouse" defaultValue="US"><option value="US">United States</option><option value="GB">United Kingdom</option><option value="EU">European Union</option><option value="CN">China</option></select></label><label>Initial status<select name="status" defaultValue="onboarding"><option value="onboarding">Onboarding</option><option value="active">Active</option><option value="paused">Paused</option></select></label><label className="ps-field-wide">Authorized seller email<input name="email" type="email" placeholder="Email address" required /></label></div><label className="ps-check-row"><input type="checkbox" /><span>Send the vendor onboarding message after creation.</span></label><div className="ps-form-submit-row"><p><LockKeyhole size={15} /> Admin authorization is enforced by the private application.</p><button type="submit">Create vendor <ArrowRight size={16} /></button></div></form></>}
+            {created ? <div className="ps-modal-success"><Check size={23} /><h2>Vendor created</h2><p>The vendor has been added and will appear in the marketplace once onboarding is complete.</p><button type="button" onClick={() => setVendorModal(false)}>Close</button></div> : <><header><div><span className="ps-kicker">Admin action</span><h2>Add a vendor</h2><p>Create the marketplace identity first. Login access and private configuration remain separate.</p></div><button type="button" onClick={() => setVendorModal(false)} aria-label="Close vendor form">×</button></header><form onSubmit={(event) => { event.preventDefault(); props.actions.createVendor(event.currentTarget); setCreated(true) }}><div className="ps-form-grid"><label>Public vendor name<input name="displayName" placeholder="Vendor name" required /></label><label>Internal identifier<input name="slug" placeholder="vendor-slug" required /></label><label>Primary warehouse<select name="warehouse" defaultValue="US"><option value="US">United States</option><option value="GB">United Kingdom</option><option value="EU">European Union</option><option value="CN">China</option></select></label><label>Initial status<select name="status" defaultValue="onboarding"><option value="onboarding">Onboarding</option><option value="active">Active</option><option value="paused">Paused</option></select></label><label className="ps-field-wide">Authorized seller email<input name="email" type="email" placeholder="Email address" required /></label></div><label className="ps-check-row"><input type="checkbox" /><span>Send the vendor onboarding message after creation.</span></label><div className="ps-form-submit-row"><p><LockKeyhole size={15} /> Admin authorization required.</p><button type="submit">Create vendor <ArrowRight size={16} /></button></div></form></>}
           </section>
         </div>
       ) : null}
@@ -147,7 +147,7 @@ function AdminPricingPreviewPage(props: PageComponentProps) {
         }
         onSave={(input) => {
           props.actions.adminAction('save-pricing', input.itemId)
-          return Promise.resolve({ ok: true, message: 'Saved in this frontend preview.' })
+          return Promise.resolve({ ok: true, message: 'Pricing updated.' })
         }}
       />
     </PortalShell>
@@ -170,7 +170,7 @@ export function AffiliatePage(props: PageComponentProps) {
   return (
     <PortalShell actions={props.actions} pathname={props.pathname} role="affiliate">
       <PortalTopbar eyebrow="Partner performance" title="Affiliate workspace" action={<button type="button"><Plus size={16} /> New link</button>} />
-      <div className="ps-portal-content"><div className="ps-metric-grid"><article><div><span>Attributed sales</span><BadgeDollarSign size={16} /></div><strong>$12,840</strong><p>Last 30 days</p></article><article><div><span>Earned</span><CircleDollarSign size={16} /></div><strong>$642</strong><p>5% commission</p></article><article><div><span>Conversions</span><Users size={16} /></div><strong>46</strong><p>From 1,284 visits</p></article><article><div><span>Next payout</span><Clock3 size={16} /></div><strong>Jul 29</strong><p>$418 eligible</p></article></div><section className="ps-portal-table-section"><SectionHeader title="Active links" detail="Mock attribution summary" action="Export" /><div className="ps-link-table"><div><strong>Summer research guide</strong><code>/r/summer-guide</code><span>682 visits</span><span>29 orders</span><b>$406.00</b></div><div><strong>COA explainer</strong><code>/r/coa-guide</code><span>402 visits</span><span>12 orders</span><b>$168.00</b></div><div><strong>Vendor comparison</strong><code>/r/vendor-list</code><span>200 visits</span><span>5 orders</span><b>$68.00</b></div></div></section></div>
+      <div className="ps-portal-content"><div className="ps-metric-grid"><article><div><span>Attributed sales</span><BadgeDollarSign size={16} /></div><strong>$12,840</strong><p>Last 30 days</p></article><article><div><span>Earned</span><CircleDollarSign size={16} /></div><strong>$642</strong><p>5% commission</p></article><article><div><span>Conversions</span><Users size={16} /></div><strong>46</strong><p>From 1,284 visits</p></article><article><div><span>Next payout</span><Clock3 size={16} /></div><strong>Jul 29</strong><p>$418 eligible</p></article></div><section className="ps-portal-table-section"><SectionHeader title="Active links" detail="Attribution summary" action="Export" /><div className="ps-link-table"><div><strong>Summer research guide</strong><code>/r/summer-guide</code><span>682 visits</span><span>29 orders</span><b>$406.00</b></div><div><strong>COA explainer</strong><code>/r/coa-guide</code><span>402 visits</span><span>12 orders</span><b>$168.00</b></div><div><strong>Vendor comparison</strong><code>/r/vendor-list</code><span>200 visits</span><span>5 orders</span><b>$68.00</b></div></div></section></div>
     </PortalShell>
   )
 }

@@ -2,7 +2,6 @@ import {
   ArrowUpRight,
   Bitcoin,
   BookOpen,
-  Coins,
   DollarSign,
   FileCheck2,
   Menu,
@@ -235,10 +234,8 @@ function FooterColumn({
 
 const classicCryptoBadges = [
   { label: 'BTC', icon: Bitcoin, color: 'is-bitcoin' },
-  { label: 'ETH', icon: Coins, color: 'is-ethereum' },
   { label: 'USDC', icon: DollarSign, color: 'is-usdc' },
   { label: 'USDT', icon: DollarSign, color: 'is-usdt' },
-  { label: 'XMR', icon: Coins, color: 'is-monero' },
 ]
 
 function ClassicHomeFooter({ navigate }: { navigate: (href: string) => void }) {

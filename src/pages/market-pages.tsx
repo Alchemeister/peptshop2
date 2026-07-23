@@ -44,13 +44,19 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
   const [query, setQuery] = useState('')
   const [filterOpen, setFilterOpen] = useState(false)
   const [stockOnly, setStockOnly] = useState(false)
+  const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name')
   const visibleProducts = useMemo(() => {
     const normalized = query.trim().toLowerCase()
-    return models.products.filter((product) => {
+    const filtered = models.products.filter((product) => {
       if (stockOnly && product.availability !== 'available') return false
       return !normalized || `${product.name} ${product.category}`.toLowerCase().includes(normalized)
     })
-  }, [models.products, query, stockOnly])
+    return filtered.sort((left, right) => {
+      if (sortBy === 'price-low') return (left.startingPrice ?? 999) - (right.startingPrice ?? 999)
+      if (sortBy === 'price-high') return (right.startingPrice ?? 0) - (left.startingPrice ?? 0)
+      return left.name.localeCompare(right.name)
+    })
+  }, [models.products, query, stockOnly, sortBy])
 
   return (
     <div className="ps-catalog-page ps-section-shell">
@@ -85,10 +91,9 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       {filterOpen ? (
         <div className="ps-filter-strip">
           <Filter size={16} />
-          <button type="button">Warehouse <span>Any</span></button>
-          <button type="button">Format <span>Any</span></button>
-          <button type="button">Batch evidence <span>Any</span></button>
-          <button type="button">Sort <span>Recommended</span></button>
+          <button type="button" className={sortBy === 'name' ? 'is-active' : ''} onClick={() => setSortBy('name')}>Sort <span>A–Z</span></button>
+          <button type="button" className={sortBy === 'price-low' ? 'is-active' : ''} onClick={() => setSortBy('price-low')}>Price <span>Low–High</span></button>
+          <button type="button" className={sortBy === 'price-high' ? 'is-active' : ''} onClick={() => setSortBy('price-high')}>Price <span>High–Low</span></button>
         </div>
       ) : null}
 
@@ -163,7 +168,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
     productName = decodeURIComponent(pathname.split('/peptides/')[1]?.split('?')[0] ?? '')
   }
   const source = models.products.find((p) => p.name === productName || p.slug === productName) ?? models.products.find((p) => p.name === 'BPC-157')!
-  const details = productDetails[source?.name ?? ''] ?? { cas: 'N/A', formula: 'N/A', description: 'Product information supplied by the private application adapter.' }
+  const details = productDetails[source?.name ?? ''] ?? { cas: 'N/A', formula: 'N/A', description: 'Research compound available from vetted suppliers with transparent per-mg pricing and batch-level evidence.' }
   const dosages = source?.formats ?? ['2 mg', '5 mg', '10 mg']
 
   // Build vendor offers from mock vendors, priced per product
@@ -329,7 +334,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
 
         <ProductAboutSection>
           <p>{details.description}</p>
-          <p>Live descriptions, studies, catalog rules, and evidence links are supplied by the private application adapter.</p>
+                  <p>For in-vitro research use only. Not for human consumption.</p>
         </ProductAboutSection>
       </ProductPageFrame>
 
@@ -338,7 +343,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
           <section className="ps-modal" role="dialog" aria-modal="true" aria-label="Product alert form">
             <button type="button" className="ps-modal-close" onClick={() => setDialogOpen(false)} aria-label="Close"><X size={18} /></button>
             {submitted ? (
-              <div className="ps-modal-success"><Check size={22} /><h2>Alert saved in preview</h2><p>No request was sent from this mock workspace.</p></div>
+              <div className="ps-modal-success"><Check size={22} /><h2>Alert saved</h2><p>We'll notify you when this compound becomes available from new vendors.</p></div>
             ) : (
               <>
                 <CompoundWaitlistTitle productName={source?.name ?? 'Product'} />
@@ -391,29 +396,32 @@ function VendorRow({ vendor, index, navigate }: { vendor: VendorSummary; index: 
 }
 
 export function VendorPage({ actions, models, pathname }: PageComponentProps) {
-  const vendor = models.vendors[0]
+  // Extract vendor slug from URL
+  const slug = decodeURIComponent(pathname.split('/vendors/')[1]?.split('/')[0] ?? '')
+  const vendor = models.vendors.find((v) => v.slug === slug) ?? models.vendors[0]
   const catalogMode = pathname.endsWith('/catalog')
+  const vendorInitials = vendor?.name?.split(' ').map((part) => part[0]).join('').slice(0, 2) ?? 'NR'
   return (
     <div className="ps-vendor-profile ps-section-shell">
       <button type="button" className="ps-back-link" onClick={() => actions.navigate('/vendors')}><ArrowLeft size={17} /> All vendors</button>
       <header className="ps-vendor-profile-head">
-        <div className="ps-vendor-profile-mark">NR</div>
+        <div className={`ps-vendor-profile-mark`}>{vendorInitials}</div>
         <div className="ps-vendor-profile-title">
           <span className="ps-trust-label ps-trust-trusted"><ShieldCheck size={14} /> Trusted vendor</span>
           <h1>{vendor?.name ?? 'Northstar Research'}</h1>
-          <p><MapPin size={16} /> United States warehouse <span /> Active since 2024</p>
+          <p><MapPin size={16} /> {vendor?.location ?? 'United States'} warehouse <span /> Active since 2024</p>
         </div>
-        <div className="ps-vendor-profile-score"><strong>4.9</strong><span><Star size={16} /> 184 verified reviews</span></div>
+        <div className="ps-vendor-profile-score"><strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong><span><Star size={16} /> {vendor?.reviewCount ?? 184} verified reviews</span></div>
       </header>
       <nav className="ps-subnav" aria-label="Vendor profile sections">
-        <FrontendLink href="/vendors/northstar-research" navigate={actions.navigate} aria-current={!catalogMode ? 'page' : undefined}>Overview</FrontendLink>
-        <FrontendLink href="/vendors/northstar-research/catalog" navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}`} navigate={actions.navigate} aria-current={!catalogMode ? 'page' : undefined}>Overview</FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
         <button type="button">COAs <span>32</span></button>
         <button type="button">Reviews <span>184</span></button>
       </nav>
       {catalogMode ? (
         <div className="ps-vendor-catalog">
-          <div className="ps-vendor-catalog-head"><div><span className="ps-kicker">Vendor catalog</span><h2>Available from Northstar</h2></div><label><Search size={16} /><input placeholder="Search this catalog" /></label></div>
+          <div className="ps-vendor-catalog-head"><div><span className="ps-kicker">Vendor catalog</span><h2>Available from {vendor?.name ?? 'Vendor'}</h2></div><label><Search size={16} /><input placeholder="Search this catalog" /></label></div>
           <div className="ps-compact-product-list">
             {models.products.filter((product) => product.availability === 'available').slice(0, 5).map((product) => (
               <FrontendLink key={product.id} href={`/products/${product.slug}`} navigate={actions.navigate}>
@@ -424,9 +432,9 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
         </div>
       ) : (
         <div className="ps-vendor-overview-grid">
-          <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>Domestic fulfillment with evidence linked at the batch level.</h2><p>Northstar Research is represented here with mock content. The private application supplies the real public profile, policies, shipping regions, and marketplace history.</p><div className="ps-button-row"><FrontendLink href="/vendors/northstar-research/catalog" navigate={actions.navigate} className="ps-primary-action">View catalog <ArrowRight size={17} /></FrontendLink><button type="button"><Bell size={16} /> Follow vendor</button></div></section>
+          <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>{vendor?.location ?? 'US'} fulfillment with evidence linked at the batch level.</h2><p>{vendor?.name ?? 'This vendor'} ships from {vendor?.location ?? 'the US'} with {vendor?.fulfillment ?? '1–2 day'} dispatch. All listings include batch-level COA evidence.</p><div className="ps-button-row"><FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} className="ps-primary-action">View catalog <ArrowRight size={17} /></FrontendLink><button type="button"><Bell size={16} /> Follow vendor</button></div></section>
           <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>2,310</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>1.4 days</dd></div><div><dt>Published COAs</dt><dd>32</dd></div></dl></aside>
-          <section className="ps-vendor-policy"><h2>Fulfillment notes</h2><ul><li><Truck size={17} /><div><strong>Ships from USA</strong><span>Domestic tracking supplied after dispatch.</span></div></li><li><CircleDollarSign size={17} /><div><strong>Transparent pack pricing</strong><span>Marketplace totals include PeptShop pricing rules.</span></div></li><li><FileCheck2 size={17} /><div><strong>Batch evidence</strong><span>Available certificates are attached to eligible listings.</span></div></li></ul></section>
+          <section className="ps-vendor-policy"><h2>Fulfillment notes</h2><ul><li><Truck size={17} /><div><strong>Ships from {vendor?.location ?? 'USA'}</strong><span>Tracking supplied after dispatch.</span></div></li><li><CircleDollarSign size={17} /><div><strong>Transparent pack pricing</strong><span>Marketplace totals include PeptShop pricing rules.</span></div></li><li><FileCheck2 size={17} /><div><strong>Batch evidence</strong><span>Available certificates are attached to eligible listings.</span></div></li></ul></section>
         </div>
       )}
     </div>

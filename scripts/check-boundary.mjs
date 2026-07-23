@@ -45,7 +45,7 @@ for (const path of files) {
 
 const homeSource = readFileSync(join(sourceRoot, 'pages', 'home-page.tsx'), 'utf8')
 const preservedHomepageMarkers = [
-  'Browse 10-vial packs from vetted suppliers.',
+  'Browse research compounds from vetted suppliers.',
   'Browse Catalog',
   'How PeptShop Works',
   'Popular',

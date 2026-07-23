@@ -43,7 +43,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
               className="ps-classic-hero-logo"
             />
             <p className="ps-classic-hero-intro">
-              Browse 10-vial packs from vetted suppliers. Transparent per-mg pricing, public CoAs,
+              Browse research compounds from vetted suppliers. Transparent per-mg pricing, public CoAs,
               and crypto checkout — no signup required.
             </p>
 
@@ -143,7 +143,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
             Identity checked before onboarding
           </TrustItem>
           <TrustItem icon={<Bitcoin size={20} />} title="Crypto Payments">
-            BTC, ETH, USDT, USDC, XMR
+            BTC, USDT, and USDC on Arbitrum
           </TrustItem>
           <TrustItem icon={<Calculator size={20} />} title="Per-mg Pricing">
             Compare value across vendors
@@ -207,7 +207,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
               Choose the dosage and supplier that fits your timeline and purity needs.
             </HowStep>
             <HowStep number="3" title="Pay with Crypto">
-              Checkout with BTC, ETH, or USDT. No account, no email required to order.
+              Checkout with BTC, USDT, or USDC on Arbitrum. No account, no email required to order.
             </HowStep>
           </ol>
         </div>

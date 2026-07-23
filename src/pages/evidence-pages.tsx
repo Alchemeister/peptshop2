@@ -86,7 +86,7 @@ function VerifyPage({ actions }: Pick<PageComponentProps, 'actions'>) {
 function SubmitCoaPage({ actions }: Pick<PageComponentProps, 'actions'>) {
   const [submitted, setSubmitted] = useState(false)
   if (submitted) {
-    return <div className="ps-flow-success"><CheckCircle2 size={28} /><span className="ps-kicker">Preview complete</span><h1>COA ready for review</h1><p>No file was uploaded from this design workspace. In production, the private adapter validates and stores the submission.</p><button type="button" onClick={() => setSubmitted(false)}>Submit another</button></div>
+    return <div className="ps-flow-success"><CheckCircle2 size={28} /><span className="ps-kicker">Submission received</span><h1>COA ready for review</h1><p>Your submission has been queued for review and will be published in the evidence library once verified.</p><button type="button" onClick={() => setSubmitted(false)}>Submit another</button></div>
   }
   return (
     <div className="ps-form-page ps-section-shell">

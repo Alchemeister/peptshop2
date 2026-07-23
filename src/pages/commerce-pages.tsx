@@ -1,12 +1,12 @@
 import {
   ArrowLeft,
   ArrowRight,
+  Bitcoin,
   Check,
   CheckCircle2,
   CircleDollarSign,
   Clock3,
   Copy,
-  CreditCard,
   FileText,
   LockKeyhole,
   Mail,
@@ -133,12 +133,14 @@ function CheckoutDelivery() {
 }
 
 function CheckoutPayment() {
-  return <fieldset className="ps-checkout-step"><legend><span>03</span><div><strong>Payment</strong><small>Select an available private payment route.</small></div></legend><div className="ps-payment-options"><label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>USDC</strong><small>Crypto payment</small></span></label><label><input type="radio" name="payment" /><CircleDollarSign size={20} /><span><strong>USDT</strong><small>Crypto payment</small></span></label><label><input type="radio" name="payment" /><CreditCard size={20} /><span><strong>Alternative route</strong><small>Availability set by checkout logic</small></span></label></div><label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label></fieldset>
+  return <fieldset className="ps-checkout-step"><legend><span>03</span><div><strong>Payment</strong><small>Select your payment method.</small></div></legend><div className="ps-payment-options"><label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>USDC</strong><small>Crypto on Arbitrum</small></span></label><label><input type="radio" name="payment" /><CircleDollarSign size={20} /><span><strong>USDT</strong><small>Crypto on Arbitrum</small></span></label><label><input type="radio" name="payment" /><Bitcoin size={20} /><span><strong>BTC</strong><small>Bitcoin network</small></span></label></div><label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label></fieldset>
 }
 
-function PaymentPage({ actions }: PageComponentProps) {
+function PaymentPage({ actions, models }: PageComponentProps) {
   const [copied, setCopied] = useState(false)
-  return <div className="ps-payment-page"><section><span className="ps-kicker">Payment pending</span><h1>Send exactly <strong>325.00 USDC</strong></h1><p>Use the selected network and complete payment before the session expires.</p><div className="ps-payment-clock"><Clock3 size={18} /><span>29:41 remaining</span></div><div className="ps-payment-address"><span>Recipient address</span><code>0x7A4E...91C2</code><button type="button" onClick={() => setCopied(true)}>{copied ? <Check size={16} /> : <Copy size={16} />}{copied ? 'Copied' : 'Copy'}</button></div><div className="ps-payment-notes"><p><strong>Network</strong>Arbitrum One</p><p><strong>Asset</strong>USDC</p><p><strong>Order</strong>PS-1049</p></div><button type="button" className="ps-outline-action" onClick={() => actions.navigate('/order/status/preview')}>I have sent payment <ArrowRight size={17} /></button></section></div>
+  const total = models.cart.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
+  const orderTotal = (total + 12).toFixed(2) // total + shipping
+  return <div className="ps-payment-page"><section><span className="ps-kicker">Payment pending</span><h1>Send exactly <strong>{orderTotal} USDC</strong></h1><p>Use the selected network and complete payment before the session expires.</p><div className="ps-payment-clock"><Clock3 size={18} /><span>29:41 remaining</span></div><div className="ps-payment-address"><span>Recipient address</span><code><recipient address></code><button type="button" onClick={() => setCopied(true)}>{copied ? <Check size={16} /> : <Copy size={16} />}{copied ? 'Copied' : 'Copy'}</button></div><div className="ps-payment-notes"><p><strong>Network</strong>Arbitrum One</p><p><strong>Asset</strong>USDC</p><p><strong>Order</strong>PS-{Math.floor(1000 + Math.random() * 9000)}</p></div><button type="button" className="ps-outline-action" onClick={() => actions.navigate('/order/status/preview')}>I have sent payment <ArrowRight size={17} /></button></section></div>
 }
 
 export function OrderFlowPage({ actions, pathname }: PageComponentProps) {
