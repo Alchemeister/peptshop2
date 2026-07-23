@@ -9,7 +9,7 @@
   background:
     radial-gradient(circle at 78% 28%, rgba(255, 163, 0, 0.18), transparent 22rem),
     linear-gradient(118deg, #101319 0%, #171b21 56%, #25272a 100%);
-  padding: 8rem max(1rem, calc((100vw - 75rem) / 2)) 5rem;
+  padding: 4rem max(1rem, calc((100vw - 75rem) / 2)) 5rem;
   color: #ffffff;
 }
 
@@ -33,9 +33,9 @@
 }
 
 .ps-hero-logo {
-  width: clamp(7rem, 14vw, 11rem);
-  margin-bottom: 1.5rem;
-  opacity: 0.85;
+  width: clamp(9rem, 18vw, 14rem);
+  margin-bottom: 1rem;
+  opacity: 0.9;
 }
 
 .ps-home-overline {
@@ -205,6 +205,7 @@
   flex: 1;
   place-items: center;
   overflow: hidden;
+  background: #14171b;
 }
 
 .ps-featured-vial::before,
@@ -498,6 +499,9 @@
   object-fit: contain;
   mix-blend-mode: multiply;
   filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.34));
+  background: #14171b;
+  border-radius: 6px;
+  padding: 0.2rem;
 }
 
 .ps-ledger-name,
@@ -995,7 +999,7 @@
   place-items: center;
   overflow: hidden;
   border-bottom: 1px solid var(--ps-line);
-  background: var(--ps-surface);
+  background: #14171b;
 }
 
 .ps-catalog-card-visual::after {
@@ -1611,6 +1615,9 @@
   width: 2.5rem;
   height: 3.5rem;
   object-fit: contain;
+  mix-blend-mode: multiply;
+  background: #14171b;
+  border-radius: 4px;
 }
 
 .ps-compact-product-list span {
