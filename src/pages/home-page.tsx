@@ -269,7 +269,7 @@ function ClassicProductCard({
       navigate={navigate}
       className="ps-classic-product-card"
     >
-      <div className="ps-classic-product-image" data-vial={product.slug}>
+      <div className="ps-classic-product-image">
         <img src={product.imageSrc} alt={`${product.name} vial`} />
       </div>
       <div className="ps-classic-product-meta">

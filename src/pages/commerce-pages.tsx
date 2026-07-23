@@ -34,17 +34,48 @@ export function CommercePage(props: PageComponentProps) {
 
 function CartPage({ actions, models }: PageComponentProps) {
   const subtotal = models.cart.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
+  // Group cart lines by vendor
+  const vendorGroups = useMemo(() => {
+    const groups: Record<string, { vendorName: string; lines: CartLine[] }> = {}
+    for (const line of models.cart) {
+      const vName = line.vendor || 'Unassigned'
+      if (!groups[vName]) groups[vName] = { vendorName: vName, lines: [] }
+      groups[vName].lines.push(line)
+    }
+    return Object.values(groups)
+  }, [models.cart])
   return (
     <div className="ps-cart-page ps-section-shell">
-      <header className="ps-page-masthead"><span className="ps-kicker">Order builder</span><div className="ps-page-title-row"><h1>Your cart</h1><p>{models.cart.length} vendor-grouped items ready to review.</p></div></header>
+      <header className="ps-page-masthead"><span className="ps-kicker">Order builder</span><div className="ps-page-title-row"><h1>Your cart</h1><p>{models.cart.length} items from {vendorGroups.length} vendor{vendorGroups.length === 1 ? '' : 's'}.</p></div></header>
       <div className="ps-cart-layout">
         <div className="ps-cart-lines">
-          <div className="ps-cart-vendor-head"><div><span className="ps-status-dot" /><strong>Northstar Research</strong></div><span><MapPin size={14} /> Ships from USA</span></div>
-          {models.cart.map((line) => <CartLineItem key={line.id} line={line} actions={actions} />)}
-          <div className="ps-shipping-progress"><div><Truck size={17} /><span><strong>Domestic tracked shipping</strong><small>Calculated during checkout</small></span></div><div><i style={{ width: '76%' }} /></div></div>
-          <FrontendLink href="/products" navigate={actions.navigate} className="ps-back-link"><ArrowLeft size={16} /> Continue browsing</FrontendLink>
+          {vendorGroups.length === 0 ? (
+            <div className="ps-empty-state">
+              <ShoppingBag size={24} />
+              <h2>Your cart is empty</h2>
+              <p>Browse the catalog to add items.</p>
+              <FrontendLink href="/products" navigate={actions.navigate} className="ps-primary-action">Browse catalog <ArrowRight size={16} /></FrontendLink>
+            </div>
+          ) : (
+            vendorGroups.map((group) => (
+              <div key={group.vendorName} className="ps-cart-vendor-group">
+                <div className="ps-cart-vendor-head"><div><span className="ps-status-dot" /><strong>{group.vendorName}</strong></div><span><MapPin size={14} /> Ships from USA · <Truck size={14} /> Tracked shipping</span></div>
+                {group.lines.map((line) => <CartLineItem key={line.id} line={line} actions={actions} />)}
+                <div className="ps-cart-vendor-subtotal">
+                  <span>Subtotal from {group.vendorName}</span>
+                  <strong>{money(group.lines.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0))}</strong>
+                </div>
+              </div>
+            ))
+          )}
+          {vendorGroups.length > 0 ? (
+            <>
+              <div className="ps-shipping-progress"><div><Truck size={17} /><span><strong>Tracked shipping</strong><small>Calculated during checkout</small></span></div><div><i style={{ width: '76%' }} /></div></div>
+              <FrontendLink href="/products" navigate={actions.navigate} className="ps-back-link"><ArrowLeft size={16} /> Continue browsing</FrontendLink>
+            </>
+          ) : null}
         </div>
-        <OrderSummaryPanel subtotal={subtotal} beginCheckout={actions.beginCheckout} navigate={actions.navigate} />
+        {vendorGroups.length > 0 ? <OrderSummaryPanel subtotal={subtotal} beginCheckout={actions.beginCheckout} navigate={actions.navigate} /> : null}
       </div>
     </div>
   )

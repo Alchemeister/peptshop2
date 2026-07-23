@@ -113,7 +113,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
 function CatalogCard({ product, navigate }: { product: ProductSummary; navigate: (href: string) => void }) {
   return (
     <FrontendLink href={`/products/${product.slug}`} navigate={navigate} className="ps-catalog-card">
-      <div className="ps-catalog-card-visual" data-vial={product.slug}>
+      <div className="ps-catalog-card-visual">
         <span>{product.category}</span>
         <img src={product.imageSrc} alt={`${product.name} vial`} />
         <i>{product.coaCount} COAs</i>
@@ -181,7 +181,9 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [quantity, setQuantity] = useState(1)
+  const [selectedVendorId, setSelectedVendorId] = useState(productVendors[0]?.id ?? '')
   const empty = query.get('state') === 'empty'
+  const selectedVendor = productVendors.find((v) => v.id === selectedVendorId) ?? productVendors[0]
 
   return (
     <div className="ps-product-route">
@@ -219,7 +221,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 <div className="ps-offer-list">
                   {productVendors.map((vendor, index) => (
                     <VendorOfferCardFrame key={vendor.id}>
-                      <div className="ps-offer-heading">
+                      <div className={`ps-offer-heading ${selectedVendorId === vendor.id ? 'is-selected' : ''}`} onClick={() => setSelectedVendorId(vendor.id)} role="button" tabIndex={0}>
                         <div>
                           <h3>{vendor.name}</h3>
                           <p><MapPin size={14} /> {vendor.location} · {vendor.fulfillment}</p>
@@ -229,7 +231,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         </button>
                       </div>
                       <div className="ps-offer-options">
-                        <VendorOfferOptionFrame selected={index === 0}>
+                        <VendorOfferOptionFrame selected={selectedVendorId === vendor.id}>
                           <strong>10 vials</strong>
                           <span>${vendor.offerPrice.toFixed(2)}</span>
                         </VendorOfferOptionFrame>
@@ -243,35 +245,34 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <span><PackageCheck size={15} /><small>Batch</small>{vendor.batch}</span>
                         <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
                       </div>
-                      {index === 0 ? (
-                        <div className="ps-offer-action">
-                          <div>
-                            <button type="button" onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label="Decrease quantity"><Minus size={15} /></button>
-                            <span>{quantity}</span>
-                            <button type="button" onClick={() => setQuantity((value) => value + 1)} aria-label="Increase quantity"><Plus size={15} /></button>
-                          </div>
-                          <button type="button" className="ps-add-to-cart-btn" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id)}>
-                            <ShoppingBag size={17} /> Add ${(vendor.offerPrice * quantity).toFixed(2)}
-                          </button>
+                      <div className="ps-offer-action">
+                        <div>
+                          <button type="button" onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label="Decrease quantity"><Minus size={15} /></button>
+                          <span>{quantity}</span>
+                          <button type="button" onClick={() => setQuantity((value) => value + 1)} aria-label="Increase quantity"><Plus size={15} /></button>
                         </div>
-                      ) : null}
+                        <button type="button" className="ps-add-to-cart-btn" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id)}>
+                          <ShoppingBag size={17} /> Add ${(vendor.offerPrice * quantity).toFixed(2)}
+                        </button>
+                      </div>
                     </VendorOfferCardFrame>
                   ))}
                 </div>
 
-                {/* Cart summary card */}
+                {/* Cart summary card — reflects selected vendor */}
                 <aside className="ps-cart-summary-card">
                   <h3>Order summary</h3>
                   <div className="ps-cart-summary-product">
-                    <img src={source?.imageSrc ?? '/images/products/bpc-157.png'} alt="" data-vial={source?.slug} />
+                    <img src={source?.imageSrc ?? '/images/products/bpc-157.png'} alt="" />
                     <div>
                       <strong>{source?.name ?? 'Product'}</strong>
                       <span>{selectedDose} · 10-vial pack</span>
+                      <small>From {selectedVendor?.name ?? '—'}</small>
                     </div>
                   </div>
                   <div className="ps-cart-summary-row">
                     <span>Unit price</span>
-                    <strong>${productVendors[0]?.offerPrice.toFixed(2) ?? '0.00'}</strong>
+                    <strong>${(selectedVendor?.offerPrice ?? 0).toFixed(2)}</strong>
                   </div>
                   <div className="ps-cart-summary-row">
                     <span>Quantity</span>
@@ -280,9 +281,9 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                   <div className="ps-cart-summary-divider" />
                   <div className="ps-cart-summary-total">
                     <span>Total</span>
-                    <strong>${((productVendors[0]?.offerPrice ?? 0) * quantity).toFixed(2)}</strong>
+                    <strong>${((selectedVendor?.offerPrice ?? 0) * quantity).toFixed(2)}</strong>
                   </div>
-                  <button type="button" className="ps-checkout-btn" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', productVendors[0]?.id ?? 'vendor-northstar')}>
+                  <button type="button" className="ps-checkout-btn" onClick={() => actions.addToCart(source?.id ?? 'product-bpc-157', selectedVendor?.id ?? 'vendor-northstar')}>
                     <ShoppingBag size={18} /> Add to cart
                   </button>
                   <div className="ps-cart-summary-badges">
@@ -293,25 +294,27 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
               </div>
             </ProductOffersSection>
 
-            {/* COA section — only shown when coaCount > 0 */}
-            {(source?.coaCount ?? 0) > 0 ? (
-              <section className="ps-product-coa-section">
-                <h2><FileCheck2 size={18} /> Certificates of Analysis ({source?.coaCount})</h2>
-                <div className="ps-coa-list">
-                  <div className="ps-coa-item">
-                    <div><FileCheck2 size={16} /><strong>Batch {mockVendor.batch}</strong></div>
-                    <span>Purity: {mockVendor.purity}</span>
-                    <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
-                  </div>
+            {/* COA section — show mock COAs so user can see the layout */}
+            <section className="ps-product-coa-section">
+              <h2><FileCheck2 size={18} /> Certificates of Analysis</h2>
+              <div className="ps-coa-list">
+                <div className="ps-coa-item">
+                  <div><FileCheck2 size={16} /><strong>Batch {selectedVendor?.batch ?? 'PS-p1-2mg-A'}</strong></div>
+                  <span>Purity: ≥{selectedVendor?.purity ?? 99.5}% · Janoshik Lab #JH-2025-0142</span>
+                  <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
                 </div>
-              </section>
-            ) : (
-              <section className="ps-product-coa-section ps-coa-empty">
-                <h2><FileCheck2 size={18} /> Certificates of Analysis</h2>
-                <p>No published COAs yet for {source?.name ?? 'this product'}. COAs will appear here when vendors upload batch evidence.</p>
-                <button type="button" onClick={() => actions.navigate('/coa/submit-coa')}>Submit a COA <ArrowRight size={14} /></button>
-              </section>
-            )}
+                <div className="ps-coa-item">
+                  <div><FileCheck2 size={16} /><strong>Batch RX-p2-2mg-B</strong></div>
+                  <span>Purity: ≥99.2% · Janoshik Lab #JH-2025-0098</span>
+                  <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
+                </div>
+                <div className="ps-coa-item ps-coa-pending">
+                  <div><FileCheck2 size={16} /><strong>Batch AX-p3-2mg-C</strong></div>
+                  <span>COA pending upload from vendor</span>
+                  <button type="button" onClick={() => setDialogOpen(true)}>Notify me <Bell size={14} /></button>
+                </div>
+              </div>
+            </section>
           </>
         )}
 
