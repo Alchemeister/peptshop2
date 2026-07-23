@@ -506,10 +506,10 @@
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* The PeptShop homepage shows a global header at the top so customers can
-   navigate to Catalog, Vendors, CoAs, Verify, Checkout from the home view. */
+/* The existing PeptShop homepage has no global header. Its brand and primary
+   actions live in the hero, matching the production storefront. */
 .ps-site-header-home {
-  display: block;
+  display: none;
 }
 
 .ps-classic-footer {

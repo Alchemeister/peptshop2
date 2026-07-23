@@ -1,7 +1,7 @@
 .ps-home-hero {
   position: relative;
   display: grid;
-  min-height: calc(100vh - 6.6rem);
+  min-height: clamp(38rem, 78vh, 56rem);
   grid-template-columns: minmax(0, 1.2fr) minmax(21rem, 0.8fr);
   gap: clamp(2rem, 6vw, 6rem);
   align-items: center;
@@ -9,7 +9,7 @@
   background:
     radial-gradient(circle at 78% 28%, rgba(255, 163, 0, 0.18), transparent 22rem),
     linear-gradient(118deg, #101319 0%, #171b21 56%, #25272a 100%);
-  padding: 1.5rem max(1rem, calc((100vw - 75rem) / 2)) 1.5rem;
+  padding: 3rem max(1rem, calc((100vw - 75rem) / 2)) 3rem;
   color: #ffffff;
 }
 
