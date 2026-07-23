@@ -143,7 +143,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
             Identity checked before onboarding
           </TrustItem>
           <TrustItem icon={<Bitcoin size={20} />} title="Crypto Payments">
-            BTC, USDT, and USDC on Arbitrum
+            All major coins via NOWPayments
           </TrustItem>
           <TrustItem icon={<Calculator size={20} />} title="Per-mg Pricing">
             Compare value across vendors
@@ -207,7 +207,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
               Choose the dosage and supplier that fits your timeline and purity needs.
             </HowStep>
             <HowStep number="3" title="Pay with Crypto">
-              Checkout with BTC, USDT, or USDC on Arbitrum. No account, no email required to order.
+              Checkout with BTC, ETH, USDT, USDC, XMR, or 100+ other coins via NOWPayments. No account, no email required to order.
             </HowStep>
           </ol>
         </div>

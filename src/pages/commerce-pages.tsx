@@ -1,10 +1,8 @@
 import {
   ArrowLeft,
   ArrowRight,
-  Bitcoin,
   Check,
   CheckCircle2,
-  CircleDollarSign,
   Clock3,
   Copy,
   FileText,
@@ -133,7 +131,7 @@ function CheckoutDelivery() {
 }
 
 function CheckoutPayment() {
-  return <fieldset className="ps-checkout-step"><legend><span>03</span><div><strong>Payment</strong><small>Select your payment method.</small></div></legend><div className="ps-payment-options"><label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>USDC</strong><small>Crypto on Arbitrum</small></span></label><label><input type="radio" name="payment" /><CircleDollarSign size={20} /><span><strong>USDT</strong><small>Crypto on Arbitrum</small></span></label><label><input type="radio" name="payment" /><Bitcoin size={20} /><span><strong>BTC</strong><small>Bitcoin network</small></span></label></div><label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label></fieldset>
+  return <fieldset className="ps-checkout-step"><legend><span>03</span><div><strong>Payment</strong><small>Select your payment method.</small></div></legend><div className="ps-payment-options"><label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>NOWPayments</strong><small>BTC, ETH, USDT, USDC, XMR, 100+ coins</small></span></label></div><label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label></fieldset>
 }
 
 function PaymentPage({ actions, models }: PageComponentProps) {
