@@ -39,14 +39,14 @@
   width: min(100%, 80rem);
   min-height: 4.7rem;
   margin: 0 auto;
-  grid-template-columns: minmax(9rem, 1fr) minmax(13rem, 0.7fr) auto minmax(4rem, 0.35fr);
+  grid-template-columns: minmax(11rem, 1fr) minmax(18rem, 0.8fr) auto minmax(4rem, 0.35fr);
   gap: 1.4rem;
   align-items: center;
   padding-inline: clamp(1rem, 3vw, 2.5rem);
 }
 
 .ps-site-header-home .ps-header-inner {
-  grid-template-columns: minmax(9rem, 1fr) auto minmax(4rem, 0.35fr);
+  grid-template-columns: minmax(11rem, 1fr) auto minmax(4rem, 0.35fr);
 }
 
 .ps-brand {
@@ -62,8 +62,8 @@
 }
 
 .ps-brand img {
-  width: 7.9rem;
-  height: 2.35rem;
+  width: 11rem;
+  height: 2.8rem;
   object-fit: contain;
   object-position: left center;
 }
@@ -106,7 +106,7 @@
   outline: 0;
   background: transparent;
   color: var(--ps-ink);
-  font-size: 0.82rem;
+  font-size: 0.9rem;
 }
 
 .ps-desktop-nav {

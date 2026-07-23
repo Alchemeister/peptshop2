@@ -722,6 +722,25 @@
   color: var(--ps-ink);
 }
 
+.ps-filter-divider {
+  width: 1px;
+  height: 1.2rem;
+  background: var(--ps-line);
+  margin-inline: 0.3rem;
+}
+
+.ps-region-badge {
+  display: inline-block;
+  border: 1px solid var(--ps-line);
+  border-radius: 5px;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--ps-muted);
+  background: var(--ps-surface);
+  letter-spacing: 0.02em;
+}
+
 .ps-catalog-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

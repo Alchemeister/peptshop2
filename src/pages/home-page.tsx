@@ -2,6 +2,7 @@ import {
   ArrowRight,
   Bitcoin,
   Calculator,
+  MapPin,
   Package,
   ShieldCheck,
   Sparkles,
@@ -21,7 +22,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
     .slice(0, 6)
   const featuredVendors = models.vendors.slice(0, 3)
   const heroProduct = popularProducts.find((product) => product.availability === 'available')
-  const heroVendors = featuredVendors.slice(0, Math.min(2, heroProduct?.vendorCount ?? 0))
+  const heroVendors = featuredVendors.slice(0, Math.min(3, heroProduct?.vendorCount ?? 0))
 
   return (
     <div className="ps-classic-home">
@@ -313,7 +314,7 @@ function ClassicVendorCard({
         <div>
           <h3>{vendor.name}</h3>
           <p>
-            <Sparkles size={12} /> {vendor.rating} rating
+            <MapPin size={12} /> {vendor.location} · <Sparkles size={12} /> {vendor.rating} rating
           </p>
         </div>
         <small className={`is-${vendor.status}`}>{vendor.status}</small>
