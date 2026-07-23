@@ -2,8 +2,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
-  CheckCircle2,
-  Clock3,
   Copy,
   FileText,
   LockKeyhole,
@@ -139,7 +137,7 @@ function PaymentPage({ actions, models }: PageComponentProps) {
   const total = models.cart.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
   const orderTotal = (total + 12).toFixed(2) // total + shipping
   const orderId = `PS-${Math.floor(1000 + Math.random() * 9000)}`
-  return <div className="ps-payment-page"><section><span className="ps-kicker">Payment pending</span><h1>Send exactly <strong>${orderTotal}</strong></h1><p>Complete payment via NOWPayments before the session expires. BTC, ETH, USDT, USDC, XMR, and 100+ coins accepted.</p><div className="ps-payment-clock"><Clock3 size={18} /><span>29:41 remaining</span></div><div className="ps-payment-address"><span>Order reference</span><code>{orderId}</code><button type="button" onClick={() => setCopied(true)}>{copied ? <Check size={16} /> : <Copy size={16} />}{copied ? 'Copied' : 'Copy'}</button></div><div className="ps-payment-notes"><p><strong>Processor</strong>NOWPayments</p><p><strong>Order</strong>{orderId}</p><p><strong>Status</strong>Waiting for payment</p></div><button type="button" className="ps-outline-action" onClick={() => actions.navigate('/order/status/preview')}>I have sent payment <ArrowRight size={17} /></button></section></div>
+  return <div className="ps-payment-page"><section><span className="ps-kicker">Payment pending</span><h1>Send exactly <strong>${orderTotal}</strong></h1><p>Complete payment via NOWPayments. You'll receive a payment link by email with a live invoice and countdown timer. BTC, ETH, USDT, USDC, XMR, and 100+ coins accepted.</p><div className="ps-payment-address"><span>Order reference</span><code>{orderId}</code><button type="button" onClick={() => setCopied(true)}>{copied ? <Check size={16} /> : <Copy size={16} />}{copied ? 'Copied' : 'Copy'}</button></div><div className="ps-payment-notes"><p><strong>Processor</strong>NOWPayments</p><p><strong>Order</strong>{orderId}</p><p><strong>Status</strong>Waiting for payment</p></div><button type="button" className="ps-outline-action" onClick={() => actions.navigate('/order/status/preview')}>I have sent payment <ArrowRight size={17} /></button></section></div>
 }
 
 export function OrderFlowPage({ actions, pathname }: PageComponentProps) {
