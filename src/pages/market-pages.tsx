@@ -61,6 +61,16 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
     })
   }, [models.products, query, stockOnly, sortBy, regionFilter])
 
+  const groupedProducts = useMemo(() => {
+    const groups = new Map<string, ProductSummary[]>()
+    for (const product of visibleProducts) {
+      const list = groups.get(product.category)
+      if (list) list.push(product)
+      else groups.set(product.category, [product])
+    }
+    return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))
+  }, [visibleProducts])
+
   return (
     <div className="ps-catalog-page ps-section-shell">
       <header className="ps-page-masthead">
@@ -129,9 +139,19 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       ) : null}
 
       {visibleProducts.length ? (
-        <div className="ps-product-ledger" style={{ marginTop: '1.5rem' }}>
-          {visibleProducts.map((product, index) => (
-            <CatalogLedgerRow key={product.id} index={index + 1} product={product} navigate={actions.navigate} />
+        <div className="ps-catalog-groups" style={{ marginTop: '1.5rem' }}>
+          {groupedProducts.map(([category, products]) => (
+            <section key={category} className="ps-catalog-group">
+              <div className="ps-catalog-group-head">
+                <span className="ps-kicker">{category}</span>
+                <span className="ps-catalog-group-count">{products.length} {products.length === 1 ? 'compound' : 'compounds'}</span>
+              </div>
+              <div className="ps-catalog-grid">
+                {products.map((product) => (
+                  <CatalogCard key={product.id} product={product} navigate={actions.navigate} />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       ) : (
@@ -146,31 +166,23 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
   )
 }
 
-function CatalogLedgerRow({ index, product, navigate }: { index: number; product: ProductSummary; navigate: (href: string) => void }) {
-  const available = product.availability === 'available'
+function CatalogCard({ product, navigate }: { product: ProductSummary; navigate: (href: string) => void }) {
   return (
-    <FrontendLink href={`/products/${product.slug}`} navigate={navigate} className="ps-product-ledger-row">
-      <span className="ps-ledger-index">{String(index).padStart(2, '0')}</span>
-      <img src={product.imageSrc} alt={`${product.name} vial`} />
-      <div className="ps-ledger-name">
-        <span>Compound</span>
-        <strong>{product.name}</strong>
+    <FrontendLink href={`/products/${product.slug}`} navigate={navigate} className="ps-catalog-card">
+      <div className="ps-catalog-card-visual">
+        <span>{product.category}</span>
+        <img src={product.imageSrc} alt={`${product.name} vial`} />
+        <i>{product.coaCount} COAs</i>
       </div>
-      <div className="ps-ledger-formats">
-        <span>Formats</span>
-        <strong>{product.formats.slice(0, 3).join(' · ')}</strong>
+      <div className="ps-catalog-card-copy">
+        <h2>{product.name}</h2>
+        <p>{product.formats.join(' · ')}</p>
+        <div>
+          <span>{product.vendorCount ? `${product.vendorCount} vendors` : 'Join watchlist'}</span>
+          {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
+          <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
+        </div>
       </div>
-      <div className="ps-ledger-market">
-        <span>Vendors</span>
-        <strong>{product.vendorCount} {product.vendorCount === 1 ? 'vendor' : 'vendors'}</strong>
-      </div>
-      <div className="ps-ledger-price">
-        <span>{available ? 'From' : 'Price'}</span>
-        <strong>
-          {product.startingPrice === null ? '—' : `$${product.startingPrice.toFixed(2)}/mg`}
-        </strong>
-      </div>
-      <ArrowRight size={18} className="ps-ledger-arrow" />
     </FrontendLink>
   )
 }

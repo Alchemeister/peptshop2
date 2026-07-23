@@ -266,7 +266,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
               <h3>Browse &amp; Compare</h3>
               <p>
                 Find your compound, compare suppliers side by side, and see per-mg
-                pricing at a glance.
+                pricing and public certificates of analysis at a glance.
               </p>
             </li>
             <li>
@@ -274,15 +274,15 @@ export function HomePage({ actions, models }: PageComponentProps) {
               <h3>Pick Your Supplier</h3>
               <p>
                 Choose the dosage and supplier that fits your timeline and purity
-                needs.
+                needs. Every batch backed by a verifiable COA.
               </p>
             </li>
             <li>
               <span>03</span>
-              <h3>Pay with Crypto</h3>
+              <h3>Pay with Crypto or Card</h3>
               <p>
-                Checkout with BTC, ETH, USDT, USDC, XMR, or 100+ other coins via
-                NOWPayments. No account, no email required to order.
+                Checkout with BTC, ETH, USDT, USDC, XMR, or 100+ coins via
+                NOWPayments. Card also accepted. No account, no email required to order.
               </p>
             </li>
           </ol>

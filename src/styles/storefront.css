@@ -942,6 +942,28 @@
   margin-top: 1.5rem;
 }
 
+.ps-catalog-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.ps-catalog-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--ps-line-strong);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0;
+}
+
+.ps-catalog-group-count {
+  color: var(--ps-faint);
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+}
+
 .ps-catalog-card {
   overflow: hidden;
   border: 1px solid var(--ps-line);
