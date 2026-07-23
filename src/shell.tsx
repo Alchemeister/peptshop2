@@ -114,6 +114,7 @@ export function StorefrontShell({
               onClick={() => setMobileOpen((open) => !open)}
             >
               {mobileOpen ? <X size={21} /> : <Menu size={21} />}
+              <span className="ps-mobile-menu-label">{mobileOpen ? 'Close' : 'Menu'}</span>
             </button>
           </div>
         </div>
