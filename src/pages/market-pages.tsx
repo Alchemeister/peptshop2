@@ -287,7 +287,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                       <div className={`ps-offer-heading ${selectedVendorId === vendor.id ? 'is-selected' : ''}`} onClick={() => setSelectedVendorId(vendor.id)} role="button" tabIndex={0}>
                         <div>
                           <h3>{vendor.name}</h3>
-                          <p><MapPin size={14} /> {vendor.location} · {vendor.fulfillment}</p>
+                          <p><MapPin size={14} /> {vendor.location || 'Location pending'} · {vendor.fulfillment}</p>
                         </div>
                         <button type="button" onClick={(e) => { e.stopPropagation(); actions.navigate(`/vendors/${vendor.slug}`) }}>
                           <Star size={15} /> {vendor.rating.toFixed(1)} <span>{vendor.reviewCount} reviews</span>
@@ -437,7 +437,7 @@ function VendorRow({ vendor, index, navigate }: { vendor: VendorSummary; index: 
     <FrontendLink href={`/vendors/${vendor.slug}`} navigate={navigate} className="ps-vendor-row">
       <span className="ps-vendor-rank">{String(index + 1).padStart(2, '0')}</span>
       <div className="ps-vendor-monogram">{vendor.name.split(' ').map((part) => part[0]).join('').slice(0, 2)}</div>
-      <div className="ps-vendor-name"><h2>{vendor.name}</h2><p><MapPin size={14} /> {vendor.location}</p></div>
+      <div className="ps-vendor-name"><h2>{vendor.name}</h2><p><MapPin size={14} /> {vendor.location || 'Location pending'}</p></div>
       <div className="ps-vendor-rating"><Star size={16} /><strong>{vendor.rating.toFixed(1)}</strong><span>{vendor.reviewCount} reviews</span></div>
       <div className="ps-vendor-fulfillment"><Clock3 size={15} /><span>Typical dispatch</span><strong>{vendor.fulfillment}</strong></div>
       <span className={`ps-trust-label ps-trust-${vendor.status}`}><ShieldCheck size={14} /> {vendor.status}</span>

@@ -314,7 +314,7 @@ function ClassicVendorCard({
         <div>
           <h3>{vendor.name}</h3>
           <p>
-            <MapPin size={12} /> {vendor.location} · <Sparkles size={12} /> {vendor.rating} rating
+            <MapPin size={12} /> {vendor.location || 'Location pending'} · <Sparkles size={12} /> {vendor.rating} rating
           </p>
         </div>
         <small className={`is-${vendor.status}`}>{vendor.status}</small>
