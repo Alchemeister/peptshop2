@@ -45,7 +45,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
 
           <p>
             Browse research compounds from vetted suppliers. Transparent per-mg pricing,
-            public certificates of analysis, and crypto checkout — no signup required.
+            public certificates of analysis, and crypto or card checkout — no signup required.
           </p>
 
           <div className="ps-hero-search" role="search">
@@ -71,7 +71,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
 
           <div className="ps-home-proof-row">
             <span><ShieldCheck size={14} /> Supplier-vetted</span>
-            <span><Bitcoin size={14} /> Crypto checkout</span>
+            <span><Bitcoin size={14} /> Crypto or card checkout</span>
             <span><UserX size={14} /> No signup required</span>
           </div>
         </div>
@@ -147,7 +147,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
         </div>
         <div>
           <strong>100+</strong>
-          <span>Crypto coins accepted</span>
+          <span>Crypto &amp; cards accepted</span>
         </div>
         <div>
           <strong>0</strong>
