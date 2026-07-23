@@ -216,7 +216,7 @@ svg {
 }
 
 .ps-page-masthead {
-  padding-block: clamp(3.5rem, 8vw, 7rem) clamp(2rem, 4vw, 3.5rem);
+  padding-block: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .ps-page-masthead h1 {

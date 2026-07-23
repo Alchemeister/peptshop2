@@ -152,7 +152,7 @@
 .productVisual {
   position: relative;
   display: grid;
-  min-height: 22rem;
+  min-height: 26rem;
   place-items: center;
   overflow: hidden;
   border-left: 1px solid var(--ps-line);
@@ -170,8 +170,8 @@
 }
 
 .productVisual img {
-  width: min(74%, 18rem);
-  max-height: 18rem;
+  width: min(74%, 20rem);
+  max-height: 22rem;
   object-fit: contain;
   filter: drop-shadow(0 28px 24px rgba(37, 42, 49, 0.22));
 }
