@@ -38,6 +38,12 @@
   opacity: 0.95;
 }
 
+@media (max-width: 640px) {
+  .ps-hero-logo {
+    width: clamp(11rem, 50vw, 16rem);
+  }
+}
+
 .ps-home-overline {
   display: flex;
   flex-wrap: wrap;
@@ -306,11 +312,11 @@
 @media (max-width: 900px) {
   .ps-home-hero {
     grid-template-columns: 1fr;
-    padding: 5rem 1.25rem 4rem;
+    padding: 1.5rem 1.25rem 2rem;
   }
 
   .ps-featured-market-card {
-    min-height: 28rem;
+    min-height: 22rem;
   }
 
   .ps-home-ticker {
