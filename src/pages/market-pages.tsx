@@ -291,11 +291,18 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   }
 
   // Vendor display data — mapped to real admin vendor IDs
-  const vendorDisplayMap: Record<string, { name: string; slug: string; location: string; rating: number; reviewCount: number; coaCount: number; fulfillment: string; purity: number; batch: string }> = {
-    'vendor-retalux': { name: 'Retalux', slug: 'retalux', location: 'United States', rating: 4.8, reviewCount: 142, coaCount: 24, fulfillment: '2–3 days', purity: 99.2, batch: 'RX-p2-2mg-B' },
-    'vendor-axiom-peptides': { name: 'Axiom Peptides', slug: 'axiom-peptides', location: 'European Union', rating: 4.7, reviewCount: 98, coaCount: 15, fulfillment: '3–5 days', purity: 99.0, batch: 'AX-p3-2mg-C' },
-    'vendor-lumira': { name: 'Lumira', slug: 'lumira', location: 'Canada', rating: 4.6, reviewCount: 76, coaCount: 12, fulfillment: '2–4 days', purity: 99.1, batch: 'LM-p4-2mg-D' },
-    'vendor-nova-bio-research': { name: 'Nova Bio Research', slug: 'nova-bio-research', location: 'United Kingdom', rating: 4.5, reviewCount: 54, coaCount: 8, fulfillment: '4–6 days', purity: 98.8, batch: 'NB-p5-2mg-E' },
+  const vendorDisplayMap: Record<string, { name: string; slug: string; location: string; rating: number; reviewCount: number; coaCount: number; fulfillment: string; purity: number; batchPrefix: string }> = {
+    'vendor-retalux': { name: 'Retalux', slug: 'retalux', location: 'United States', rating: 4.8, reviewCount: 142, coaCount: 24, fulfillment: '2–3 days', purity: 99.2, batchPrefix: 'RX' },
+    'vendor-axiom-peptides': { name: 'Axiom Peptides', slug: 'axiom-peptides', location: 'European Union', rating: 4.7, reviewCount: 98, coaCount: 15, fulfillment: '3–5 days', purity: 99.0, batchPrefix: 'AX' },
+    'vendor-lumira': { name: 'Lumira', slug: 'lumira', location: 'Canada', rating: 4.6, reviewCount: 76, coaCount: 12, fulfillment: '2–4 days', purity: 99.1, batchPrefix: 'LM' },
+    'vendor-nova-bio-research': { name: 'Nova Bio Research', slug: 'nova-bio-research', location: 'United Kingdom', rating: 4.5, reviewCount: 54, coaCount: 8, fulfillment: '4–6 days', purity: 98.8, batchPrefix: 'NB' },
+  }
+
+  // Generate dose-specific batch number
+  const makeBatch = (prefix: string, dose: string) => {
+    const doseNum = parseInt(dose) || 5
+    const letter = String.fromCharCode(65 + (doseNum % 26)) // A-Z based on dose
+    return `${prefix}-${doseNum}mg-${letter}`
   }
 
   // Find which admin vendors actually sell this product
@@ -306,7 +313,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
         .map((item) => item.vendorId)
     )]
     return vendorIdsWithProduct
-      .map((vid) => ({ id: vid, ...(vendorDisplayMap[vid] ?? { name: vid, slug: vid, location: 'Unknown', rating: 4.5, reviewCount: 50, coaCount: 5, fulfillment: '2–3 days', purity: 99.0, batch: 'XX' }) }))
+      .map((vid) => ({ id: vid, ...(vendorDisplayMap[vid] ?? { name: vid, slug: vid, location: 'Unknown', rating: 4.5, reviewCount: 50, coaCount: 5, fulfillment: '2–3 days', purity: 99.0, batchPrefix: 'XX' }) }))
       .slice(0, Math.max(1, source?.vendorCount ?? 1))
   }, [source])
 
@@ -388,7 +395,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                       </div>
                       <div className="ps-offer-facts">
                         <span><FileCheck2 size={15} /><small>Purity</small>≥{vendor.purity}%</span>
-                        <span><PackageCheck size={15} /><small>Batch</small>{vendor.batch}</span>
+                        <span><PackageCheck size={15} /><small>Batch</small>{makeBatch(vendor.batchPrefix, selectedDose)}</span>
                         <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
                         <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate('/coas')}>
                           <FileCheck2 size={13} /> COA
@@ -452,7 +459,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                     <div>
                       <FileCheck2 size={16} />
                       <div>
-                        <strong>{vendor.name} — Batch {vendor.batch}</strong>
+                        <strong>{vendor.name} — Batch {makeBatch(vendor.batchPrefix, selectedDose)}</strong>
                         <small style={{ display: 'block', color: 'var(--ps-muted)', fontSize: '0.75rem' }}>Purity ≥{vendor.purity}% · {source?.name ?? 'BPC-157'} · {selectedDose}</small>
                       </div>
                     </div>
