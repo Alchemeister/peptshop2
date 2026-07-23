@@ -289,6 +289,115 @@
   font-weight: 750;
 }
 
+.ps-featured-market-card-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Dark hero responsive ── */
+@media (max-width: 900px) {
+  .ps-home-hero {
+    grid-template-columns: 1fr;
+    padding: 5rem 1.25rem 4rem;
+  }
+
+  .ps-featured-market-card {
+    min-height: 28rem;
+    transform: rotate(0deg);
+  }
+
+  .ps-home-ticker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ps-home-ticker > div:nth-child(3) {
+    border-top: 1px solid var(--ps-line);
+  }
+
+  .ps-home-ticker > div:nth-child(4) {
+    border-top: 1px solid var(--ps-line);
+  }
+
+  .ps-section-intro {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .ps-product-ledger-row {
+    grid-template-columns: 2rem 3.5rem minmax(8rem, 1fr) auto;
+    gap: 0.75rem;
+  }
+
+  .ps-ledger-formats,
+  .ps-ledger-market {
+    display: none;
+  }
+
+  .ps-evidence-band {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 4rem 1.25rem;
+  }
+
+  .ps-evidence-sheet {
+    transform: rotate(0deg);
+    margin-top: 2rem;
+  }
+
+  .ps-process-list li {
+    grid-template-columns: 2.5rem 1fr;
+  }
+
+  .ps-process-list p {
+    grid-column: 2;
+  }
+
+  .ps-vendor-row {
+    grid-template-columns: 2rem 3rem minmax(8rem, 1fr) auto;
+  }
+
+  .ps-vendor-rating,
+  .ps-vendor-fulfillment {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .ps-home-hero h1 {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .ps-hero-search {
+    grid-template-columns: auto 1fr;
+  }
+
+  .ps-hero-search .ps-primary-action {
+    grid-column: 1 / -1;
+    min-height: 2.85rem;
+  }
+
+  .ps-home-ticker {
+    grid-template-columns: 1fr;
+  }
+
+  .ps-home-ticker > div {
+    border-left: 0;
+    border-top: 1px solid var(--ps-line);
+  }
+
+  .ps-home-ticker > div:first-child {
+    border-top: 0;
+  }
+
+  .ps-product-ledger-row {
+    grid-template-columns: 2rem 3rem 1fr auto;
+  }
+
+  .ps-ledger-index {
+    display: none;
+  }
+}
+
 .ps-home-ticker {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
