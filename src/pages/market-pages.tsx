@@ -272,7 +272,12 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const lookupAdminPrice = (dose: string, vendorMultiplier = 1): number => {
     const doseNum = parseInt(dose) || 5
     const adminItem = mockAdminPricingItems.find(
-      (item) => item.name === source?.name && item.dosage.includes(`${doseNum} mg`)
+      (item) => item.name === source?.name && (
+        item.dosage.includes(`${doseNum} mg`) ||
+        item.dosage.includes(`${doseNum} mL`) ||
+        item.dosage.includes(`${doseNum}mg`) ||
+        item.dosage.includes(`${doseNum}mL`)
+      )
     )
     if (adminItem && adminItem.tiers[0]) {
       return adminItem.tiers[0].price * vendorMultiplier
