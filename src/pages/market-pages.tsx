@@ -270,25 +270,18 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   // Build vendor offers from admin pricing data — real per-vendor, per-dose prices
   const lookupVendorPrice = (dose: string, vendorId: string): number => {
     const doseNum = parseInt(dose) || 5
+    // Use word-boundary matching to avoid "5 mg" matching "15 mg" or "50 mg"
+    // Also handle no-space format like "3mL"
+    const doseRegex = new RegExp(`\\b${doseNum} ?(mg|mL)\\b`)
     const adminItem = mockAdminPricingItems.find(
-      (item) => item.vendorId === vendorId && item.name === source?.name && (
-        item.dosage.includes(`${doseNum} mg`) ||
-        item.dosage.includes(`${doseNum} mL`) ||
-        item.dosage.includes(`${doseNum}mg`) ||
-        item.dosage.includes(`${doseNum}mL`)
-      )
+      (item) => item.vendorId === vendorId && item.name === source?.name && doseRegex.test(item.dosage)
     )
     if (adminItem && adminItem.tiers[0]) {
       return adminItem.tiers[0].price
     }
     // Fallback: try any vendor with this product+dose, use as base
     const anyVendorItem = mockAdminPricingItems.find(
-      (item) => item.name === source?.name && (
-        item.dosage.includes(`${doseNum} mg`) ||
-        item.dosage.includes(`${doseNum} mL`) ||
-        item.dosage.includes(`${doseNum}mg`) ||
-        item.dosage.includes(`${doseNum}mL`)
-      )
+      (item) => item.name === source?.name && doseRegex.test(item.dosage)
     )
     if (anyVendorItem && anyVendorItem.tiers[0]) {
       return anyVendorItem.tiers[0].price
