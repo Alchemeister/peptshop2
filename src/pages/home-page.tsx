@@ -2,6 +2,7 @@ import {
   ArrowRight,
   Bitcoin,
   Calculator,
+  CheckCircle2,
   MapPin,
   Package,
   ShieldCheck,
@@ -25,184 +26,296 @@ export function HomePage({ actions, models }: PageComponentProps) {
   const heroVendors = featuredVendors.slice(0, Math.min(3, heroProduct?.vendorCount ?? 0))
 
   return (
-    <div className="ps-classic-home">
-      <section className="ps-classic-hero">
-        <div className="ps-classic-container ps-classic-hero-grid">
-          <div className="ps-classic-hero-copy">
-            <img
-              src="/peptshop-logo.svg"
-              alt="PeptShop"
-              width="200"
-              height="120"
-              className="ps-classic-hero-logo"
+    <div className="ps-app" style={{ paddingInline: 0 }}>
+      {/* ── Dark industrial hero ── */}
+      <section className="ps-home-hero">
+        <div className="ps-home-hero-copy">
+          <img src="/peptshop-logo-white.svg" alt="PeptShop" className="ps-hero-logo" />
+          <div className="ps-home-overline">
+            <span>Live marketplace</span>
+            <span>Per-mg pricing</span>
+            <span>Public CoAs</span>
+          </div>
+
+          <h1>
+            Research<br />
+            <span>compounds,</span>
+            verified.
+          </h1>
+
+          <p>
+            Browse research compounds from vetted suppliers. Transparent per-mg pricing,
+            public certificates of analysis, and crypto or card checkout — no signup required.
+          </p>
+
+          <div className="ps-hero-search" role="search">
+            <SearchIcon />
+            <input
+              type="search"
+              placeholder="Search compounds — BPC-157, semaglutide, NAD+…"
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  actions.navigate('/products?q=' + encodeURIComponent((event.target as HTMLInputElement).value))
+                }
+              }}
             />
-            <p className="ps-classic-hero-intro">
-              Browse research compounds from vetted suppliers. Transparent per-mg pricing, public CoAs,
-              and crypto checkout — no signup required.
-            </p>
-
-            <div className="ps-classic-hero-actions">
-              <FrontendLink
-                href="/products"
-                navigate={actions.navigate}
-                className="ps-classic-button-primary"
-              >
-                Browse Catalog <ArrowRight size={18} />
-              </FrontendLink>
-              <a href="#how-it-works" className="ps-classic-button-secondary">
-                How It Works
-              </a>
-            </div>
-
-            <div className="ps-classic-secondary-links">
-              <FrontendLink href="/vendors" navigate={actions.navigate}>
-                Vendors
-              </FrontendLink>
-              <span aria-hidden="true">·</span>
-              <FrontendLink href="/coas" navigate={actions.navigate}>
-                CoA Labs
-              </FrontendLink>
-            </div>
-
-            <div className="ps-classic-hero-proof" aria-label="Marketplace benefits">
-              <span>
-                <ShieldCheck size={16} /> Supplier-vetted listings
-              </span>
-              <span>
-                <Bitcoin size={16} /> Crypto checkout
-              </span>
-              <span>
-                <UserX size={16} /> No signup required
-              </span>
-            </div>
-          </div>
-
-          <div className="ps-classic-hero-card-wrap">
-            {heroProduct ? (
-              <FrontendLink
-                href={`/products/${heroProduct.slug}`}
-                navigate={actions.navigate}
-                className="ps-classic-hero-card"
-              >
-                <div className="ps-classic-hero-card-head">
-                  <span>{heroProduct.name}</span>
-                  <small>10-vial pack</small>
-                </div>
-                <h2>{heroProduct.name}</h2>
-                <div className="ps-classic-hero-price">
-                  <strong>
-                    {heroProduct.startingPrice === null
-                      ? '—'
-                      : `$${heroProduct.startingPrice.toFixed(2)}`}
-                  </strong>
-                  {heroProduct.startingPrice !== null ? <span>/mg</span> : null}
-                </div>
-                <div className="ps-classic-hero-vendors">
-                  {heroVendors.map((vendor, index) => (
-                    <div key={vendor.id} className={index === 0 ? 'is-primary' : undefined}>
-                      <span>
-                        <i />
-                        {vendor.name}
-                      </span>
-                      <strong>{vendor.fulfillment}</strong>
-                    </div>
-                  ))}
-                </div>
-                <div className="ps-classic-hero-card-link">
-                  Compare {heroProduct.vendorCount}{' '}
-                  {heroProduct.vendorCount === 1 ? 'vendor' : 'vendors'} →
-                </div>
-              </FrontendLink>
-            ) : (
-              <FrontendLink
-                href="/products"
-                navigate={actions.navigate}
-                className="ps-classic-hero-card ps-classic-empty-card"
-              >
-                <Package size={30} />
-                <small>Coming Soon</small>
-                <h2>Verified vendors are joining</h2>
-                <p>The PeptShop catalog is being prepared. Check back soon.</p>
-                <span>Browse the full catalog →</span>
-              </FrontendLink>
-            )}
-            <span className="ps-classic-hero-blob" aria-hidden="true" />
-          </div>
-        </div>
-      </section>
-
-      <section className="ps-classic-trust-bar" aria-label="PeptShop marketplace standards">
-        <div className="ps-classic-container ps-classic-trust-grid">
-          <TrustItem icon={<ShieldCheck size={20} />} title="Vetted Suppliers">
-            Identity checked before onboarding
-          </TrustItem>
-          <TrustItem icon={<Bitcoin size={20} />} title="Crypto Payments">
-            All major coins via NOWPayments
-          </TrustItem>
-          <TrustItem icon={<Calculator size={20} />} title="Per-mg Pricing">
-            Compare value across vendors
-          </TrustItem>
-          <TrustItem icon={<UserX size={20} />} title="No Account Needed">
-            Browse, buy, track — no signup
-          </TrustItem>
-        </div>
-      </section>
-
-      <section className="ps-classic-section">
-        <div className="ps-classic-container">
-          <div className="ps-classic-section-heading">
-            <div>
-              <h2>Popular</h2>
-              <p>In stock and ready to ship.</p>
-            </div>
-            <FrontendLink href="/products" navigate={actions.navigate}>
-              View all <ArrowRight size={16} />
+            <FrontendLink
+              href="/products"
+              navigate={actions.navigate}
+              className="ps-primary-action"
+              style={{ minHeight: '3.25rem', padding: '0 1.1rem' }}
+            >
+              Browse Catalog <ArrowRight size={16} />
             </FrontendLink>
           </div>
 
-          <div className="ps-classic-product-grid">
-            {popularProducts.map((product) => (
-              <ClassicProductCard key={product.id} product={product} navigate={actions.navigate} />
-            ))}
+          <div className="ps-home-proof-row">
+            <span><ShieldCheck size={14} /> Supplier-vetted</span>
+            <span><Bitcoin size={14} /> Crypto or card checkout</span>
+            <span><UserX size={14} /> No signup required</span>
           </div>
+        </div>
+
+        <div className="ps-featured-market-card-wrap">
+          {heroProduct ? (
+            <FrontendLink
+              href={`/products/${heroProduct.slug}`}
+              navigate={actions.navigate}
+              className="ps-featured-market-card"
+            >
+              <div className="ps-featured-market-head">
+                <span>Featured · {heroProduct.name}</span>
+                <span className="ps-live-indicator">
+                  <i /> Live
+                </span>
+              </div>
+
+              <div className="ps-featured-vial">
+                <span className="ps-vial-halo" />
+                <img src={heroProduct.imageSrc} alt={`${heroProduct.name} vial`} />
+              </div>
+
+              <div className="ps-featured-market-copy">
+                <span>10-vial pack</span>
+                <h2>{heroProduct.name}</h2>
+                <div>
+                  <p>
+                    {heroProduct.startingPrice === null
+                      ? '—'
+                      : `$${heroProduct.startingPrice.toFixed(2)}`}
+                    {heroProduct.startingPrice !== null && <small>/mg</small>}
+                  </p>
+                  <p>
+                    {heroProduct.vendorCount}
+                    <small>{heroProduct.vendorCount === 1 ? 'vendor' : 'vendors'}</small>
+                  </p>
+                </div>
+              </div>
+
+              <div className="ps-featured-card-cta">
+                Compare vendors <ArrowRight size={16} />
+              </div>
+            </FrontendLink>
+          ) : (
+            <FrontendLink
+              href="/products"
+              navigate={actions.navigate}
+              className="ps-featured-market-card"
+              style={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
+            >
+              <Package size={32} color="rgba(255,255,255,0.4)" />
+              <div style={{ padding: '2rem', color: 'rgba(255,255,255,0.6)' }}>
+                <small style={{ display: 'block', fontSize: '0.67rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.5rem' }}>Coming Soon</small>
+                <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 620, color: '#fff' }}>Verified vendors are joining</h2>
+                <p style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>The PeptShop catalog is being prepared.</p>
+                <span style={{ color: 'var(--ps-accent)', fontSize: '0.76rem', fontWeight: 750 }}>Browse the full catalog →</span>
+              </div>
+            </FrontendLink>
+          )}
         </div>
       </section>
 
-      <section id="how-it-works" className="ps-classic-how">
-        <div className="ps-classic-container">
-          <h2>How PeptShop Works</h2>
-          <ol>
-            <HowStep number="1" title="Browse & Compare">
-              Find your compound, compare suppliers side by side, and see per-mg pricing at a
-              glance.
-            </HowStep>
-            <HowStep number="2" title="Pick Your Supplier">
-              Choose the dosage and supplier that fits your timeline and purity needs.
-            </HowStep>
-            <HowStep number="3" title="Pay with Crypto">
-              Checkout with BTC, ETH, USDT, USDC, XMR, or 100+ other coins via NOWPayments. No account, no email required to order.
-            </HowStep>
+      {/* ── Ticker bar ── */}
+      <section className="ps-home-ticker" aria-label="Marketplace stats">
+        <div>
+          <strong>{models.products.length}</strong>
+          <span>Compounds listed</span>
+        </div>
+        <div>
+          <strong>{models.vendors.length}</strong>
+          <span>Vetted suppliers</span>
+        </div>
+        <div>
+          <strong>100+</strong>
+          <span>Crypto &amp; cards accepted</span>
+        </div>
+        <div>
+          <strong>0</strong>
+          <span>Signup required</span>
+        </div>
+      </section>
+
+      {/* ── Product ledger ── */}
+      <section className="ps-home-products">
+        <div className="ps-section-shell">
+          <div className="ps-section-intro">
+            <div>
+              <span className="ps-kicker">Catalog</span>
+              <h2>Popular compounds.</h2>
+            </div>
+            <p>
+              In stock and ready to ship. Compare verified listings, pack sizes, and
+              fulfillment terms before you buy.
+            </p>
+          </div>
+
+          <div className="ps-product-ledger">
+            {popularProducts.map((product, index) => (
+              <LedgerRow
+                key={product.id}
+                index={index + 1}
+                product={product}
+                navigate={actions.navigate}
+              />
+            ))}
+          </div>
+
+          <FrontendLink
+            href="/products"
+            navigate={actions.navigate}
+            className="ps-outline-action"
+            style={{ marginTop: '1.5rem' }}
+          >
+            View all {models.products.length} compounds <ArrowRight size={16} />
+          </FrontendLink>
+        </div>
+      </section>
+
+      {/* ── Evidence band ── */}
+      <section className="ps-evidence-band">
+        <div className="ps-evidence-band-copy">
+          <span className="ps-kicker">Evidence</span>
+          <h2>Every batch. Every claim. Public.</h2>
+          <p>
+            Vendors and independent labs publish certificates of analysis for every
+            batch. Verify purity, compare labs, and trace what you buy to independent
+            test results — all before checkout.
+          </p>
+          <div className="ps-button-row">
+            <FrontendLink
+              href="/coas"
+              navigate={actions.navigate}
+              className="ps-dark-link"
+            >
+              Browse CoA library <ArrowRight size={16} />
+            </FrontendLink>
+            <FrontendLink
+              href="/verify"
+              navigate={actions.navigate}
+              className="ps-dark-link"
+            >
+              Verify a batch
+            </FrontendLink>
+          </div>
+        </div>
+
+        <div className="ps-evidence-sheet">
+          <div className="ps-evidence-sheet-head">
+            <span>CoA</span>
+            <span>Janoshik Analytical</span>
+            <small>PS-001</small>
+          </div>
+          <div className="ps-evidence-result">
+            <span>Purity</span>
+            <strong>99.5%</strong>
+            <CheckCircle2 size={28} />
+          </div>
+          <dl>
+            <div>
+              <dt>Compound</dt>
+              <dd>BPC-157</dd>
+            </div>
+            <div>
+              <dt>Batch</dt>
+              <dd>PS-p1-2mg-A</dd>
+            </div>
+            <div>
+              <dt>Method</dt>
+              <dd>HPLC-UV</dd>
+            </div>
+            <div>
+              <dt>Lab ID</dt>
+              <dd>JK-2401</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      {/* ── How it works ── */}
+      <section id="how-it-works" className="ps-how-section">
+        <div className="ps-section-shell">
+          <div className="ps-section-intro ps-section-intro-compact">
+            <div>
+              <span className="ps-kicker">Process</span>
+              <h2>How PeptShop Works</h2>
+            </div>
+          </div>
+
+          <ol className="ps-process-list">
+            <li>
+              <span>01</span>
+              <h3>Browse &amp; Compare</h3>
+              <p>
+                Find your compound, compare suppliers side by side, and see per-mg
+                pricing and public certificates of analysis at a glance.
+              </p>
+            </li>
+            <li>
+              <span>02</span>
+              <h3>Pick Your Supplier</h3>
+              <p>
+                Choose the dosage and supplier that fits your timeline and purity
+                needs. Every batch backed by a verifiable COA.
+              </p>
+            </li>
+            <li>
+              <span>03</span>
+              <h3>Pay with Crypto or Card</h3>
+              <p>
+                Checkout with BTC, ETH, USDT, USDC, XMR, or 100+ coins via
+                NOWPayments. Card also accepted. No account, no email required to order.
+              </p>
+            </li>
           </ol>
         </div>
       </section>
 
+      {/* ── Featured vendors ── */}
       {featuredVendors.length > 0 ? (
-        <section className="ps-classic-section ps-classic-vendors-section">
-          <div className="ps-classic-container">
-            <div className="ps-classic-section-heading">
+        <section className="ps-home-products" style={{ paddingBlock: 'clamp(3rem, 6vw, 6rem)' }}>
+          <div className="ps-section-shell">
+            <div className="ps-section-intro">
               <div>
+                <span className="ps-kicker">Suppliers</span>
                 <h2>Featured Suppliers</h2>
-                <p>Identity checked before listing.</p>
               </div>
-              <FrontendLink href="/vendors" navigate={actions.navigate}>
-                View all suppliers <ArrowRight size={16} />
-              </FrontendLink>
+              <p>Identity checked before listing. Every vendor vetted before onboarding.</p>
             </div>
-            <div className="ps-classic-vendor-grid">
-              {featuredVendors.map((vendor) => (
-                <ClassicVendorCard key={vendor.id} vendor={vendor} navigate={actions.navigate} />
+
+            <div className="ps-vendor-directory" style={{ marginTop: '3rem' }}>
+              {featuredVendors.map((vendor, index) => (
+                <VendorRow key={vendor.id} index={index + 1} vendor={vendor} navigate={actions.navigate} />
               ))}
             </div>
+
+            <FrontendLink
+              href="/vendors"
+              navigate={actions.navigate}
+              className="ps-outline-action"
+              style={{ marginTop: '1.5rem' }}
+            >
+              View all suppliers <ArrowRight size={16} />
+            </FrontendLink>
           </div>
         </section>
       ) : null}
@@ -210,28 +323,21 @@ export function HomePage({ actions, models }: PageComponentProps) {
   )
 }
 
-function TrustItem({
-  children,
-  icon,
-  title,
-}: {
-  children: React.ReactNode
-  icon: React.ReactNode
-  title: string
-}) {
+function SearchIcon() {
   return (
-    <div className="ps-classic-trust-item">
-      <span>{icon}</span>
-      <h3>{title}</h3>
-      <p>{children}</p>
-    </div>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </svg>
   )
 }
 
-function ClassicProductCard({
+function LedgerRow({
+  index,
   navigate,
   product,
 }: {
+  index: number
   navigate: (href: string) => void
   product: ProductSummary
 }) {
@@ -240,60 +346,39 @@ function ClassicProductCard({
     <FrontendLink
       href={`/products/${product.slug}`}
       navigate={navigate}
-      className="ps-classic-product-card"
+      className="ps-product-ledger-row"
     >
-      <div className="ps-classic-product-image">
-        <img src={product.imageSrc} alt={`${product.name} vial`} />
+      <span className="ps-ledger-index">{String(index).padStart(2, '0')}</span>
+      <img src={product.imageSrc} alt={`${product.name} vial`} />
+      <div className="ps-ledger-name">
+        <span>Compound</span>
+        <strong>{product.name}</strong>
       </div>
-      <div className="ps-classic-product-meta">
-        <span>{product.name}</span>
-        <small className={available ? 'is-available' : undefined}>
-          <i /> {product.vendorCount} {product.vendorCount === 1 ? 'vendor' : 'vendors'} available
-        </small>
+      <div className="ps-ledger-formats">
+        <span>Formats</span>
+        <strong>{product.formats.slice(0, 3).join(' · ')}</strong>
       </div>
-      <h3>{product.name}</h3>
-      <div className="ps-classic-dose-list">
-        {product.formats.slice(0, 4).map((format) => (
-          <span key={format}>{format}</span>
-        ))}
-        {product.coaCount > 0 ? <span className="is-coa">CoA</span> : null}
+      <div className="ps-ledger-market">
+        <span>Vendors</span>
+        <strong>{product.vendorCount} {product.vendorCount === 1 ? 'vendor' : 'vendors'}</strong>
       </div>
-      <div className="ps-classic-product-price">
-        <div>
-          <small>{available ? 'As low as' : 'No vendors yet'}</small>
-          <strong>
-            {product.startingPrice === null ? '—' : `$${product.startingPrice.toFixed(2)}`}
-          </strong>
-          {product.startingPrice !== null ? <span>/mg</span> : null}
-        </div>
-        <ArrowRight size={18} />
+      <div className="ps-ledger-price">
+        <span>{available ? 'From' : 'Price'}</span>
+        <strong>
+          {product.startingPrice === null ? '—' : `$${product.startingPrice.toFixed(2)}/mg`}
+        </strong>
       </div>
+      <ArrowRight size={18} className="ps-ledger-arrow" />
     </FrontendLink>
   )
 }
 
-function HowStep({
-  children,
-  number,
-  title,
-}: {
-  children: React.ReactNode
-  number: string
-  title: string
-}) {
-  return (
-    <li>
-      <span>{number}</span>
-      <h3>{title}</h3>
-      <p>{children}</p>
-    </li>
-  )
-}
-
-function ClassicVendorCard({
+function VendorRow({
+  index,
   navigate,
   vendor,
 }: {
+  index: number
   navigate: (href: string) => void
   vendor: VendorSummary
 }) {
@@ -307,31 +392,26 @@ function ClassicVendorCard({
     <FrontendLink
       href={`/vendors/${vendor.slug}`}
       navigate={navigate}
-      className="ps-classic-vendor-card"
+      className="ps-vendor-row"
     >
-      <div className="ps-classic-vendor-head">
-        <span className="ps-classic-vendor-mark">{initials}</span>
-        <div>
-          <h3>{vendor.name}</h3>
-          <p>
-            <MapPin size={12} /> {vendor.location || 'Location pending'} · <Sparkles size={12} /> {vendor.rating} rating
-          </p>
-        </div>
-        <small className={`is-${vendor.status}`}>{vendor.status}</small>
+      <span className="ps-vendor-rank">{String(index).padStart(2, '0')}</span>
+      <span className="ps-vendor-monogram">{initials}</span>
+      <div className="ps-vendor-name">
+        <h2>{vendor.name}</h2>
+        <p>
+          <MapPin size={12} /> {vendor.location || 'Location pending'}
+        </p>
       </div>
-      <p className="ps-classic-vendor-description">{vendor.specialties.join(' · ')}</p>
-      <dl>
-        <div>
-          <dt>Orders</dt>
-          <dd>{vendor.orderCount.toLocaleString()}+</dd>
-        </div>
-        <div>
-          <dt>Rating</dt>
-          <dd>
-            <Sparkles size={14} /> {vendor.rating}
-          </dd>
-        </div>
-      </dl>
+      <div className="ps-vendor-rating">
+        <Sparkles size={14} />
+        <span>{vendor.rating}</span>
+      </div>
+      <div className="ps-vendor-fulfillment">
+        <Package size={14} />
+        <strong>{vendor.fulfillment}</strong>
+      </div>
+      <small className={`ps-trust-label is-${vendor.status}`}>{vendor.status}</small>
+      <ArrowRight size={16} className="ps-ledger-arrow" />
     </FrontendLink>
   )
 }

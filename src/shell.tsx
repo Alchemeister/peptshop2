@@ -269,9 +269,8 @@ function ClassicHomeFooter({ navigate }: { navigate: (href: string) => void }) {
             title="Support"
             links={[
               ['/order/status', 'Find My Order'],
-              ['/disputes', 'Disputes'],
-              ['/disputes/new', 'File a Dispute'],
-              ['/messages', 'Messages'],
+              ['/coas', 'COA library'],
+              ['/verify', 'Verify a batch'],
               ['/contact', 'Contact'],
             ]}
             navigate={navigate}

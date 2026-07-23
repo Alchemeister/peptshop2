@@ -50,7 +50,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
   const visibleProducts = useMemo(() => {
     const normalized = query.trim().toLowerCase()
     const filtered = models.products.filter((product) => {
-      if (stockOnly && product.availability !== 'available') return false
+      if (stockOnly && (product.availability !== 'available' || product.vendorCount === 0)) return false
       if (regionFilter === 'eu' && product.vendorCount < 3) return false // EU = Axiom (3rd vendor)
       return !normalized || `${product.name} ${product.category}`.toLowerCase().includes(normalized)
     })
@@ -60,6 +60,16 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       return left.name.localeCompare(right.name)
     })
   }, [models.products, query, stockOnly, sortBy, regionFilter])
+
+  const groupedProducts = useMemo(() => {
+    const groups = new Map<string, ProductSummary[]>()
+    for (const product of visibleProducts) {
+      const list = groups.get(product.category)
+      if (list) list.push(product)
+      else groups.set(product.category, [product])
+    }
+    return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))
+  }, [visibleProducts])
 
   return (
     <div className="ps-catalog-page ps-section-shell">
@@ -129,9 +139,19 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       ) : null}
 
       {visibleProducts.length ? (
-        <div className="ps-catalog-grid">
-          {visibleProducts.map((product) => (
-            <CatalogCard key={product.id} product={product} navigate={actions.navigate} />
+        <div className="ps-catalog-groups" style={{ marginTop: '1.5rem' }}>
+          {groupedProducts.map(([category, products]) => (
+            <section key={category} className="ps-catalog-group">
+              <div className="ps-catalog-group-head">
+                <span className="ps-kicker">{category}</span>
+                <span className="ps-catalog-group-count">{products.length} {products.length === 1 ? 'compound' : 'compounds'}</span>
+              </div>
+              <div className="ps-catalog-grid">
+                {products.map((product) => (
+                  <CatalogCard key={product.id} product={product} navigate={actions.navigate} />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       ) : (
@@ -153,6 +173,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
         <span>{product.category}</span>
         <img src={product.imageSrc} alt={`${product.name} vial`} />
         <i>{product.coaCount} COAs</i>
+        <small className="ps-catalog-card-disclaimer">*Illustrative</small>
       </div>
       <div className="ps-catalog-card-copy">
         <h2>{product.name}</h2>
@@ -194,7 +215,7 @@ const productDetails: Record<string, { cas: string; formula: string; description
   'Cagrilintide': { cas: '2210613-36-6', formula: 'C242H355N61O68', description: 'Long-acting amylin analog. Research suggests appetite suppression and weight loss as a dual-action with GLP-1 agonists.' },
   'Dihexa': { cas: '127892-62-8', formula: 'C22H28N6O3', description: 'Angiotensin IV analog. Research suggests cognitive enhancement and neuroprotective effects via dendritic spine growth.' },
   'DSIP': { cas: '62568-57-4', formula: 'C34H41N7O9', description: 'Delta sleep-inducing peptide. Research suggests regulation of sleep cycles, stress response, and hormone modulation.' },
-  'Epitech': { cas: 'N/A', formula: 'C14H22N4O9', description: 'Synthetic tetrapeptide. Research suggests skin repair and anti-aging effects via collagen synthesis stimulation.' },
+
   'Follistatin-344': { cas: 'N/A', formula: 'Recombinant protein', description: 'Recombinant glycoprotein. Research suggests muscle growth via myostatin and activin binding inhibition.' },
   'GHRP-2': { cas: '158861-67-7', formula: 'C45H55N9O6', description: 'Growth hormone secretagogue. Research stimulates GH release via ghrelin receptor agonism.' },
   'Glutathione': { cas: '70-18-8', formula: 'C10H17N3O6S', description: 'Tripeptide antioxidant. Research suggests detoxification, immune support, and oxidative stress reduction.' },
