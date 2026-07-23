@@ -30,6 +30,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
       {/* ── Dark industrial hero ── */}
       <section className="ps-home-hero">
         <div className="ps-home-hero-copy">
+          <img src="/peptshop-logo-white.svg" alt="PeptShop" className="ps-hero-logo" />
           <div className="ps-home-overline">
             <span>Live marketplace</span>
             <span>Per-mg pricing</span>

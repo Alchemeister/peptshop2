@@ -32,6 +32,12 @@
   z-index: 1;
 }
 
+.ps-hero-logo {
+  width: clamp(7rem, 14vw, 11rem);
+  margin-bottom: 1.5rem;
+  opacity: 0.85;
+}
+
 .ps-home-overline {
   display: flex;
   flex-wrap: wrap;
