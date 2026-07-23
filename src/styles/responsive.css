@@ -71,7 +71,9 @@
   }
 
   .ps-mobile-menu-button {
-    display: grid;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
   }
 
   .ps-mobile-nav {
@@ -104,7 +106,9 @@
   .ps-home-hero {
     min-height: auto;
     grid-template-columns: 1fr;
-    padding-top: 8rem;
+    align-items: start;
+    padding-top: 1.25rem;
+    padding-bottom: 1.5rem;
   }
 
   .ps-home-hero h1 {
@@ -113,7 +117,7 @@
 
   .ps-featured-market-card {
     width: min(100%, 30rem);
-    min-height: 31rem;
+    min-height: 18rem;
     transform: none;
   }
 
@@ -349,11 +353,19 @@
   }
 
   .ps-home-ticker > div {
-    min-height: 5rem;
+    min-height: 4rem;
     flex-direction: column;
     justify-content: center;
     gap: 0.1rem;
-    padding: 0.8rem 1rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .ps-home-ticker strong {
+    font-size: 1.25rem;
+  }
+
+  .ps-home-ticker span {
+    font-size: 0.65rem;
   }
 
   .ps-product-ledger-row {
@@ -428,7 +440,7 @@
   }
 
   .ps-catalog-card-visual {
-    min-height: 15rem;
+    min-height: 11rem;
   }
 
   .ps-state-tabs {

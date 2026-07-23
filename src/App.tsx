@@ -28,7 +28,7 @@ export function PeptShopFrontend({
   actions: providedActions,
   initialPath,
   models = mockModels,
-  showPreviewTools = true,
+  showPreviewTools = false,
   theme: providedTheme,
 }: PeptShopFrontendProps) {
   const [{ pathname, query }, setLocation] = useState(() => {

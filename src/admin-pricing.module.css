@@ -21,7 +21,7 @@
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-:global(.ps-app[data-theme='dark']) .root,
+:global(.ps-app[data-theme="dark"]) .root,
 :global(.dark) .root {
   --admin-accent: #ff7a45;
   --admin-accent-hover: #ff986f;
@@ -40,6 +40,61 @@
   --admin-danger: #ffb4ad;
   --admin-danger-soft: #40201f;
   color-scheme: dark;
+}
+
+.root.embedded,
+:global(.dark) .root.embedded {
+  --admin-accent: #3b82f6;
+  --admin-accent-hover: #60a5fa;
+  --admin-accent-contrast: #ffffff;
+  --admin-canvas: transparent;
+  --admin-paper: #0d1728;
+  --admin-soft: #121f33;
+  --admin-ink: #f8fafc;
+  --admin-muted: rgba(255, 255, 255, 0.58);
+  --admin-faint: rgba(255, 255, 255, 0.38);
+  --admin-line: rgba(255, 255, 255, 0.1);
+  --admin-line-strong: rgba(147, 197, 253, 0.42);
+  --admin-deep: transparent;
+  --admin-success: #6ee7b7;
+  --admin-success-soft: rgba(16, 185, 129, 0.12);
+  --admin-danger: #fca5a5;
+  --admin-danger-soft: rgba(239, 68, 68, 0.12);
+  min-height: auto;
+  background: transparent;
+  font-family: inherit;
+  color-scheme: dark;
+}
+
+.embedded .masthead {
+  border: 1px solid var(--admin-line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.embedded .mastheadInner {
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) minmax(13rem, 18rem);
+  align-items: end;
+  padding: 1.25rem;
+}
+
+.embedded .backButton {
+  display: none;
+}
+
+.embedded .titleBlock p {
+  color: #93c5fd;
+}
+
+.embedded .vendorSelect select {
+  border-color: var(--admin-line);
+  background: #0a1424;
+}
+
+.embedded .workspace {
+  width: 100%;
+  padding: 1.5rem 0 0;
 }
 
 .root *,
@@ -95,7 +150,9 @@
   color: #d7dce1;
   font-size: 0.75rem;
   font-weight: 700;
-  transition: border-color 140ms ease, background-color 140ms ease;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease;
 }
 
 .backButton:hover {
@@ -224,7 +281,10 @@
 .listHeader,
 .itemSummary {
   display: grid;
-  grid-template-columns: minmax(12rem, 1.5fr) minmax(7rem, 0.55fr) minmax(6rem, 0.45fr) minmax(7rem, 0.55fr) 5.5rem;
+  grid-template-columns: minmax(12rem, 1.5fr) minmax(7rem, 0.55fr) minmax(6rem, 0.45fr) minmax(
+      7rem,
+      0.55fr
+    ) 5.5rem;
   gap: 1rem;
   align-items: center;
 }
@@ -607,6 +667,10 @@
 
   .vendorSelect {
     width: min(100%, 24rem);
+  }
+
+  .embedded .mastheadInner {
+    grid-template-columns: 1fr;
   }
 
   .listHeader {

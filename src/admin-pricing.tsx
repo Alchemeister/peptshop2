@@ -52,6 +52,7 @@ export type AdminPricingSurfaceProps = {
   items: AdminPricingItem[]
   loadError?: string | null
   vendorLoading?: boolean
+  embedded?: boolean
   onBack: () => void
   onAddVendor: () => void
   onSelectVendor: (vendorId: string) => void
@@ -90,9 +91,7 @@ function PricingRow({
 
   const updateTier = (index: number, field: keyof TierDraft, value: string) => {
     setTiers((current) =>
-      current.map((tier, tierIndex) =>
-        tierIndex === index ? { ...tier, [field]: value } : tier,
-      ),
+      current.map((tier, tierIndex) => (tierIndex === index ? { ...tier, [field]: value } : tier)),
     )
     setFeedback(null)
   }
@@ -257,7 +256,12 @@ function PricingRow({
           </div>
 
           <div className={styles.editorActions}>
-            <button type="button" className={styles.addTier} onClick={addTier} disabled={tiers.length >= 12}>
+            <button
+              type="button"
+              className={styles.addTier}
+              onClick={addTier}
+              disabled={tiers.length >= 12}
+            >
               <Plus size={15} /> Add tier
             </button>
             <div className={styles.saveGroup}>
@@ -290,6 +294,7 @@ export function AdminPricingSurface({
   items,
   loadError = null,
   vendorLoading = false,
+  embedded = false,
   onBack,
   onAddVendor,
   onSelectVendor,
@@ -309,7 +314,10 @@ export function AdminPricingSurface({
   )
 
   return (
-    <section className={styles.root} aria-busy={vendorLoading}>
+    <section
+      className={`${styles.root}${embedded ? ` ${styles.embedded}` : ''}`}
+      aria-busy={vendorLoading}
+    >
       <header className={styles.masthead}>
         <div className={styles.mastheadInner}>
           <button type="button" className={styles.backButton} onClick={onBack}>
@@ -318,7 +326,9 @@ export function AdminPricingSurface({
           <div className={styles.titleBlock}>
             <p>Catalog controls</p>
             <h1>Pricing and availability</h1>
-            <span>Set vendor price tiers and storefront availability from one guarded workspace.</span>
+            <span>
+              Set vendor price tiers and storefront availability from one guarded workspace.
+            </span>
           </div>
           {vendors.length > 0 ? (
             <label className={styles.vendorSelect}>
@@ -330,7 +340,8 @@ export function AdminPricingSurface({
               >
                 {vendors.map((vendor) => (
                   <option key={vendor.id} value={vendor.id}>
-                    {vendor.name}{vendor.enabled ? '' : ' (disabled)'}
+                    {vendor.name}
+                    {vendor.enabled ? '' : ' (disabled)'}
                   </option>
                 ))}
               </select>
@@ -352,7 +363,9 @@ export function AdminPricingSurface({
           <div className={styles.emptyState}>
             <PackageOpen size={25} />
             <h2>Add a vendor first</h2>
-            <p>Pricing is attached to vendor catalog listings. Create the first vendor to continue.</p>
+            <p>
+              Pricing is attached to vendor catalog listings. Create the first vendor to continue.
+            </p>
             <button type="button" onClick={onAddVendor}>
               <Plus size={16} /> Add vendor
             </button>
@@ -362,7 +375,9 @@ export function AdminPricingSurface({
             <div className={styles.toolbar}>
               <div>
                 <h2>{selectedVendor?.name ?? 'Vendor catalog'}</h2>
-                <p>{items.length} catalog {items.length === 1 ? 'listing' : 'listings'}</p>
+                <p>
+                  {items.length} catalog {items.length === 1 ? 'listing' : 'listings'}
+                </p>
               </div>
               <label className={styles.searchBox}>
                 <Search size={16} aria-hidden="true" />
@@ -379,7 +394,10 @@ export function AdminPricingSurface({
               <div className={styles.emptyState}>
                 <PackageOpen size={25} />
                 <h2>No catalog listings yet</h2>
-                <p>This vendor can add listings from the seller portal. They will appear here automatically.</p>
+                <p>
+                  This vendor can add listings from the seller portal. They will appear here
+                  automatically.
+                </p>
               </div>
             ) : visibleItems.length === 0 ? (
               <div className={styles.emptyState}>

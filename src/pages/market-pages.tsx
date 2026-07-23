@@ -1,6 +1,7 @@
 import {
   ArrowLeft,
   ArrowRight,
+  ArrowUp,
   Bell,
   Check,
   ChevronDown,
@@ -20,7 +21,7 @@ import {
   Truck,
   X,
 } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { PageComponentProps, ProductSummary, VendorSummary } from '../contracts'
 import { mockProduct, mockVendor } from '../mock-data'
 import { FrontendLink } from '../navigation'
@@ -47,6 +48,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
   const [regionFilter, setRegionFilter] = useState<'all' | 'us' | 'eu'>('all')
   const [regionOpen, setRegionOpen] = useState(false)
   const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name')
+  const [showTop, setShowTop] = useState(false)
   const visibleProducts = useMemo(() => {
     const normalized = query.trim().toLowerCase()
     const filtered = models.products.filter((product) => {
@@ -70,6 +72,12 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
     }
     return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))
   }, [visibleProducts])
+
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 600)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <div className="ps-catalog-page ps-section-shell">
@@ -139,9 +147,17 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       ) : null}
 
       {visibleProducts.length ? (
+        <>
+        {groupedProducts.length > 1 ? (
+          <nav className="ps-catalog-category-nav" aria-label="Categories">
+            {groupedProducts.map(([category]) => (
+              <a key={category} href={`#cat-${category.replace(/\s+/g, '-').toLowerCase()}`}>{category}</a>
+            ))}
+          </nav>
+        ) : null}
         <div className="ps-catalog-groups" style={{ marginTop: '1.5rem' }}>
           {groupedProducts.map(([category, products]) => (
-            <section key={category} className="ps-catalog-group">
+            <section key={category} id={`cat-${category.replace(/\s+/g, '-').toLowerCase()}`} className="ps-catalog-group">
               <div className="ps-catalog-group-head">
                 <span className="ps-kicker">{category}</span>
                 <span className="ps-catalog-group-count">{products.length} {products.length === 1 ? 'compound' : 'compounds'}</span>
@@ -154,6 +170,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
             </section>
           ))}
         </div>
+        </>
       ) : (
         <div className="ps-empty-state">
           <Search size={24} />
@@ -162,6 +179,11 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
           <button type="button" onClick={() => { setQuery(''); setStockOnly(false) }}>Reset catalog</button>
         </div>
       )}
+      {showTop ? (
+        <button type="button" className="ps-back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
+          <ArrowUp size={20} />
+        </button>
+      ) : null}
     </div>
   )
 }
@@ -173,7 +195,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
         <span>{product.category}</span>
         <img src={product.imageSrc} alt={`${product.name} vial`} />
         <i>{product.coaCount} COAs</i>
-        <small className="ps-catalog-card-disclaimer">*Illustrative</small>
+        {product.coaCount === 0 ? <small className="ps-catalog-card-disclaimer">*Illustrative</small> : null}
       </div>
       <div className="ps-catalog-card-copy">
         <h2>{product.name}</h2>
@@ -449,6 +471,19 @@ export function VendorsPage({ actions, models }: PageComponentProps) {
       <div className="ps-vendor-directory">
         {vendors.map((vendor, index) => <VendorRow key={vendor.id} vendor={vendor} index={index} navigate={actions.navigate} />)}
       </div>
+      <section className="ps-vendor-page-summary">
+        <div>
+          <span className="ps-kicker">Marketplace standards</span>
+          <h2>Every vendor vetted. Every batch verified.</h2>
+          <p>All vendors on PeptShop undergo identity verification before listing. Each product listing links to batch-level certificates of analysis from independent labs. Buyers can verify purity, identity, and lab records before purchase.</p>
+        </div>
+        <dl>
+          <div><dt>Total vendors</dt><dd>{models.vendors.length}</dd></div>
+          <div><dt>Total COAs published</dt><dd>{models.vendors.reduce((sum, v) => sum + ((v as any)?.coaCount ?? 0), 0)}</dd></div>
+          <div><dt>Average rating</dt><dd>{(models.vendors.reduce((sum, v) => sum + v.rating, 0) / Math.max(1, models.vendors.length)).toFixed(1)}★</dd></div>
+          <div><dt>Total reviews</dt><dd>{models.vendors.reduce((sum, v) => sum + v.reviewCount, 0).toLocaleString()}</dd></div>
+        </dl>
+      </section>
     </div>
   )
 }

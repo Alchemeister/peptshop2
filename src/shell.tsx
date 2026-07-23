@@ -19,8 +19,9 @@ import { FrontendLink, routeIsActive } from './navigation'
 const navItems = [
   { href: '/products', label: 'Catalog' },
   { href: '/vendors', label: 'Vendors' },
-  { href: '/coas', label: 'COAs' },
+  { href: '/coas', label: 'CoAs' },
   { href: '/verify', label: 'Verify' },
+  { href: '/checkout', label: 'Checkout' },
 ]
 
 type StorefrontShellProps = {
@@ -102,7 +103,7 @@ export function StorefrontShell({
               className="ps-icon-button ps-cart-button"
               aria-label={`Cart with ${cartCount} items`}
             >
-              <ShoppingBag size={21} strokeWidth={1.8} />
+              <ShoppingBag size={23} strokeWidth={1.8} />
               {cartCount > 0 ? <span>{cartCount}</span> : null}
             </FrontendLink>
             <button
@@ -113,6 +114,7 @@ export function StorefrontShell({
               onClick={() => setMobileOpen((open) => !open)}
             >
               {mobileOpen ? <X size={21} /> : <Menu size={21} />}
+              <span className="ps-mobile-menu-label">{mobileOpen ? 'Close' : 'Menu'}</span>
             </button>
           </div>
         </div>
