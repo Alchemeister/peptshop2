@@ -244,6 +244,9 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <span><FileCheck2 size={15} /><small>Purity</small>≥{vendor.purity}%</span>
                         <span><PackageCheck size={15} /><small>Batch</small>{vendor.batch}</span>
                         <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
+                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/coas/${vendor.slug}/${source?.slug ?? 'bpc-157'}`)}>
+                          <FileCheck2 size={13} /> COA
+                        </button>
                       </div>
                       <div className="ps-offer-action">
                         <div>
@@ -294,25 +297,27 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
               </div>
             </ProductOffersSection>
 
-            {/* COA section — show mock COAs so user can see the layout */}
+            {/* COA section — per-vendor, per-compound */}
             <section className="ps-product-coa-section">
-              <h2><FileCheck2 size={18} /> Certificates of Analysis</h2>
+              <h2><FileCheck2 size={18} /> Certificates of Analysis · {source?.name ?? 'Product'}</h2>
               <div className="ps-coa-list">
-                <div className="ps-coa-item">
-                  <div><FileCheck2 size={16} /><strong>Batch {selectedVendor?.batch ?? 'PS-p1-2mg-A'}</strong></div>
-                  <span>Purity: ≥{selectedVendor?.purity ?? 99.5}% · Janoshik Lab #JH-2025-0142</span>
-                  <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
-                </div>
-                <div className="ps-coa-item">
-                  <div><FileCheck2 size={16} /><strong>Batch RX-p2-2mg-B</strong></div>
-                  <span>Purity: ≥99.2% · Janoshik Lab #JH-2025-0098</span>
-                  <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
-                </div>
-                <div className="ps-coa-item ps-coa-pending">
-                  <div><FileCheck2 size={16} /><strong>Batch AX-p3-2mg-C</strong></div>
-                  <span>COA pending upload from vendor</span>
-                  <button type="button" onClick={() => setDialogOpen(true)}>Notify me <Bell size={14} /></button>
-                </div>
+                {productVendors.map((vendor) => (
+                  <div key={vendor.id} className="ps-coa-item">
+                    <div>
+                      <FileCheck2 size={16} />
+                      <div>
+                        <strong>{vendor.name} — Batch {vendor.batch}</strong>
+                        <small style={{ display: 'block', color: 'var(--ps-muted)', fontSize: '0.75rem' }}>Purity ≥{vendor.purity}% · {source?.name ?? 'BPC-157'} · {selectedDose}</small>
+                      </div>
+                    </div>
+                    <span>Janoshik Lab #{vendor.id === 'vendor-northstar' ? 'JH-2025-0142' : vendor.id === 'vendor-retalux' ? 'JH-2025-0098' : 'Pending'}</span>
+                    {vendor.id === 'vendor-axiom' ? (
+                      <button type="button" onClick={() => setDialogOpen(true)}><Bell size={14} /> Notify me</button>
+                    ) : (
+                      <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
+                    )}
+                  </div>
+                ))}
               </div>
             </section>
           </>

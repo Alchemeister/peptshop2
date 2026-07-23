@@ -4638,3 +4638,267 @@
 .cs-catalog-card-visual::after {
   display: none;
 }
+
+/* ============================================
+   Product page: Offer grid + Cart summary card
+   =========================================== */
+.ps-offer-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .ps-offer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.ps-offer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.ps-offer-heading.is-selected {
+  border-left: 3px solid var(--ps-accent);
+  padding-left: 0.75rem;
+  background: rgba(255, 200, 100, 0.04);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.ps-offer-heading {
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-radius: 6px;
+  padding-left: 0.5rem;
+}
+.ps-offer-heading:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+.ps-offer-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ps-line);
+}
+.ps-offer-action > div {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--ps-line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.ps-offer-action > div button,
+.ps-offer-action > div span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: none;
+  background: var(--ps-paper);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+.ps-offer-action > div span {
+  border-left: 1px solid var(--ps-line);
+  border-right: 1px solid var(--ps-line);
+  width: 2.5rem;
+}
+.ps-offer-action > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  background: var(--ps-ink);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.1rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.ps-offer-action > button:hover {
+  opacity: 0.88;
+}
+.ps-add-to-cart-btn {
+  background: var(--ps-ink) !important;
+  color: white !important;
+}
+
+/* Cart summary card */
+.ps-cart-summary-card {
+  position: sticky;
+  top: 2rem;
+  background: var(--ps-paper);
+  border: 1px solid var(--ps-line);
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.ps-cart-summary-card h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  color: var(--ps-ink);
+}
+.ps-cart-summary-product {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--ps-line);
+}
+.ps-cart-summary-product img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--ps-surface);
+  flex-shrink: 0;
+}
+.ps-cart-summary-product > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.ps-cart-summary-product strong {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ps-ink);
+  display: block;
+}
+.ps-cart-summary-product span {
+  font-size: 0.8125rem;
+  color: var(--ps-muted);
+  display: block;
+}
+.ps-cart-summary-product small {
+  font-size: 0.75rem;
+  color: var(--ps-accent);
+  font-weight: 600;
+  display: block;
+  margin-top: 0.15rem;
+}
+.ps-cart-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+}
+.ps-cart-summary-row span {
+  font-size: 0.8125rem;
+  color: var(--ps-muted);
+}
+.ps-cart-summary-row strong {
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--ps-mono);
+  color: var(--ps-ink);
+}
+.ps-cart-summary-divider {
+  height: 1px;
+  background: var(--ps-line);
+  margin: 0.75rem 0;
+}
+.ps-cart-summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ps-cart-summary-total span {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ps-ink);
+}
+.ps-cart-summary-total strong {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: var(--ps-mono);
+  color: var(--ps-ink);
+}
+.ps-checkout-btn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  background: var(--ps-accent);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.85rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.ps-checkout-btn:hover {
+  opacity: 0.9;
+}
+.ps-cart-summary-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ps-line);
+}
+.ps-cart-summary-badges span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ps-muted);
+}
+
+/* Product page COA section */
+.ps-product-coa-section {
+  margin-top: 2rem;
+  padding: 0 1.5rem;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+.ps-product-coa-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  color: var(--ps-ink);
+}
+.ps-coa-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* COA link in vendor offer card */
+.ps-offer-coa-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ps-accent);
+  background: transparent;
+  border: 1px solid var(--ps-line);
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  margin-left: auto;
+}
+.ps-offer-coa-link:hover {
+  border-color: var(--ps-accent);
+  background: rgba(255, 200, 100, 0.06);
+}
