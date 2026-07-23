@@ -286,9 +286,15 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const [selectedPackSize, setSelectedPackSize] = useState<10 | 20>(10)
   const empty = query.get('state') === 'empty'
   const selectedVendor = productVendors.find((v) => v.id === selectedVendorId) ?? productVendors[0]
+
+  // Scale price by dosage — higher mg = higher price
+  const doseMultiplier = selectedDose.includes('10') ? 2.5
+    : selectedDose.includes('5') ? 1.5
+    : 1
+  const doseAdjustedPrice = (selectedVendor?.offerPrice ?? 0) * doseMultiplier
   const unitPrice = selectedPackSize === 20
-    ? (selectedVendor?.offerPrice ?? 0) * 1.9
-    : (selectedVendor?.offerPrice ?? 0)
+    ? doseAdjustedPrice * 1.9
+    : doseAdjustedPrice
 
   return (
     <div className="ps-product-route">
@@ -337,14 +343,16 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         </button>
                       </div>
                       <div className="ps-offer-options">
+                        {(() => { const vPrice = vendor.offerPrice * doseMultiplier; return (<>
                         <VendorOfferOptionFrame selected={selectedVendorId === vendor.id && selectedPackSize === 10} onClick={() => { setSelectedVendorId(vendor.id); setSelectedPackSize(10) }}>
                           <strong>10 vials</strong>
-                          <span>${vendor.offerPrice.toFixed(2)}</span>
+                          <span>${vPrice.toFixed(2)}</span>
                         </VendorOfferOptionFrame>
                         <VendorOfferOptionFrame selected={selectedVendorId === vendor.id && selectedPackSize === 20} onClick={() => { setSelectedVendorId(vendor.id); setSelectedPackSize(20) }}>
                           <strong>20 vials</strong>
-                          <span>${(vendor.offerPrice * 1.9).toFixed(2)}</span>
+                          <span>${(vPrice * 1.9).toFixed(2)}</span>
                         </VendorOfferOptionFrame>
+                        </>); })()}
                       </div>
                       <div className="ps-offer-facts">
                         <span><FileCheck2 size={15} /><small>Purity</small>≥{vendor.purity}%</span>
@@ -361,7 +369,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                           <button type="button" onClick={() => { setSelectedVendorId(vendor.id); setQuantity((value) => value + 1) }} aria-label="Increase quantity"><Plus size={15} /></button>
                         </div>
                         <button type="button" className="ps-add-to-cart-btn" onClick={() => { setSelectedVendorId(vendor.id); actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id) }}>
-                          <ShoppingBag size={17} /> Add ${((selectedPackSize === 20 ? vendor.offerPrice * 1.9 : vendor.offerPrice) * quantity).toFixed(2)}
+                          <ShoppingBag size={17} /> Add ${((selectedPackSize === 20 ? vendor.offerPrice * doseMultiplier * 1.9 : vendor.offerPrice * doseMultiplier) * (selectedVendorId === vendor.id ? quantity : 1)).toFixed(2)}
                         </button>
                       </div>
                     </VendorOfferCardFrame>
@@ -372,7 +380,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 <aside className="ps-cart-summary-card">
                   <h3>Order summary</h3>
                   <div className="ps-cart-summary-product">
-                    <img src={source?.imageSrc ?? '/images/products/bpc-157.png'} alt="" />
+                    <img src={source?.imageSrc ?? '/vial.svg'} alt="" />
                     <div>
                       <strong>{source?.name ?? 'Product'}</strong>
                       <span>{selectedDose} · {selectedPackSize}-vial pack</span>
