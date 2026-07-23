@@ -173,6 +173,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
         <span>{product.category}</span>
         <img src={product.imageSrc} alt={`${product.name} vial`} />
         <i>{product.coaCount} COAs</i>
+        <small className="ps-catalog-card-disclaimer">*Illustrative</small>
       </div>
       <div className="ps-catalog-card-copy">
         <h2>{product.name}</h2>

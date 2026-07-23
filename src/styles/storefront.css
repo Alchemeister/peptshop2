@@ -1040,6 +1040,17 @@
   filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.12));
 }
 
+.ps-catalog-card-disclaimer {
+  position: absolute;
+  z-index: 2;
+  bottom: 0.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--ps-muted);
+  font-size: 0.58rem;
+  font-style: italic;
+}
+
 .ps-catalog-card-copy {
   padding: 1rem;
 }
