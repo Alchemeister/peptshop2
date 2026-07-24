@@ -4,7 +4,6 @@ import {
   Download,
   FileCheck2,
   FileUp,
-  FlaskConical,
   Info,
   ScanLine,
   Search,
@@ -43,7 +42,20 @@ export function EvidencePage({ actions, models, pathname }: PageComponentProps) 
             <div><span className="ps-mobile-label">Laboratory</span><strong>{coa.lab}</strong></div>
             <div><span className="ps-mobile-label">Tested</span><strong>{coa.testedAt}</strong></div>
             <div><span className="ps-mobile-label">Result</span><span className="ps-purity-result"><CheckCircle2 size={15} /> {coa.purity}</span></div>
-            <button type="button" aria-label={`Open ${coa.product} certificate`}><ArrowRight size={18} /></button>
+            {coa.href ? (
+              <a
+                href={coa.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${coa.product} certificate`}
+              >
+                <ArrowRight size={18} />
+              </a>
+            ) : (
+              <span className="ps-coa-link-unavailable" aria-label="Certificate link unavailable">
+                <ArrowRight size={18} />
+              </span>
+            )}
           </div>
         ))}
       </div>

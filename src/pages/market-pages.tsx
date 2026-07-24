@@ -23,7 +23,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import type { PageComponentProps, ProductSummary, VendorSummary } from '../contracts'
-import { mockAdminPricingItems, mockProduct, mockVendor } from '../mock-data'
+import { mockAdminPricingItems } from '../mock-data'
 import { FrontendLink } from '../navigation'
 import {
   CompoundWaitlistDescription,
@@ -52,7 +52,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
     const normalized = query.trim().toLowerCase()
     const filtered = models.products.filter((product) => {
       if (stockOnly && (product.availability !== 'available' || product.vendorCount === 0)) return false
-      if (regionFilter === 'eu' && product.vendorCount < 3) return false // EU = Axiom (3rd vendor)
+      if (regionFilter !== 'all' && !product.regions?.includes(regionFilter)) return false
       return !normalized || `${product.name} ${product.category}`.toLowerCase().includes(normalized)
     })
     return filtered.sort((left, right) => {
@@ -201,8 +201,16 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
         <p>{product.formats.join(' · ')}</p>
         <div>
           <span>{product.vendorCount ? `${product.vendorCount} vendors` : 'Join watchlist'}</span>
-          {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
-          <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
+          {product.regions?.length ? (
+            <small className="ps-region-badge">
+              {product.regions.map((region) => region.toUpperCase()).join(' · ')}
+            </small>
+          ) : null}
+          <strong>
+            {product.startingPrice === null
+              ? 'No live offers'
+              : `$${product.startingPrice.toFixed(2)}/${product.priceUnit ?? 'mg'}`}
+          </strong>
         </div>
       </div>
     </FrontendLink>
@@ -368,7 +376,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
             <ProductOffersSection dosage={selectedDose}>
               <div className="ps-offer-grid">
                 <div className="ps-offer-list">
-                  {productVendors.map((vendor, index) => (
+                  {productVendors.map((vendor) => (
                     <VendorOfferCardFrame key={vendor.id}>
                       <div className={`ps-offer-heading ${selectedVendorId === vendor.id ? 'is-selected' : ''}`} onClick={() => setSelectedVendorId(vendor.id)} role="button" tabIndex={0}>
                         <div>
@@ -505,14 +513,38 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
 
 export function VendorsPage({ actions, models }: PageComponentProps) {
   const [query, setQuery] = useState('')
-  const vendors = models.vendors.filter((vendor) => vendor.name.toLowerCase().includes(query.toLowerCase()))
+  const [sortBy, setSortBy] = useState<'recommended' | 'rating' | 'reviews' | 'evidence' | 'dispatch'>('recommended')
+  const vendors = models.vendors
+    .filter((vendor) => vendor.name.toLowerCase().includes(query.toLowerCase()))
+    .sort((left, right) => {
+      if (sortBy === 'rating') return right.rating - left.rating
+      if (sortBy === 'reviews') return right.reviewCount - left.reviewCount
+      if (sortBy === 'evidence') return (right.coaCount ?? 0) - (left.coaCount ?? 0)
+      if (sortBy === 'dispatch') {
+        return (left.fulfillmentHours ?? Number.POSITIVE_INFINITY) - (right.fulfillmentHours ?? Number.POSITIVE_INFINITY)
+      }
+      return (right.recommendationScore ?? right.rating) - (left.recommendationScore ?? left.rating)
+    })
   return (
     <div className="ps-vendors-page ps-section-shell">
       <header className="ps-page-masthead ps-page-masthead-split">
         <div><span className="ps-kicker">Marketplace partners</span><h1>Vendors</h1></div>
         <p>Compare fulfillment history, customer reviews, warehouse region, and published evidence.</p>
       </header>
-      <label className="ps-directory-search"><Search size={18} /><span className="ps-visually-hidden">Search vendors</span><input value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder="Search vendor names" /></label>
+      <div className="ps-directory-tools">
+        <label className="ps-directory-search"><Search size={18} /><span className="ps-visually-hidden">Search vendors</span><input value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder="Search vendor names" /></label>
+        <label className="ps-directory-sort">
+          <span>Sort by</span>
+          <select value={sortBy} onChange={(event) => setSortBy(event.currentTarget.value as typeof sortBy)}>
+            <option value="recommended">Recommended</option>
+            <option value="rating">Rating</option>
+            <option value="reviews">Review count</option>
+            <option value="evidence">COA coverage</option>
+            <option value="dispatch">Dispatch speed</option>
+          </select>
+          <ChevronDown size={15} />
+        </label>
+      </div>
       <div className="ps-vendor-directory">
         {vendors.map((vendor, index) => <VendorRow key={vendor.id} vendor={vendor} index={index} navigate={actions.navigate} />)}
       </div>
@@ -524,7 +556,7 @@ export function VendorsPage({ actions, models }: PageComponentProps) {
         </div>
         <dl>
           <div><dt>Total vendors</dt><dd>{models.vendors.length}</dd></div>
-          <div><dt>Total COAs published</dt><dd>{models.vendors.reduce((sum, v) => sum + ((v as any)?.coaCount ?? 0), 0)}</dd></div>
+          <div><dt>Total COAs published</dt><dd>{models.vendors.reduce((sum, v) => sum + (v.coaCount ?? 0), 0)}</dd></div>
           <div><dt>Average rating</dt><dd>{(models.vendors.reduce((sum, v) => sum + v.rating, 0) / Math.max(1, models.vendors.length)).toFixed(1)}★</dd></div>
           <div><dt>Total reviews</dt><dd>{models.vendors.reduce((sum, v) => sum + v.reviewCount, 0).toLocaleString()}</dd></div>
         </dl>
@@ -538,7 +570,22 @@ function VendorRow({ vendor, index, navigate }: { vendor: VendorSummary; index: 
     <FrontendLink href={`/vendors/${vendor.slug}`} navigate={navigate} className="ps-vendor-row">
       <span className="ps-vendor-rank">{String(index + 1).padStart(2, '0')}</span>
       <div className="ps-vendor-monogram">{vendor.name.split(' ').map((part) => part[0]).join('').slice(0, 2)}</div>
-      <div className="ps-vendor-name"><h2>{vendor.name}</h2><p><MapPin size={14} /> {vendor.location || 'Location pending'}</p></div>
+      <div className="ps-vendor-name">
+        <h2>{vendor.name}</h2>
+        <p>
+          <MapPin size={14} /> {vendor.location || 'Location pending'}
+          {vendor.regions?.length ? (
+            <span
+              className="ps-vendor-regions"
+              data-testid="supplier-card-warehouse"
+              aria-label={`${vendor.regions.map((region) => region.toUpperCase()).join(' and ')} warehouses`}
+            >
+              {vendor.regions.map((region) => region.toUpperCase()).join(' · ')}
+            </span>
+          ) : null}
+          {vendor.acceptsOrders === false ? ' · Temporarily unavailable' : ''}
+        </p>
+      </div>
       <div className="ps-vendor-rating"><Star size={16} /><strong>{vendor.rating.toFixed(1)}</strong><span>{vendor.reviewCount} reviews</span></div>
       <div className="ps-vendor-fulfillment"><Clock3 size={15} /><span>Typical dispatch</span><strong>{vendor.fulfillment}</strong></div>
       <span className={`ps-trust-label ps-trust-${vendor.status}`}><ShieldCheck size={14} /> {vendor.status}</span>
@@ -568,7 +615,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
       <nav className="ps-subnav" aria-label="Vendor profile sections">
         <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}`} navigate={actions.navigate} aria-current={!catalogMode ? 'page' : undefined}>Overview</FrontendLink>
         <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
-        <button type="button">COAs <span>{(vendor as any)?.coaCount ?? 0}</span></button>
+        <button type="button">COAs <span>{vendor?.coaCount ?? 0}</span></button>
         <button type="button">Reviews <span>{vendor?.reviewCount ?? 0}</span></button>
       </nav>
       {catalogMode ? (
@@ -577,7 +624,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
           <div className="ps-compact-product-list">
             {models.products.filter((product) => product.availability === 'available').slice(0, 5).map((product) => (
               <FrontendLink key={product.id} href={`/products/${product.slug}`} navigate={actions.navigate}>
-                <img src={product.imageSrc} alt="" /><strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount} COAs</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
+                <img src={product.imageSrc} alt="" /><strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount} COAs</span><b>${product.startingPrice?.toFixed(2)}/{product.priceUnit ?? 'mg'}</b><ArrowRight size={17} />
               </FrontendLink>
             ))}
           </div>
@@ -585,7 +632,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
       ) : (
         <div className="ps-vendor-overview-grid">
           <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>{vendor?.location ?? 'US'} fulfillment with evidence linked at the batch level.</h2><p>{vendor?.name ?? 'This vendor'} ships from {vendor?.location ?? 'the US'} with {vendor?.fulfillment ?? '1–2 day'} dispatch. All listings include batch-level COA evidence.</p><div className="ps-button-row"><FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} className="ps-primary-action">View catalog <ArrowRight size={17} /></FrontendLink><button type="button"><Bell size={16} /> Follow vendor</button></div></section>
-          <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>{vendor?.orderCount?.toLocaleString() ?? '2,310'}</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>{vendor?.fulfillment ?? '1–2 days'}</dd></div><div><dt>Published COAs</dt><dd>{(vendor as any)?.coaCount ?? 0}</dd></div></dl></aside>
+          <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>{vendor?.orderCount?.toLocaleString() ?? '2,310'}</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>{vendor?.fulfillment ?? '1–2 days'}</dd></div><div><dt>Published COAs</dt><dd>{vendor?.coaCount ?? 0}</dd></div></dl></aside>
           <section className="ps-vendor-policy"><h2>Fulfillment notes</h2><ul><li><Truck size={17} /><div><strong>Ships from {vendor?.location ?? 'USA'}</strong><span>Tracking supplied after dispatch.</span></div></li><li><CircleDollarSign size={17} /><div><strong>Transparent pack pricing</strong><span>Marketplace totals include PeptShop pricing rules.</span></div></li><li><FileCheck2 size={17} /><div><strong>Batch evidence</strong><span>Available certificates are attached to eligible listings.</span></div></li></ul></section>
         </div>
       )}

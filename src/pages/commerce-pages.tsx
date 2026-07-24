@@ -10,7 +10,6 @@ import {
   Minus,
   PackageCheck,
   Plus,
-  Search,
   ShieldCheck,
   ShoppingBag,
   Truck,
@@ -67,7 +66,10 @@ function CartPage({ actions, models }: PageComponentProps) {
           {vendorGroups.length > 0 ? (
             <>
               <div className="ps-shipping-progress"><div><Truck size={17} /><span><strong>Tracked shipping</strong><small>Calculated during checkout</small></span></div><div><i style={{ width: '76%' }} /></div></div>
-              <FrontendLink href="/products" navigate={actions.navigate} className="ps-back-link"><ArrowLeft size={16} /> Continue browsing</FrontendLink>
+              <div className="ps-cart-secondary-actions">
+                <FrontendLink href="/products" navigate={actions.navigate} className="ps-back-link"><ArrowLeft size={16} /> Continue browsing</FrontendLink>
+                <button type="button" onClick={actions.clearCart}>Clear cart</button>
+              </div>
             </>
           ) : null}
         </div>

@@ -1,7 +1,6 @@
 import {
   ArrowRight,
   Bitcoin,
-  Calculator,
   CheckCircle2,
   MapPin,
   Package,
@@ -23,7 +22,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
     .slice(0, 6)
   const featuredVendors = models.vendors.slice(0, 3)
   const heroProduct = popularProducts.find((product) => product.availability === 'available')
-  const heroVendors = featuredVendors.slice(0, Math.min(3, heroProduct?.vendorCount ?? 0))
+  const featuredCoa = models.coas[0] ?? null
 
   return (
     <div className="ps-app" style={{ paddingInline: 0 }}>
@@ -96,14 +95,16 @@ export function HomePage({ actions, models }: PageComponentProps) {
               </div>
 
               <div className="ps-featured-market-copy">
-                <span>10-vial pack</span>
+                <span>{heroProduct.packSize ?? 10}-vial pack</span>
                 <h2>{heroProduct.name}</h2>
                 <div>
                   <p>
                     {heroProduct.startingPrice === null
                       ? '—'
                       : `$${heroProduct.startingPrice.toFixed(2)}`}
-                    {heroProduct.startingPrice !== null && <small>/mg</small>}
+                    {heroProduct.startingPrice !== null && (
+                      <small>/{heroProduct.priceUnit ?? 'mg'}</small>
+                    )}
                   </p>
                   <p>
                     {heroProduct.vendorCount}
@@ -222,30 +223,34 @@ export function HomePage({ actions, models }: PageComponentProps) {
         <div className="ps-evidence-sheet">
           <div className="ps-evidence-sheet-head">
             <span>CoA</span>
-            <span>Janoshik Analytical</span>
-            <small>PS-001</small>
+            <span>{featuredCoa?.lab ?? 'No published record'}</span>
+            <small>{featuredCoa?.batch ?? 'Awaiting evidence'}</small>
           </div>
           <div className="ps-evidence-result">
-            <span>Purity</span>
-            <strong>99.5%</strong>
-            <CheckCircle2 size={28} />
+            <span>{featuredCoa ? 'Reported purity' : 'Evidence status'}</span>
+            <strong>{featuredCoa?.purity ?? 'Pending'}</strong>
+            {featuredCoa?.result === 'pass' ? (
+              <CheckCircle2 size={28} />
+            ) : (
+              <ShieldCheck size={28} />
+            )}
           </div>
           <dl>
             <div>
               <dt>Compound</dt>
-              <dd>BPC-157</dd>
+              <dd>{featuredCoa?.product ?? 'Awaiting evidence'}</dd>
             </div>
             <div>
-              <dt>Batch</dt>
-              <dd>PS-p1-2mg-A</dd>
+              <dt>Vendor</dt>
+              <dd>{featuredCoa?.vendor ?? 'Not published'}</dd>
             </div>
             <div>
-              <dt>Method</dt>
-              <dd>HPLC-UV</dd>
+              <dt>Tested</dt>
+              <dd>{featuredCoa?.testedAt ?? 'Not available'}</dd>
             </div>
             <div>
-              <dt>Lab ID</dt>
-              <dd>JK-2401</dd>
+              <dt>Records</dt>
+              <dd>{models.coas.length}</dd>
             </div>
           </dl>
         </div>
@@ -365,7 +370,9 @@ function LedgerRow({
       <div className="ps-ledger-price">
         <span>{available ? 'From' : 'Price'}</span>
         <strong>
-          {product.startingPrice === null ? '—' : `$${product.startingPrice.toFixed(2)}/mg`}
+          {product.startingPrice === null
+            ? '—'
+            : `$${product.startingPrice.toFixed(2)}/${product.priceUnit ?? 'mg'}`}
         </strong>
       </div>
       <ArrowRight size={18} className="ps-ledger-arrow" />

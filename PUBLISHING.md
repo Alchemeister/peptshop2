@@ -50,9 +50,10 @@ such as `/admin`, `/admin/pricing`, `/panel`, and `/local/admin/*` become live o
 frontend source is consumed by the private application. Authorized operators use those routes on
 the private application, not on the standalone preview.
 
-The frontend owner's repository can change presentation code freely. A frontend change reaches
-production only after the private application pins that revision, passes its boundary checks, and
-deploys. This keeps the backend private and makes every design update reviewable and reversible.
+The frontend owner's repository can change presentation code and files under `public` freely. A
+frontend change reaches production only after the private application pins that revision, copies
+the reviewed source and public assets, passes its boundary checks, and deploys. This keeps the
+backend private and makes every design update reviewable and reversible.
 
 ## Environment safety
 
