@@ -39,6 +39,10 @@ Optional values must render an honest empty or unavailable state. The standalone
 mock values, but production-facing components must never invent a vendor, laboratory, batch,
 region, COA, price, or availability claim when the private adapter omits it.
 
+The catalog defaults to available-only when at least one live offer exists. When a clean database
+contains peptide records but no offers yet, it defaults to the complete watchlist so those imported
+compounds remain discoverable.
+
 ## Logic that stays private
 
 - Database clients, SQL, project identifiers, and environment variables.

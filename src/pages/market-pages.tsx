@@ -43,7 +43,11 @@ import {
 export function CatalogPage({ actions, models }: PageComponentProps) {
   const [query, setQuery] = useState('')
   const [filterOpen, setFilterOpen] = useState(false)
-  const [stockOnly, setStockOnly] = useState(true)
+  const [stockOnly, setStockOnly] = useState(() =>
+    models.products.some(
+      (product) => product.availability === 'available' && product.vendorCount > 0,
+    ),
+  )
   const [regionFilter, setRegionFilter] = useState<'all' | 'us' | 'eu'>('all')
   const [regionOpen, setRegionOpen] = useState(false)
   const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name')
@@ -277,7 +281,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
 
   // Build vendor offers from admin pricing data — real per-vendor, per-dose prices
   const lookupVendorPrice = (dose: string, vendorId: string): number => {
-    const doseNum = parseInt(dose) || 5
+    const doseNum = parseInt(dose, 10) || 5
     // Use word-boundary matching to avoid "5 mg" matching "15 mg" or "50 mg"
     // Also handle no-space format like "3mL"
     const doseRegex = new RegExp(`\\b${doseNum} ?(mg|mL)\\b`)
@@ -308,7 +312,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
 
   // Generate dose-specific batch number
   const makeBatch = (prefix: string, dose: string) => {
-    const doseNum = parseInt(dose) || 5
+    const doseNum = parseInt(dose, 10) || 5
     const letter = String.fromCharCode(65 + (doseNum % 26)) // A-Z based on dose
     return `${prefix}-${doseNum}mg-${letter}`
   }
