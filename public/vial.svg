@@ -8,7 +8,7 @@
       <stop offset="80%" stop-color="#c5d8e3" stop-opacity="0.7"/>
       <stop offset="100%" stop-color="#a0bdd0" stop-opacity="0.85"/>
     </linearGradient>
-    
+
     <!-- Cap gradient (blue-top) -->
     <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#1e3a5f"/>
@@ -17,14 +17,14 @@
       <stop offset="70%" stop-color="#2563eb"/>
       <stop offset="100%" stop-color="#1e3a5f"/>
     </linearGradient>
-    
+
     <!-- Powder gradient (white/crystalline) -->
     <linearGradient id="powderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
       <stop offset="40%" stop-color="#f0f4f8" stop-opacity="0.9"/>
       <stop offset="100%" stop-color="#d8e2ec" stop-opacity="0.85"/>
     </linearGradient>
-    
+
     <!-- Glass shine -->
     <linearGradient id="glassShine" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
@@ -33,17 +33,17 @@
       <stop offset="60%" stop-color="#ffffff" stop-opacity="0.6"/>
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
-    
+
     <!-- Shadow -->
     <radialGradient id="shadowGrad" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#000000" stop-opacity="0.3"/>
       <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  
+
   <!-- Shadow under vial -->
   <ellipse cx="300" cy="720" rx="120" ry="20" fill="url(#shadowGrad)"/>
-  
+
   <!-- Vial group -->
   <g transform="translate(300, 400)">
     <!-- Cap (blue-top, brand color) -->
@@ -56,20 +56,20 @@
     <line x1="-5" y1="-295" x2="-5" y2="-250" stroke="#1e3a5f" stroke-width="2" opacity="0.3"/>
     <line x1="20" y1="-295" x2="20" y2="-250" stroke="#1e3a5f" stroke-width="2" opacity="0.3"/>
     <line x1="45" y1="-295" x2="45" y2="-250" stroke="#1e3a5f" stroke-width="2" opacity="0.3"/>
-    
+
     <!-- Neck (narrow part between cap and body) -->
     <rect x="-50" y="-240" width="100" height="30" fill="url(#glassBody)"/>
     <rect x="-50" y="-240" width="100" height="6" fill="#2563eb" opacity="0.3"/>
-    
+
     <!-- Shoulder transition -->
     <path d="M -50,-210 Q -50,-195 -65,-185 L -65,-180 L 65,-180 L 65,-185 Q 50,-195 50,-210 Z" fill="url(#glassBody)"/>
-    
+
     <!-- Main vial body -->
     <rect x="-85" y="-180" width="170" height="490" rx="12" fill="url(#glassBody)"/>
-    
+
     <!-- Powder (lyophilized white powder at bottom) -->
     <path d="M -83,200 L -83,305 Q -83,312 -76,312 L 76,312 Q 83,312 83,305 L 83,200 Z" fill="url(#powderGrad)"/>
-    
+
     <!-- Powder surface texture (small dots/granules) -->
     <g opacity="0.4">
       <circle cx="-50" cy="210" r="3" fill="#ffffff"/>
@@ -90,24 +90,24 @@
       <circle cx="15" cy="295" r="2" fill="#ffffff"/>
       <circle cx="45" cy="300" r="2.5" fill="#ffffff"/>
     </g>
-    
+
     <!-- Glass shine (left side) -->
     <rect x="-78" y="-170" width="20" height="470" rx="10" fill="url(#glassShine)" opacity="0.5"/>
-    
+
     <!-- Glass shine (right side, subtle) -->
     <rect x="60" y="-170" width="15" height="470" rx="7" fill="#ffffff" opacity="0.2"/>
-    
+
     <!-- Glass edge highlights -->
     <rect x="-85" y="-180" width="3" height="490" rx="1.5" fill="#ffffff" opacity="0.5"/>
     <rect x="82" y="-180" width="3" height="490" rx="1.5" fill="#ffffff" opacity="0.3"/>
-    
+
     <!-- Bottom rounded edge -->
     <ellipse cx="0" cy="310" rx="85" ry="12" fill="#a0bdd0" opacity="0.3"/>
-    
+
     <!-- Subtle blue tint reflection on glass (brand color echo) -->
     <rect x="-85" y="-180" width="170" height="490" rx="12" fill="#2563eb" opacity="0.04"/>
   </g>
-  
+
   <!-- Subtle blue glow behind vial -->
   <ellipse cx="300" cy="450" rx="140" ry="350" fill="#2563eb" opacity="0.05"/>
 </svg>
