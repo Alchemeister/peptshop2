@@ -21,6 +21,11 @@
   padding-inline: 0.35rem;
 }
 
+.ps-portal-sidebar .ps-brand img {
+  max-width: calc(15rem - 1.4rem);
+  height: auto;
+}
+
 .ps-portal-role {
   margin: 2rem 0 0.8rem;
   padding-inline: 0.5rem;
