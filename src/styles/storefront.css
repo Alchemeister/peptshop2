@@ -5161,7 +5161,8 @@
   background: transparent;
   border: 1px solid var(--ps-line);
   border-radius: 6px;
-  padding: 0.3rem 0.6rem;
+  padding: 0.55rem 0.8rem;
+  min-height: 2.75rem;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease;

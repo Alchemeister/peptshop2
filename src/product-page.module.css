@@ -240,7 +240,7 @@
 
 .dosageOption {
   min-width: 4.5rem;
-  min-height: 2.65rem;
+  min-height: 2.8rem;
   flex-shrink: 0;
   border: 1px solid var(--ps-line-strong);
   border-radius: 10px;
