@@ -84,7 +84,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
         <span className="ps-kicker">Marketplace index</span>
         <div className="ps-page-title-row">
           <h1>All compounds</h1>
-          <p>{models.products.length} research products with transparent availability.</p>
+          <p>{visibleProducts.length} of {models.products.length} research products {stockOnly ? 'in stock' : 'listed'}.</p>
         </div>
       </header>
 
@@ -324,7 +324,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const [quantity, setQuantity] = useState(1)
   const [selectedVendorId, setSelectedVendorId] = useState(productVendors[0]?.id ?? '')
   const [selectedPackSize, setSelectedPackSize] = useState<10 | 20>(10)
-  const empty = query.get('state') === 'empty'
+  const empty = query.get('state') === 'empty' || source?.availability === 'watchlist' || (source?.vendorCount === 0 && source?.availability !== 'available')
   const selectedVendor = productVendors.find((v) => v.id === selectedVendorId) ?? productVendors[0]
 
   // Get price from admin pricing data based on selected dose + vendor
