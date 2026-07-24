@@ -546,10 +546,28 @@
     display: none;
   }
 
+  .ps-coa-row strong {
+    font-size: 0.875rem;
+  }
+
+  .ps-coa-row small {
+    font-size: 0.75rem;
+  }
+
+  .ps-coa-row > button {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .ps-back-link {
+    min-height: 2.75rem;
+    padding: 0.55rem 0;
+  }
+
   .ps-mobile-label {
     display: block;
     color: var(--ps-faint);
-    font-size: 0.55rem;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
   }
