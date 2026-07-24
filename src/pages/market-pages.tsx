@@ -529,7 +529,19 @@ export function VendorsPage({ actions, models }: PageComponentProps) {
     <div className="ps-vendors-page ps-section-shell">
       <header className="ps-page-masthead ps-page-masthead-split">
         <div><span className="ps-kicker">Marketplace partners</span><h1>Vendors</h1></div>
-        <p>Compare fulfillment history, customer reviews, warehouse region, and published evidence.</p>
+        <div className="ps-directory-intro">
+          <p>Compare fulfillment history, customer reviews, warehouse region, and published evidence.</p>
+          {models.directoryShipping ? (
+            <FrontendLink
+              href={models.directoryShipping.href}
+              navigate={actions.navigate}
+              className="ps-directory-shipping-link"
+            >
+              {models.directoryShipping.label}
+              <ArrowRight size={15} />
+            </FrontendLink>
+          ) : null}
+        </div>
       </header>
       <div className="ps-directory-tools">
         <label className="ps-directory-search"><Search size={18} /><span className="ps-visually-hidden">Search vendors</span><input value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder="Search vendor names" /></label>

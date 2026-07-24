@@ -31,6 +31,7 @@ The production adapter currently supplies:
   vendor count, published COA count, and an approved presentation image.
 - Public vendor display name, country, rating, review count, fulfillment time, recommendation
   score, ordering availability, warehouse regions, and public COA count.
+- A request-derived vendor-directory shipping link containing only its display label and href.
 - Public COA display fields and an optional application-approved report URL.
 - Cart lines plus update, remove, clear, and begin-checkout callbacks.
 

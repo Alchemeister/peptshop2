@@ -80,6 +80,10 @@ export type PeptShopViewModels = {
   cart: CartLine[]
   orders: OrderSummary[]
   sellerMetrics: SellerMetric[]
+  directoryShipping?: {
+    href: string
+    label: string
+  }
 }
 
 export type PeptShopActions = {
