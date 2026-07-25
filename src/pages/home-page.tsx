@@ -53,7 +53,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
             <SearchIcon />
             <input
               type="search"
-              placeholder="Search compounds — BPC-157, semaglutide, NAD+…"
+              placeholder="Search compounds…"
               onKeyDown={(event) => {
                 if (event.key === 'Enter') {
                   actions.navigate('/products?q=' + encodeURIComponent((event.target as HTMLInputElement).value))

@@ -343,6 +343,8 @@
 
   .ps-home-hero {
     padding-inline: 1rem;
+    padding-top: 0.8rem;
+    padding-bottom: 1rem;
   }
 
   .ps-home-hero h1 {
@@ -353,9 +355,49 @@
     grid-template-columns: auto minmax(0, 1fr);
   }
 
+  .ps-hero-search input {
+    font-size: 0.92rem;
+  }
+
+  .ps-hero-search input::placeholder {
+    font-size: 0.72rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
   .ps-hero-search button {
     grid-column: 1 / -1;
     justify-content: center;
+  }
+
+  .ps-home-overline {
+    gap: 0.5rem 1rem;
+    font-size: 0.58rem;
+  }
+
+  .ps-home-hero > div > p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .ps-home-proof-row {
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    font-size: 0.68rem;
+  }
+
+  .ps-featured-market-card {
+    min-height: 14rem;
+    padding: 1.5rem;
+  }
+
+  .ps-featured-market-card h2 {
+    font-size: 1.15rem;
+  }
+
+  .ps-featured-market-card p {
+    font-size: 0.78rem;
   }
 
   .ps-home-ticker > div {
@@ -415,6 +457,12 @@
     grid-column: 1 / -1;
   }
 
+  .ps-footer-column a {
+    display: block;
+    min-height: 2.75rem;
+    line-height: 2.75rem;
+  }
+
   .ps-footer-bottom {
     align-items: flex-start;
     flex-direction: column;
@@ -446,7 +494,37 @@
   }
 
   .ps-catalog-card-visual {
-    min-height: 11rem;
+    min-height: 9rem;
+  }
+
+  .ps-catalog-card-copy {
+    padding: 0.8rem;
+  }
+
+  .ps-catalog-card-copy h2 {
+    font-size: 1.05rem;
+    word-break: break-word;
+    overflow: visible;
+    text-overflow: unset;
+    white-space: normal;
+  }
+
+  .ps-catalog-card-copy > p {
+    font-size: 0.68rem;
+    margin: 0.2rem 0 0.8rem;
+  }
+
+  .ps-catalog-card-copy > div {
+    gap: 0.5rem;
+    padding-top: 0.6rem;
+  }
+
+  .ps-catalog-card-copy > div span {
+    font-size: 0.65rem;
+  }
+
+  .ps-catalog-card-copy > div strong {
+    font-size: 0.78rem;
   }
 
   .ps-state-tabs {
