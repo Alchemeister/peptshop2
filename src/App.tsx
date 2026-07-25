@@ -70,6 +70,7 @@ export function PeptShopFrontend({
     addToCart: () => { setCartCount((count) => count + 1); demo('Added to the preview cart') },
     updateCartQuantity: () => demo('Quantity change sent to the private adapter'),
     removeCartLine: () => demo('Remove action sent to the private adapter'),
+    clearCart: () => demo('Clear cart action sent to the private adapter'),
     beginCheckout: () => undefined,
     submitCheckout: () => demo('Checkout submitted to the private adapter'),
     submitEmail: () => demo('Email action sent to the private adapter'),

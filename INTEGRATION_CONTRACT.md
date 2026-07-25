@@ -25,6 +25,24 @@ records, or unrestricted customer data.
 login, COA submission, batch verification, vendor creation, seller operations, and admin
 operations. The frontend may invoke a callback. It may not implement the operation.
 
+The production adapter currently supplies:
+
+- Product formats, warehouse regions, per-measure starting price, price unit, pack size, active
+  vendor count, published COA count, and an approved presentation image.
+- Public vendor display name, country, rating, review count, fulfillment time, recommendation
+  score, ordering availability, warehouse regions, and public COA count.
+- A request-derived vendor-directory shipping link containing only its display label and href.
+- Public COA display fields and an optional application-approved report URL.
+- Cart lines plus update, remove, clear, and begin-checkout callbacks.
+
+Optional values must render an honest empty or unavailable state. The standalone preview may use
+mock values, but production-facing components must never invent a vendor, laboratory, batch,
+region, COA, price, or availability claim when the private adapter omits it.
+
+The catalog defaults to available-only when at least one live offer exists. When a clean database
+contains peptide records but no offers yet, it defaults to the complete watchlist so those imported
+compounds remain discoverable.
+
 ## Logic that stays private
 
 - Database clients, SQL, project identifiers, and environment variables.
@@ -33,6 +51,10 @@ operations. The frontend may invoke a callback. It may not implement the operati
 - Stock, batch, COA visibility, and publication decisions.
 - Cart validation, checkout orchestration, payment routing, escrow, refunds, and payouts.
 - Order mutations, vendor onboarding, emails, webhooks, rate limits, and audit logs.
+
+The private application imports the route components directly. It supplies only serialized view
+models and callbacks, so this repository cannot query Supabase or inspect sessions, environment
+variables, wallets, payment credentials, or authorization policy.
 
 ## Stable product exports
 

@@ -8,7 +8,10 @@ export type ProductSummary = {
   slug: string
   category: string
   formats: string[]
+  regions?: Array<'us' | 'eu'>
   startingPrice: number | null
+  priceUnit?: string
+  packSize?: number
   vendorCount: number
   coaCount: number
   imageSrc: string
@@ -24,6 +27,11 @@ export type VendorSummary = {
   reviewCount: number
   orderCount: number
   fulfillment: string
+  fulfillmentHours?: number | null
+  coaCount?: number
+  recommendationScore?: number
+  acceptsOrders?: boolean
+  regions?: Array<'us' | 'eu'>
   specialties: string[]
   status: 'trusted' | 'verified' | 'new'
 }
@@ -37,6 +45,7 @@ export type CoaSummary = {
   testedAt: string
   purity: string
   result: 'pass' | 'review'
+  href?: string
 }
 
 export type CartLine = {
@@ -71,6 +80,10 @@ export type PeptShopViewModels = {
   cart: CartLine[]
   orders: OrderSummary[]
   sellerMetrics: SellerMetric[]
+  directoryShipping?: {
+    href: string
+    label: string
+  }
 }
 
 export type PeptShopActions = {
@@ -79,6 +92,7 @@ export type PeptShopActions = {
   addToCart: (productId: string, vendorId?: string) => void
   updateCartQuantity: (lineId: string, quantity: number) => void
   removeCartLine: (lineId: string) => void
+  clearCart: () => void
   beginCheckout: () => void
   submitCheckout: (form: HTMLFormElement) => void
   submitEmail: (email: string, intent: string) => void
@@ -109,6 +123,7 @@ export const noopActions: PeptShopActions = {
   addToCart: () => undefined,
   updateCartQuantity: () => undefined,
   removeCartLine: () => undefined,
+  clearCart: () => undefined,
   beginCheckout: () => undefined,
   submitCheckout: () => undefined,
   submitEmail: () => undefined,

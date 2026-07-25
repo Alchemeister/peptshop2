@@ -526,6 +526,15 @@
     grid-template-columns: 1fr;
   }
 
+  .ps-directory-tools {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ps-directory-sort {
+    width: 100%;
+  }
+
   .ps-evidence-toolbar > a {
     justify-content: center;
   }
@@ -554,7 +563,9 @@
     font-size: 0.75rem;
   }
 
-  .ps-coa-row > button {
+  .ps-coa-row > button,
+  .ps-coa-row > a,
+  .ps-coa-row > .ps-coa-link-unavailable {
     width: 2.75rem;
     height: 2.75rem;
   }
