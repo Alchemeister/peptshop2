@@ -1946,7 +1946,7 @@ export const mockProduct = {
   name: 'BPC-157',
   cas: '137525-51-0',
   formula: 'C62H98N16O22',
-  imageSrc: '/vial.svg',
+  imageSrc: '/images/products/bpc-157.png',
   dosageLabel: 'Dose per vial',
   dosages: ['2 mg', '5 mg', '10 mg'],
   description:
@@ -1974,7 +1974,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 14.0,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/bpc-157.png',
       availability: 'available',
     },
     {
@@ -1986,7 +1986,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 36.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/tirzepatide.png',
       availability: 'available',
     },
     {
@@ -1998,7 +1998,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 0.12,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/nad.png',
       availability: 'available',
     },
     {
@@ -2010,7 +2010,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 4.5,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/mots-c.png',
       availability: 'available',
     },
     {
@@ -2022,7 +2022,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 90.0,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/tesamorelin.png',
       availability: 'available',
     },
     {
@@ -2034,7 +2034,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 5.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/semax.png',
       availability: 'available',
     },
     {
@@ -2046,7 +2046,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 0.7,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/ghk-cu.png',
       availability: 'available',
     },
     {
@@ -2058,7 +2058,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 32.0,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/retatrutide.png',
       availability: 'available',
     },
     {
@@ -2070,7 +2070,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 15.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/5-amino-1mq.png',
       availability: 'available',
     },
     {
@@ -2082,7 +2082,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 12.0,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/aod-9604.png',
       availability: 'available',
     },
     {
@@ -2094,7 +2094,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/cagrilintide.png',
       availability: 'watchlist',
     },
     {
@@ -2106,7 +2106,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 10.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/dsip.png',
       availability: 'available',
     },
     {
@@ -2118,7 +2118,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 10.0,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/epitalon.png',
       availability: 'available',
     },
     {
@@ -2130,7 +2130,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 0.6,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/glutathione.png',
       availability: 'available',
     },
     {
@@ -2142,7 +2142,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 12.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/ipamorelin.png',
       availability: 'available',
     },
     {
@@ -2154,7 +2154,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 15.0,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/kisspeptin-10.png',
       availability: 'available',
     },
     {
@@ -2166,7 +2166,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 15.0,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/pt-141.png',
       availability: 'available',
     },
     {
@@ -2178,7 +2178,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 8.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/pinealon.png',
       availability: 'available',
     },
     {
@@ -2190,7 +2190,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 18.0,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/ss-31.png',
       availability: 'available',
     },
     {
@@ -2202,7 +2202,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 10.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/selank.png',
       availability: 'available',
     },
     {
@@ -2214,7 +2214,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 35.0,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/semaglutide.png',
       availability: 'available',
     },
     {
@@ -2226,7 +2226,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 10.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/sermorelin.png',
       availability: 'available',
     },
     {
@@ -2238,7 +2238,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 0.3,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/bac-water.png',
       availability: 'available',
     },
     {
@@ -2250,7 +2250,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 0.5,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/acetic-acid.png',
       availability: 'available',
     },
     {
@@ -2262,7 +2262,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 11.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/bpc-tb500-blend.png',
       availability: 'available',
     },
     {
@@ -2274,7 +2274,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 8.5,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/cjc-1295.png',
       availability: 'available',
     },
     {
@@ -2286,7 +2286,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 5.5,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/ghrp-2.png',
       availability: 'available',
     },
     {
@@ -2298,7 +2298,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 12.0,
       vendorCount: 1,
       coaCount: 1,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/melanotan-2.png',
       availability: 'available',
     },
     {
@@ -2310,7 +2310,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 9.0,
       vendorCount: 1,
       coaCount: 1,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/hexarelin.png',
       availability: 'available',
     },
     {
@@ -2322,7 +2322,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 45.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/igf-1-lr3.png',
       availability: 'available',
     },
     {
@@ -2334,7 +2334,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 7.5,
       vendorCount: 1,
       coaCount: 1,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/mod-grf-1-29.png',
       availability: 'available',
     },
     {
@@ -2346,7 +2346,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 18.0,
       vendorCount: 1,
       coaCount: 1,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/peg-mgf.png',
       availability: 'available',
     },
     {
@@ -2358,7 +2358,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 22.0,
       vendorCount: 1,
       coaCount: 1,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/gonadorelin.png',
       availability: 'available',
     },
     {
@@ -2370,7 +2370,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 28.0,
       vendorCount: 1,
       coaCount: 1,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/oxytocin.png',
       availability: 'available',
     },
     {
@@ -2382,7 +2382,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 9.5,
       vendorCount: 3,
       coaCount: 3,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/tb-500.png',
       availability: 'available',
     },
     {
@@ -2394,7 +2394,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 30.0,
       vendorCount: 2,
       coaCount: 2,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/liraglutide.png',
       availability: 'available',
     },
     {
@@ -2406,7 +2406,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 35.0,
       vendorCount: 1,
       coaCount: 1,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/dihexa.png',
       availability: 'available',
     },
     {
@@ -2418,7 +2418,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 65.0,
       vendorCount: 1,
       coaCount: 1,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/follistatin-344.png',
       availability: 'available',
     },
     {
@@ -2430,7 +2430,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: 55.0,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/ace-031.png',
       availability: 'watchlist',
     },
     {
@@ -2442,7 +2442,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/eloralintide.png',
       availability: 'watchlist',
     },
     {
@@ -2454,7 +2454,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/mazdutide.png',
       availability: 'watchlist',
     },
     {
@@ -2466,7 +2466,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/survodutide.png',
       availability: 'watchlist',
     },
     {
@@ -2478,7 +2478,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/cagrilintide-semaglutide.png',
       availability: 'watchlist',
     },
     {
@@ -2490,7 +2490,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/ara-290.png',
       availability: 'watchlist',
     },
     {
@@ -2502,7 +2502,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/kpv.png',
       availability: 'watchlist',
     },
     {
@@ -2514,7 +2514,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/ll-37.png',
       availability: 'watchlist',
     },
     {
@@ -2526,7 +2526,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/thymalin.png',
       availability: 'watchlist',
     },
     {
@@ -2538,7 +2538,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/thymosin-alpha-1.png',
       availability: 'watchlist',
     },
     {
@@ -2550,7 +2550,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/glow.png',
       availability: 'watchlist',
     },
     {
@@ -2562,7 +2562,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/klow.png',
       availability: 'watchlist',
     },
     {
@@ -2574,7 +2574,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/adamax.png',
       availability: 'watchlist',
     },
     {
@@ -2586,7 +2586,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/p21.png',
       availability: 'watchlist',
     },
     {
@@ -2598,7 +2598,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/pe-22-28.png',
       availability: 'watchlist',
     },
     {
@@ -2610,7 +2610,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/cjc-1295-with-dac.png',
       availability: 'watchlist',
     },
     {
@@ -2622,7 +2622,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/cjc-1295-ipamorelin-blend.png',
       availability: 'watchlist',
     },
     {
@@ -2634,7 +2634,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/ghrp-6.png',
       availability: 'watchlist',
     },
     {
@@ -2646,7 +2646,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/gdf-8.png',
       availability: 'watchlist',
     },
     {
@@ -2658,7 +2658,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/somatropin-hgh.png',
       availability: 'watchlist',
     },
     {
@@ -2670,7 +2670,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/fox04-dri.png',
       availability: 'watchlist',
     },
     {
@@ -2682,7 +2682,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/slu-pp-332.png',
       availability: 'watchlist',
     },
     {
@@ -2694,7 +2694,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/cartalax.png',
       availability: 'watchlist',
     },
     {
@@ -2706,7 +2706,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/pancragen.png',
       availability: 'watchlist',
     },
     {
@@ -2718,7 +2718,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/vilon.png',
       availability: 'watchlist',
     },
     {
@@ -2730,7 +2730,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/kp1.png',
       availability: 'watchlist',
     },
     {
@@ -2742,7 +2742,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/ahk-cu.png',
       availability: 'watchlist',
     },
     {
@@ -2754,7 +2754,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/melanotan-1.png',
       availability: 'watchlist',
     },
     {
@@ -2766,7 +2766,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/snap-8.png',
       availability: 'watchlist',
     },
     {
@@ -2778,7 +2778,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/hyaluronic-acid.png',
       availability: 'watchlist',
     },
     {
@@ -2790,7 +2790,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/dermorphin.png',
       availability: 'watchlist',
     },
     {
@@ -2802,7 +2802,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/vip.png',
       availability: 'watchlist',
     },
     {
@@ -2814,7 +2814,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/hcg.png',
       availability: 'watchlist',
     },
     {
@@ -2826,7 +2826,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/hmg.png',
       availability: 'watchlist',
     },
     {
@@ -2838,7 +2838,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/rfsh.png',
       availability: 'watchlist',
     },
     {
@@ -2850,7 +2850,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/testagen.png',
       availability: 'watchlist',
     },
     {
@@ -2862,7 +2862,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/b12-methylcobalamin.png',
       availability: 'watchlist',
     },
     {
@@ -2874,7 +2874,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/l-carnitine.png',
       availability: 'watchlist',
     },
     {
@@ -2886,7 +2886,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/pbs-water.png',
       availability: 'watchlist',
     },
     {
@@ -2898,7 +2898,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/pnc-27.png',
       availability: 'watchlist',
     },
     {
@@ -2910,7 +2910,7 @@ export const mockModels: PeptShopViewModels = {
       startingPrice: null,
       vendorCount: 0,
       coaCount: 0,
-      imageSrc: '/vial.svg',
+      imageSrc: '/images/products/fox04.png',
       availability: 'watchlist',
     },
   ],
