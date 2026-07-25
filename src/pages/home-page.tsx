@@ -3,13 +3,14 @@ import {
   Bitcoin,
   Calculator,
   CheckCircle2,
+  Clock3,
   MapPin,
   Package,
   ShieldCheck,
   Sparkles,
   UserX,
 } from 'lucide-react'
-import type { PageComponentProps, ProductSummary, VendorSummary } from '../contracts'
+import type { PageComponentProps, VendorSummary } from '../contracts'
 import { FrontendLink } from '../navigation'
 
 export function HomePage({ actions, models }: PageComponentProps) {
@@ -155,7 +156,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
         </div>
       </section>
 
-      {/* ── Product ledger ── */}
+      {/* ── Popular product cards ── */}
       <section className="ps-home-products">
         <div className="ps-section-shell">
           <div className="ps-section-intro">
@@ -169,14 +170,29 @@ export function HomePage({ actions, models }: PageComponentProps) {
             </p>
           </div>
 
-          <div className="ps-product-ledger">
-            {popularProducts.map((product, index) => (
-              <LedgerRow
+          <div className="ps-catalog-grid ps-home-catalog-grid">
+            {popularProducts.map((product) => (
+              <FrontendLink
                 key={product.id}
-                index={index + 1}
-                product={product}
+                href={`/products/${product.slug}`}
                 navigate={actions.navigate}
-              />
+                className="ps-catalog-card"
+              >
+                <div className="ps-catalog-card-visual">
+                  <img src={product.imageSrc} alt={`${product.name} vial`} />
+                  <i>{product.coaCount} COAs</i>
+                  {product.coaCount === 0 ? <small className="ps-catalog-card-disclaimer">*Illustrative</small> : null}
+                </div>
+                <div className="ps-catalog-card-copy">
+                  <h2>{product.name}</h2>
+                  <p>{product.formats.slice(0, 3).join(' · ')}</p>
+                  <div>
+                    <span>{product.vendorCount ? `${product.vendorCount} ${product.vendorCount === 1 ? 'vendor' : 'vendors'}` : 'Join watchlist'}</span>
+                    {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
+                    <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
+                  </div>
+                </div>
+              </FrontendLink>
             ))}
           </div>
 
@@ -219,36 +235,68 @@ export function HomePage({ actions, models }: PageComponentProps) {
           </div>
         </div>
 
-        <div className="ps-evidence-sheet">
-          <div className="ps-evidence-sheet-head">
-            <span>CoA</span>
-            <span>Janoshik Analytical</span>
-            <small>PS-001</small>
+        {models.coas.length > 0 ? (
+          <div className="ps-evidence-sheet">
+            <div className="ps-evidence-sheet-head">
+              <span>CoA</span>
+              <span>{models.coas[0].lab}</span>
+              <small>{models.coas[0].batch}</small>
+            </div>
+            <div className="ps-evidence-result">
+              <span>Purity</span>
+              <strong>{models.coas[0].purity}</strong>
+              <CheckCircle2 size={28} />
+            </div>
+            <dl>
+              <div>
+                <dt>Compound</dt>
+                <dd>{models.coas[0].product}</dd>
+              </div>
+              <div>
+                <dt>Vendor</dt>
+                <dd>{models.coas[0].vendor}</dd>
+              </div>
+              <div>
+                <dt>Tested</dt>
+                <dd>{models.coas[0].testedAt}</dd>
+              </div>
+              <div>
+                <dt>Result</dt>
+                <dd>{models.coas[0].result === 'pass' ? 'Pass' : 'In review'}</dd>
+              </div>
+            </dl>
           </div>
-          <div className="ps-evidence-result">
-            <span>Purity</span>
-            <strong>99.5%</strong>
-            <CheckCircle2 size={28} />
+        ) : (
+          <div className="ps-evidence-sheet ps-evidence-sheet-pending">
+            <div className="ps-evidence-sheet-head">
+              <span>Awaiting evidence</span>
+              <small>Pending</small>
+            </div>
+            <div className="ps-evidence-result ps-evidence-result-pending">
+              <span>No published record</span>
+              <strong>—</strong>
+              <Clock3 size={28} />
+            </div>
+            <dl>
+              <div>
+                <dt>Compound</dt>
+                <dd>Pending</dd>
+              </div>
+              <div>
+                <dt>Batch</dt>
+                <dd>Pending</dd>
+              </div>
+              <div>
+                <dt>Method</dt>
+                <dd>Pending</dd>
+              </div>
+              <div>
+                <dt>Lab ID</dt>
+                <dd>Pending</dd>
+              </div>
+            </dl>
           </div>
-          <dl>
-            <div>
-              <dt>Compound</dt>
-              <dd>BPC-157</dd>
-            </div>
-            <div>
-              <dt>Batch</dt>
-              <dd>PS-p1-2mg-A</dd>
-            </div>
-            <div>
-              <dt>Method</dt>
-              <dd>HPLC-UV</dd>
-            </div>
-            <div>
-              <dt>Lab ID</dt>
-              <dd>JK-2401</dd>
-            </div>
-          </dl>
-        </div>
+        )}
       </section>
 
       {/* ── How it works ── */}
@@ -329,47 +377,6 @@ function SearchIcon() {
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.3-4.3" />
     </svg>
-  )
-}
-
-function LedgerRow({
-  index,
-  navigate,
-  product,
-}: {
-  index: number
-  navigate: (href: string) => void
-  product: ProductSummary
-}) {
-  const available = product.availability === 'available'
-  return (
-    <FrontendLink
-      href={`/products/${product.slug}`}
-      navigate={navigate}
-      className="ps-product-ledger-row"
-    >
-      <span className="ps-ledger-index">{String(index).padStart(2, '0')}</span>
-      <img src={product.imageSrc} alt={`${product.name} vial`} />
-      <div className="ps-ledger-name">
-        <span>Compound</span>
-        <strong>{product.name}</strong>
-      </div>
-      <div className="ps-ledger-formats">
-        <span>Formats</span>
-        <strong>{product.formats.slice(0, 3).join(' · ')}</strong>
-      </div>
-      <div className="ps-ledger-market">
-        <span>Vendors</span>
-        <strong>{product.vendorCount} {product.vendorCount === 1 ? 'vendor' : 'vendors'}</strong>
-      </div>
-      <div className="ps-ledger-price">
-        <span>{available ? 'From' : 'Price'}</span>
-        <strong>
-          {product.startingPrice === null ? '—' : `$${product.startingPrice.toFixed(2)}/mg`}
-        </strong>
-      </div>
-      <ArrowRight size={18} className="ps-ledger-arrow" />
-    </FrontendLink>
   )
 }
 

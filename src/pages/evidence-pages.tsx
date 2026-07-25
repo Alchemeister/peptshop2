@@ -16,7 +16,7 @@ import { FrontendLink } from '../navigation'
 
 export function EvidencePage({ actions, models, pathname }: PageComponentProps) {
   if (pathname === '/verify') return <VerifyPage actions={actions} />
-  if (pathname.includes('submit-coa')) return <SubmitCoaPage actions={actions} />
+  if (pathname.includes('submit-coa')) return <SubmitCoaPage actions={actions} models={models} />
 
   return (
     <div className="ps-evidence-page ps-section-shell">
@@ -86,8 +86,12 @@ function VerifyPage({ actions }: Pick<PageComponentProps, 'actions'>) {
   )
 }
 
-function SubmitCoaPage({ actions }: Pick<PageComponentProps, 'actions'>) {
+function SubmitCoaPage({ actions, models }: Pick<PageComponentProps, 'actions' | 'models'>) {
   const [submitted, setSubmitted] = useState(false)
+  const [compoundId, setCompoundId] = useState('')
+  const [dosage, setDosage] = useState('')
+  const selectedProduct = models.products.find((product) => product.id === compoundId)
+  const doses = selectedProduct ? selectedProduct.formats : []
   useEffect(() => {
     if (submitted) window.scrollTo({ top: 0, behavior: 'instant' })
   }, [submitted])
@@ -98,11 +102,44 @@ function SubmitCoaPage({ actions }: Pick<PageComponentProps, 'actions'>) {
     <div className="ps-form-page ps-section-shell">
       <header><span className="ps-kicker">Community evidence</span><h1>Submit a COA</h1><p>Share a laboratory report for review and possible publication in the evidence library.</p></header>
       <form className="ps-long-form" onSubmit={(event) => { event.preventDefault(); actions.submitCoa(event.currentTarget); setSubmitted(true) }}>
-        <section><span className="ps-form-step">01</span><div><h2>Identify the report</h2><p>Use the names and identifiers exactly as they appear on the document.</p></div></section>
-        <div className="ps-form-grid"><label>Compound name<input name="compound" placeholder="BPC-157" required /></label><label>Batch number<input name="batch" placeholder="PS-0426-A" required /></label><label>Vendor name<input name="vendor" placeholder="Vendor shown on product" /></label><label>Laboratory<input name="lab" placeholder="Testing laboratory" required /></label></div>
-        <section><span className="ps-form-step">02</span><div><h2>Add the document</h2><p>PDF and common image formats are accepted by the private upload flow.</p></div></section>
-        <label className="ps-file-drop"><FileUp size={28} /><strong>Choose the COA file</strong><span>or drag it into this area</span><input name="file" type="file" /></label>
-        <label className="ps-check-row"><input type="checkbox" required /><span>I confirm this report is unaltered and may be reviewed for public display.</span></label>
+        <section><span className="ps-form-step">01</span><div><h2>Pick the product you ordered</h2><p>Select the exact compound, vendor, and dosage from your order so we can match the submission to a listing.</p></div></section>
+        <div className="ps-form-grid">
+          <label>Compound
+            <select name="compound" value={compoundId} onChange={(event) => { setCompoundId(event.currentTarget.value); setDosage('') }} required>
+              <option value="">Select a compound</option>
+              {models.products.map((product) => <option key={product.id} value={product.id}>{product.name}</option>)}
+            </select>
+          </label>
+          <label>Vendor
+            <select name="vendor" required>
+              <option value="">Select a vendor</option>
+              {models.vendors.map((vendor) => <option key={vendor.id} value={vendor.id}>{vendor.name}</option>)}
+            </select>
+          </label>
+          <label>Dosage
+            <select name="dosage" value={dosage} onChange={(event) => setDosage(event.currentTarget.value)} required disabled={!selectedProduct}>
+              <option value="">{selectedProduct ? 'Select a dosage' : 'Pick a compound first'}</option>
+              {doses.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </label>
+        </div>
+
+        <section><span className="ps-form-step">02</span><div><h2>Verify you bought this</h2><p>Confirm the order so we can tie the COA back to a real purchase.</p></div></section>
+        <div className="ps-form-grid">
+          <label>Order ID<input name="orderId" type="text" placeholder="e.g. 12345" required /></label>
+          <label>Email on the order<input name="email" type="email" placeholder="you@example.com" required /></label>
+          <label>Order code<input name="orderCode" type="text" placeholder="Paste the code from your confirmation email" required /></label>
+        </div>
+        <p className="ps-check-row"><Info size={16} /> <span>Orders become eligible 21 days after placement once shipment is recorded, and submissions close 2 months after the order ships.</span></p>
+
+        <section><span className="ps-form-step">03</span><div><h2>Upload the COA</h2><p>Attach the laboratory report and tell us where you shared it publicly.</p></div></section>
+        <div className="ps-form-grid">
+          <label>Batch number<input name="batch" type="text" placeholder="Required only when this product had batch numbers enabled when you ordered" /></label>
+          <label className="ps-file-drop"><FileUp size={28} /><strong>Choose the COA file</strong><span>PDF, PNG, or JPG up to 5MB</span><input name="file" type="file" accept=".pdf,.png,.jpg,.jpeg" /></label>
+          <label>Source link<input name="sourceLink" type="url" placeholder="https://example.com/your-post" required /></label>
+        </div>
+        <p className="ps-form-note"><ShieldCheck size={16} /> Paste a link to where you shared the COA publicly — a forum thread, social post, or public archive.</p>
+
         <div className="ps-form-submit-row"><p><ShieldCheck size={16} /> Submissions are reviewed before publication.</p><button type="submit">Send for review <ArrowRight size={17} /></button></div>
       </form>
     </div>

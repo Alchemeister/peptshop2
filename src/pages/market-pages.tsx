@@ -53,7 +53,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
     const filtered = models.products.filter((product) => {
       if (stockOnly && (product.availability !== 'available' || product.vendorCount === 0)) return false
       if (regionFilter === 'eu' && product.vendorCount < 3) return false // EU = Axiom (3rd vendor)
-      return !normalized || `${product.name} ${product.category}`.toLowerCase().includes(normalized)
+      return !normalized || `${product.name}`.toLowerCase().includes(normalized)
     })
     return filtered.sort((left, right) => {
       if (sortBy === 'price-low') return (left.startingPrice ?? 999) - (right.startingPrice ?? 999)
@@ -61,16 +61,6 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       return left.name.localeCompare(right.name)
     })
   }, [models.products, query, stockOnly, sortBy, regionFilter])
-
-  const groupedProducts = useMemo(() => {
-    const groups = new Map<string, ProductSummary[]>()
-    for (const product of visibleProducts) {
-      const list = groups.get(product.category)
-      if (list) list.push(product)
-      else groups.set(product.category, [product])
-    }
-    return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))
-  }, [visibleProducts])
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 600)
@@ -95,7 +85,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
           <input
             value={query}
             onChange={(event) => setQuery(event.currentTarget.value)}
-            placeholder="Search by compound or category"
+            placeholder="Search by compound"
           />
           {query ? <button type="button" onClick={() => setQuery('')} aria-label="Clear search"><X size={16} /></button> : null}
         </label>
@@ -146,30 +136,11 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       ) : null}
 
       {visibleProducts.length ? (
-        <>
-        {groupedProducts.length > 1 ? (
-          <nav className="ps-catalog-category-nav" aria-label="Categories">
-            {groupedProducts.map(([category]) => (
-              <a key={category} href={`#cat-${category.replace(/\s+/g, '-').toLowerCase()}`}>{category}</a>
-            ))}
-          </nav>
-        ) : null}
-        <div className="ps-catalog-groups" style={{ marginTop: '1.5rem' }}>
-          {groupedProducts.map(([category, products]) => (
-            <section key={category} id={`cat-${category.replace(/\s+/g, '-').toLowerCase()}`} className="ps-catalog-group">
-              <div className="ps-catalog-group-head">
-                <span className="ps-kicker">{category}</span>
-                <span className="ps-catalog-group-count">{products.length} {products.length === 1 ? 'compound' : 'compounds'}</span>
-              </div>
-              <div className="ps-catalog-grid">
-                {products.map((product) => (
-                  <CatalogCard key={product.id} product={product} navigate={actions.navigate} />
-                ))}
-              </div>
-            </section>
+        <div className="ps-catalog-grid" style={{ marginTop: '1.5rem' }}>
+          {visibleProducts.map((product) => (
+            <CatalogCard key={product.id} product={product} navigate={actions.navigate} />
           ))}
         </div>
-        </>
       ) : (
         <div className="ps-empty-state">
           <Search size={24} />
@@ -191,7 +162,6 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
   return (
     <FrontendLink href={`/products/${product.slug}`} navigate={navigate} className="ps-catalog-card">
       <div className="ps-catalog-card-visual">
-        <span>{product.category}</span>
         <img src={product.imageSrc} alt={`${product.name} vial`} />
         <i>{product.coaCount} COAs</i>
         {product.coaCount === 0 ? <small className="ps-catalog-card-disclaimer">*Illustrative</small> : null}
@@ -211,46 +181,46 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
 
 // Product detail lookup: maps product name → extra fields not in ProductSummary
 const productDetails: Record<string, { cas: string; formula: string; description: string }> = {
-  'BPC-157': { cas: '137525-51-0', formula: 'C62H98N16O22', description: 'Synthetic pentadecapeptide derived from human gastric juice. Research suggests it promotes healing of tendons, muscles, and the nervous system.' },
-  'Tirzepatide': { cas: '2023788-19-2', formula: 'C225H348N48O68', description: 'Dual GIP/GLP-1 receptor agonist. Research suggests significant effects on glycemic control and weight reduction.' },
-  'NAD+': { cas: '53-84-9', formula: 'C21H27N7O14P2', description: 'Essential coenzyme in redox reactions and cellular energy metabolism. Research suggests benefits for aging, DNA repair, and mitochondrial function.' },
-  'MOTS-c': { cas: '2030360-70-3', formula: 'C102H153N29O32S2', description: 'Mitochondrial-derived peptide. Research suggests metabolic regulation, insulin sensitivity, and exercise capacity benefits.' },
-  'Tesamorelin': { cas: '106129-60-4', formula: 'C169H277N51O44', description: 'Growth hormone releasing hormone analog. Research suggests reduction in visceral adipose tissue and metabolic improvement.' },
-  'SS-31': { cas: '927967-26-2', formula: 'C50H70N12O7', description: 'Mitochondria-targeted peptide. Research suggests protection against oxidative stress and mitochondrial dysfunction.' },
-  'Semaglutide': { cas: '910463-19-5', formula: 'C187H291N45O52', description: 'GLP-1 receptor agonist. Research suggests significant effects on glycemic control, weight management, and cardiovascular outcomes.' },
-  'Epitalon': { cas: '103640-04-0', formula: 'C14H22N4O9', description: 'Synthetic tetrapeptide. Research suggests telomere lengthening and anti-aging effects via melatonin regulation.' },
-  'GHK-Cu': { cas: '89030-95-5', formula: 'C14H24CuN6O4', description: 'Copper peptide complex. Research suggests wound healing, collagen stimulation, and anti-inflammatory properties.' },
-  'AOD-9604': { cas: '221231-10-3', formula: 'C78H123N23O23', description: 'Modified fragment of human growth hormone. Research suggests lipolytic effects without impacting insulin or growth.' },
-  'TB-500': { cas: '1035302-50-1', formula: 'C18H31N7O8S', description: 'Synthetic version of thymosin beta-4. Research suggests tissue repair, inflammation reduction, and wound healing.' },
-  'Melanotan II': { cas: '121062-08-6', formula: 'C50H69N11O9', description: 'Synthetic analog of alpha-MSH. Research suggests skin pigmentation and libido enhancement effects.' },
-  'PT-141': { cas: '189691-06-3', formula: 'C50H68N12O8', description: 'Synthetic peptide analog. Research suggests sexual arousal enhancement via melanocortin receptor activation.' },
-  'Hexarelin': { cas: '140703-51-1', formula: 'C49H57N11O8', description: 'Synthetic hexapeptide. Research suggests growth hormone secretion stimulation and cardioprotective effects.' },
-  'CJC-1295': { cas: '863288-34-0', formula: 'C152H252N44O40', description: 'Growth hormone releasing hormone analog. Research suggests sustained GH release and IGF-1 elevation.' },
-  'Ipamorelin': { cas: '170851-70-4', formula: 'C38H49N9O5', description: 'Synthetic pentapeptide. Research suggests selective GH release without cortisol or prolactin impact.' },
-  'Retatrutide': { cas: '2373529-69-8', formula: 'C221H346N48O63', description: 'Triple agonist (GLP-1/GIP/GcgR). Research suggests unprecedented weight loss and metabolic improvement.' },
-  'BPC-157 / TB-500 Blend': { cas: 'N/A', formula: 'Blend', description: 'Combined formulation of BPC-157 and TB-500. Research suggests synergistic tissue repair and anti-inflammatory effects.' },
-  '5-Amino-1MQ': { cas: '4142-44-3', formula: 'C11H17N5O', description: 'Small molecule inhibitor of NAD-dependent methyltransferase. Research suggests metabolic regulation and potential anti-obesity effects via NNMT inhibition.' },
-  'ACE-031': { cas: 'N/A', formula: 'Recombinant protein', description: 'Recombinant fusion protein of activin receptor type IIB. Research suggests muscle growth stimulation via myostatin blockade.' },
+  'BPC-157': { cas: '137525-51-0', formula: 'C62H98N16O22', description: 'Synthetic pentadecapeptide sequence derived from gastric mucosa. Studied for its effects on fibroblast migration and angiogenesis in in-vitro models.' },
+  'Tirzepatide': { cas: '2023788-19-2', formula: 'C225H348N48O68', description: 'Dual GIP/GLP-1 receptor agonist. Studied for glucose-dependent insulin secretion and metabolic signaling pathways.' },
+  'NAD+': { cas: '53-84-9', formula: 'C21H27N7O14P2', description: 'Essential coenzyme in cellular redox reactions. Studied for its role in electron transport and enzymatic cofactor activity.' },
+  'MOTS-c': { cas: '2030360-70-3', formula: 'C102H153N29O32S2', description: 'Mitochondrial-derived peptide. Studied for AMPK signaling pathway modulation and metabolic gene expression.' },
+  'Tesamorelin': { cas: '106129-60-4', formula: 'C169H277N51O44', description: 'Growth hormone releasing hormone analog. Studied for pituitary GH secretion stimulation and IGF-1 response.' },
+  'SS-31': { cas: '927967-26-2', formula: 'C50H70N12O7', description: 'Mitochondria-targeted peptide. Studied for inner membrane stabilization and reactive oxygen species modulation.' },
+  'Semaglutide': { cas: '910463-19-5', formula: 'C187H291N45O52', description: 'GLP-1 receptor agonist. Studied for glucose-dependent insulin secretion and gastric emptying modulation.' },
+  'Epitalon': { cas: '103640-04-0', formula: 'C14H22N4O9', description: 'Synthetic tetrapeptide. Studied for telomerase activity modulation and pineal gland peptide signaling.' },
+  'GHK-Cu': { cas: '89030-95-5', formula: 'C14H24CuN6O4', description: 'Copper peptide complex. Studied for metalloproteinase modulation and extracellular matrix synthesis.' },
+  'AOD-9604': { cas: '221231-10-3', formula: 'C78H123N23O23', description: 'Modified fragment of growth hormone peptide sequence. Studied for beta-adrenergic lipolysis signaling.' },
+  'TB-500': { cas: '1035302-50-1', formula: 'C18H31N7O8S', description: 'Synthetic thymosin beta-4 fragment. Studied for actin sequestration and cell migration signaling.' },
+  'Melanotan II': { cas: '121062-08-6', formula: 'C50H69N11O9', description: 'Synthetic analog of alpha-melanocyte stimulating hormone. Studied for melanocortin receptor binding affinity.' },
+  'PT-141': { cas: '189691-06-3', formula: 'C50H68N12O8', description: 'Synthetic melanocortin receptor agonist. Studied for MC3R and MC4R receptor selectivity.' },
+  'Hexarelin': { cas: '140703-51-1', formula: 'C49H57N11O8', description: 'Synthetic hexapeptide. Studied for ghrelin receptor agonism and GH secretagogue activity.' },
+  'CJC-1295': { cas: '863288-34-0', formula: 'C152H252N44O40', description: 'Growth hormone releasing hormone analog. Studied for extended half-life via drug affinity complex.' },
+  'Ipamorelin': { cas: '170851-70-4', formula: 'C38H49N9O5', description: 'Synthetic pentapeptide. Studied for selective ghrelin receptor agonism.' },
+  'Retatrutide': { cas: '2373529-69-8', formula: 'C221H346N48O63', description: 'Triple agonist (GLP-1/GIP/GcgR). Studied for multi-receptor binding and metabolic signaling.' },
+  'BPC-157 / TB-500 Blend': { cas: 'N/A', formula: 'Blend', description: 'Combined formulation of BPC-157 and TB-500. Studied for synergistic effects on fibroblast activity.' },
+  '5-Amino-1MQ': { cas: '4142-44-3', formula: 'C11H17N5O', description: 'Small molecule inhibitor of NNMT methyltransferase. Studied for NAD+ salvage pathway modulation.' },
+  'ACE-031': { cas: 'N/A', formula: 'Recombinant protein', description: 'Recombinant fusion protein of activin receptor type IIB. Studied for myostatin and activin ligand trapping.' },
   'Acetic Acid': { cas: '64-19-7', formula: 'CH3COOH', description: 'Reconstitution solvent for peptide vials. 0.9% bacteriostatic acetic acid for compounds sensitive to neutral pH.' },
   'BAC Water': { cas: 'N/A', formula: 'H2O + 0.9% BA', description: 'Bacteriostatic water for injection. 0.9% benzyl alcohol preservative allows multi-dose use for up to 30 days.' },
-  'Cagrilintide': { cas: '2210613-36-6', formula: 'C242H355N61O68', description: 'Long-acting amylin analog. Research suggests appetite suppression and weight loss as a dual-action with GLP-1 agonists.' },
-  'Dihexa': { cas: '127892-62-8', formula: 'C22H28N6O3', description: 'Angiotensin IV analog. Research suggests cognitive enhancement and neuroprotective effects via dendritic spine growth.' },
-  'DSIP': { cas: '62568-57-4', formula: 'C34H41N7O9', description: 'Delta sleep-inducing peptide. Research suggests regulation of sleep cycles, stress response, and hormone modulation.' },
+  'Cagrilintide': { cas: '2210613-36-6', formula: 'C242H355N61O68', description: 'Long-acting amylin analog. Studied for calcitonin receptor activation and gastric motility.' },
+  'Dihexa': { cas: '127892-62-8', formula: 'C22H28N6O3', description: 'Angiotensin IV analog. Studied for hepatocyte growth factor signaling and synaptogenesis.' },
+  'DSIP': { cas: '62568-57-4', formula: 'C34H41N7O9', description: 'Delta sleep-inducing peptide. Studied for hypothalamic neuropeptide signaling and circadian modulation.' },
 
-  'Follistatin-344': { cas: 'N/A', formula: 'Recombinant protein', description: 'Recombinant glycoprotein. Research suggests muscle growth via myostatin and activin binding inhibition.' },
-  'GHRP-2': { cas: '158861-67-7', formula: 'C45H55N9O6', description: 'Growth hormone secretagogue. Research stimulates GH release via ghrelin receptor agonism.' },
-  'Glutathione': { cas: '70-18-8', formula: 'C10H17N3O6S', description: 'Tripeptide antioxidant. Research suggests detoxification, immune support, and oxidative stress reduction.' },
-  'Gonadorelin': { cas: '33515-09-2', formula: 'C55H15N17O13', description: 'Synthetic GnRH analog. Research suggests reproductive hormone regulation and fertility applications.' },
-  'IGF-1 LR3': { cas: '14325-99-2', formula: 'C331H521N77O113S6', description: 'Long-acting insulin-like growth factor analog. Research suggests muscle growth, recovery, and neuroprotection.' },
-  'Kisspeptin-10': { cas: '374679-61-3', formula: 'C54H84N15O11', description: 'Neuropeptide derived from kisspeptin. Research suggests reproductive hormone regulation and pubertal activation.' },
-  'Liraglutide': { cas: '204656-20-2', formula: 'C97H149N21O33', description: 'GLP-1 receptor agonist. Research suggests glycemic control and weight loss for type 2 diabetes management.' },
-  'MOD-GRF 1-29': { cas: '93414-79-4', formula: 'C74H117N27O22', description: 'Modified growth hormone releasing factor analog. Research suggests sustained GH release and IGF-1 elevation.' },
-  'Oxytocin': { cas: '50-56-6', formula: 'C43H66N12O12S2', description: 'Neurohypophysial hormone. Research suggests social bonding, trust, and potential therapeutic uses for autism spectrum.' },
-  'PEG-MGF': { cas: 'N/A', formula: 'C102H184N34O40S8 (PEGylated)', description: 'Pegylated mechano growth factor. Research suggests muscle repair, recovery, and satellite cell activation.' },
-  'Pinealon': { cas: 'N/A', formula: 'C15H25N5O7', description: 'Synthetic tripeptide. Research suggests cognitive protection and neuroregeneration via brain-specific gene regulation.' },
-  'Selank': { cas: '129954-34-3', formula: 'C69H104N22O19S', description: 'Synthetic heptapeptide. Research suggests anxiolytic and cognitive enhancement effects via immune modulation.' },
-  'Semax': { cas: '80715-95-1', formula: 'C40H63N15O11S', description: 'Synthetic heptapeptide. Research suggests cognitive enhancement, memory improvement, and neuroprotective effects.' },
-  'Sermorelin': { cas: '31231-80-8', formula: 'C24H34N12O6', description: 'Growth hormone releasing hormone analog. Research suggests GH stimulation and anti-aging applications.' },
+  'Follistatin-344': { cas: 'N/A', formula: 'Recombinant protein', description: 'Recombinant glycoprotein. Studied for myostatin and activin binding inhibition.' },
+  'GHRP-2': { cas: '158861-67-7', formula: 'C45H55N9O6', description: 'Growth hormone secretagogue. Studied for ghrelin receptor agonism and GH pulse amplification.' },
+  'Glutathione': { cas: '70-18-8', formula: 'C10H17N3O6S', description: 'Tripeptide antioxidant. Studied for redox buffering and xenobiotic conjugation.' },
+  'Gonadorelin': { cas: '33515-09-2', formula: 'C55H15N17O13', description: 'Synthetic GnRH analog. Studied for pituitary gonadotropin release stimulation.' },
+  'IGF-1 LR3': { cas: '14325-99-2', formula: 'C331H521N77O113S6', description: 'Long-acting insulin-like growth factor analog. Studied for IGF-1R binding and downstream PI3K/AKT signaling.' },
+  'Kisspeptin-10': { cas: '374679-61-3', formula: 'C54H84N15O11', description: 'Neuropeptide derived from kisspeptin. Studied for GPR54 receptor activation and GnRH secretion.' },
+  'Liraglutide': { cas: '204656-20-2', formula: 'C97H149N21O33', description: 'GLP-1 receptor agonist. Studied for glucose-dependent insulin secretion and pancreatic beta-cell response.' },
+  'MOD-GRF 1-29': { cas: '93414-79-4', formula: 'C74H117N27O22', description: 'Modified growth hormone releasing factor analog. Studied for extended half-life and GH secretagogue activity.' },
+  'Oxytocin': { cas: '50-56-6', formula: 'C43H66N12O12S2', description: 'Neurohypophysial hormone. Studied for oxytocin receptor signaling and neuropeptide modulation.' },
+  'PEG-MGF': { cas: 'N/A', formula: 'C102H184N34O40S8 (PEGylated)', description: 'Pegylated mechano growth factor. Studied for satellite cell activation and IGF-1 splice variant signaling.' },
+  'Pinealon': { cas: 'N/A', formula: 'C15H25N5O7', description: 'Synthetic tripeptide. Studied for gene-specific DNA sequence interactions.' },
+  'Selank': { cas: '129954-34-3', formula: 'C69H104N22O19S', description: 'Synthetic heptapeptide. Studied for enkephalin-degrading enzyme inhibition and immune modulation.' },
+  'Semax': { cas: '80715-95-1', formula: 'C40H63N15O11S', description: 'Synthetic heptapeptide. Studied for BDNF expression and melanocortin receptor activity.' },
+  'Sermorelin': { cas: '31231-80-8', formula: 'C24H34N12O6', description: 'Growth hormone releasing hormone analog. Studied for pituitary GH secretion stimulation.' },
 }
 
 export function ProductPage({ actions, models, query, theme, pathname }: PageComponentProps) {
