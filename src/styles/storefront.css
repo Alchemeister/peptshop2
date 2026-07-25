@@ -98,6 +98,7 @@
 
 .ps-hero-search input {
   min-width: 0;
+  min-height: 3rem;
   border: 0;
   outline: 0;
   background: transparent;
@@ -552,6 +553,10 @@
   margin-top: 1.5rem;
 }
 
+.ps-home-catalog-grid {
+  margin-top: 3rem;
+}
+
 .ps-evidence-band {
   display: grid;
   min-height: 46rem;
@@ -733,6 +738,7 @@
 .ps-directory-search input,
 .ps-evidence-toolbar input {
   min-width: 0;
+  min-height: 2.75rem;
   flex: 1;
   border: 0;
   outline: 0;

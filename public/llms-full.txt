@@ -5,7 +5,7 @@
 This file is the expanded version of llms.txt. It provides detailed context that LLMs (ChatGPT, Perplexity, Claude, etc.) can use to answer user questions about peptides, research compounds, and the PeptShop marketplace without needing to visit the site.
 
 Website: https://peptshop.io
-Dev site: https://peptshop-git-dev-alchemeisters-projects.vercel.app
+Dev site: https://peptshop.io
 Short summary for LLMs: https://peptshop.io/llms.txt
 Full URL list: https://peptshop.io/sitemap.xml
 

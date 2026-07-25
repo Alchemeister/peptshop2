@@ -9,7 +9,7 @@ import {
   Sparkles,
   UserX,
 } from 'lucide-react'
-import type { PageComponentProps, ProductSummary, VendorSummary } from '../contracts'
+import type { PageComponentProps, VendorSummary } from '../contracts'
 import { FrontendLink } from '../navigation'
 
 export function HomePage({ actions, models }: PageComponentProps) {
@@ -155,7 +155,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
         </div>
       </section>
 
-      {/* ── Product ledger ── */}
+      {/* ── Popular product cards ── */}
       <section className="ps-home-products">
         <div className="ps-section-shell">
           <div className="ps-section-intro">
@@ -169,14 +169,30 @@ export function HomePage({ actions, models }: PageComponentProps) {
             </p>
           </div>
 
-          <div className="ps-product-ledger">
-            {popularProducts.map((product, index) => (
-              <LedgerRow
+          <div className="ps-catalog-grid ps-home-catalog-grid">
+            {popularProducts.map((product) => (
+              <FrontendLink
                 key={product.id}
-                index={index + 1}
-                product={product}
+                href={`/products/${product.slug}`}
                 navigate={actions.navigate}
-              />
+                className="ps-catalog-card"
+              >
+                <div className="ps-catalog-card-visual">
+                  <span>{product.category}</span>
+                  <img src={product.imageSrc} alt={`${product.name} vial`} />
+                  <i>{product.coaCount} COAs</i>
+                  {product.coaCount === 0 ? <small className="ps-catalog-card-disclaimer">*Illustrative</small> : null}
+                </div>
+                <div className="ps-catalog-card-copy">
+                  <h2>{product.name}</h2>
+                  <p>{product.formats.slice(0, 3).join(' · ')}</p>
+                  <div>
+                    <span>{product.vendorCount ? `${product.vendorCount} ${product.vendorCount === 1 ? 'vendor' : 'vendors'}` : 'Join watchlist'}</span>
+                    {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
+                    <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
+                  </div>
+                </div>
+              </FrontendLink>
             ))}
           </div>
 
@@ -329,47 +345,6 @@ function SearchIcon() {
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.3-4.3" />
     </svg>
-  )
-}
-
-function LedgerRow({
-  index,
-  navigate,
-  product,
-}: {
-  index: number
-  navigate: (href: string) => void
-  product: ProductSummary
-}) {
-  const available = product.availability === 'available'
-  return (
-    <FrontendLink
-      href={`/products/${product.slug}`}
-      navigate={navigate}
-      className="ps-product-ledger-row"
-    >
-      <span className="ps-ledger-index">{String(index).padStart(2, '0')}</span>
-      <img src={product.imageSrc} alt={`${product.name} vial`} />
-      <div className="ps-ledger-name">
-        <span>Compound</span>
-        <strong>{product.name}</strong>
-      </div>
-      <div className="ps-ledger-formats">
-        <span>Formats</span>
-        <strong>{product.formats.slice(0, 3).join(' · ')}</strong>
-      </div>
-      <div className="ps-ledger-market">
-        <span>Vendors</span>
-        <strong>{product.vendorCount} {product.vendorCount === 1 ? 'vendor' : 'vendors'}</strong>
-      </div>
-      <div className="ps-ledger-price">
-        <span>{available ? 'From' : 'Price'}</span>
-        <strong>
-          {product.startingPrice === null ? '—' : `$${product.startingPrice.toFixed(2)}/mg`}
-        </strong>
-      </div>
-      <ArrowRight size={18} className="ps-ledger-arrow" />
-    </FrontendLink>
   )
 }
 

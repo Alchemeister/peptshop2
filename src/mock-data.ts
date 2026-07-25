@@ -3107,26 +3107,7 @@ export const mockModels: PeptShopViewModels = {
       result: 'pass',
     },
   ],
-  cart: [
-    {
-      id: 'line-bpc',
-      product: 'BPC-157',
-      format: '5 mg, 10-vial pack',
-      vendor: 'Retalux',
-      quantity: 1,
-      unitPrice: 85,
-      imageSrc: '/vial.svg',
-    },
-    {
-      id: 'line-nad',
-      product: 'NAD+',
-      format: '500 mg, 10-vial pack',
-      vendor: 'Retalux',
-      quantity: 1,
-      unitPrice: 55,
-      imageSrc: '/vial.svg',
-    },
-  ],
+  cart: [],
   orders: [
     {
       id: 'order-1048',
