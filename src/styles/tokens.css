@@ -179,20 +179,20 @@ svg {
 }
 
 .ps-outline-action {
-  border: 1px solid var(--ps-line-strong);
-  background: var(--ps-paper);
-  color: var(--ps-ink);
+  border: 1px solid var(--ps-accent);
+  background: var(--ps-accent);
+  color: #15181d;
 }
 
 .ps-outline-action:hover {
-  border-color: var(--ps-accent);
-  background: var(--ps-accent-soft);
+  border-color: var(--ps-accent-hover);
+  background: var(--ps-accent-hover);
 }
 
 .ps-dark-link {
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: transparent;
-  color: #ffffff;
+  border: 1px solid var(--ps-accent);
+  background: var(--ps-accent);
+  color: #15181d;
 }
 
 .ps-text-link {
