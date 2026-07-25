@@ -5009,12 +5009,19 @@
 /* Cart summary card */
 .ps-cart-summary-card {
   position: sticky;
-  top: 2rem;
+  top: calc(116px + 1.5rem);
+  z-index: 40;
   background: var(--ps-paper);
   border: 1px solid var(--ps-line);
   border-radius: 14px;
   padding: 1.5rem;
   box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+@media (max-width: 768px) {
+  .ps-cart-summary-card {
+    top: calc(68px + 1rem);
+  }
 }
 .ps-cart-summary-card h3 {
   font-size: 1.125rem;
