@@ -178,7 +178,6 @@ export function HomePage({ actions, models }: PageComponentProps) {
                 className="ps-catalog-card"
               >
                 <div className="ps-catalog-card-visual">
-                  <span>{product.category}</span>
                   <img src={product.imageSrc} alt={`${product.name} vial`} />
                   <i>{product.coaCount} COAs</i>
                   {product.coaCount === 0 ? <small className="ps-catalog-card-disclaimer">*Illustrative</small> : null}

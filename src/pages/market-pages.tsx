@@ -53,7 +53,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
     const filtered = models.products.filter((product) => {
       if (stockOnly && (product.availability !== 'available' || product.vendorCount === 0)) return false
       if (regionFilter === 'eu' && product.vendorCount < 3) return false // EU = Axiom (3rd vendor)
-      return !normalized || `${product.name} ${product.category}`.toLowerCase().includes(normalized)
+      return !normalized || `${product.name}`.toLowerCase().includes(normalized)
     })
     return filtered.sort((left, right) => {
       if (sortBy === 'price-low') return (left.startingPrice ?? 999) - (right.startingPrice ?? 999)
@@ -61,16 +61,6 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       return left.name.localeCompare(right.name)
     })
   }, [models.products, query, stockOnly, sortBy, regionFilter])
-
-  const groupedProducts = useMemo(() => {
-    const groups = new Map<string, ProductSummary[]>()
-    for (const product of visibleProducts) {
-      const list = groups.get(product.category)
-      if (list) list.push(product)
-      else groups.set(product.category, [product])
-    }
-    return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))
-  }, [visibleProducts])
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 600)
@@ -95,7 +85,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
           <input
             value={query}
             onChange={(event) => setQuery(event.currentTarget.value)}
-            placeholder="Search by compound or category"
+            placeholder="Search by compound"
           />
           {query ? <button type="button" onClick={() => setQuery('')} aria-label="Clear search"><X size={16} /></button> : null}
         </label>
@@ -146,30 +136,11 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       ) : null}
 
       {visibleProducts.length ? (
-        <>
-        {groupedProducts.length > 1 ? (
-          <nav className="ps-catalog-category-nav" aria-label="Categories">
-            {groupedProducts.map(([category]) => (
-              <a key={category} href={`#cat-${category.replace(/\s+/g, '-').toLowerCase()}`}>{category}</a>
-            ))}
-          </nav>
-        ) : null}
-        <div className="ps-catalog-groups" style={{ marginTop: '1.5rem' }}>
-          {groupedProducts.map(([category, products]) => (
-            <section key={category} id={`cat-${category.replace(/\s+/g, '-').toLowerCase()}`} className="ps-catalog-group">
-              <div className="ps-catalog-group-head">
-                <span className="ps-kicker">{category}</span>
-                <span className="ps-catalog-group-count">{products.length} {products.length === 1 ? 'compound' : 'compounds'}</span>
-              </div>
-              <div className="ps-catalog-grid">
-                {products.map((product) => (
-                  <CatalogCard key={product.id} product={product} navigate={actions.navigate} />
-                ))}
-              </div>
-            </section>
+        <div className="ps-catalog-grid" style={{ marginTop: '1.5rem' }}>
+          {visibleProducts.map((product) => (
+            <CatalogCard key={product.id} product={product} navigate={actions.navigate} />
           ))}
         </div>
-        </>
       ) : (
         <div className="ps-empty-state">
           <Search size={24} />
@@ -191,7 +162,6 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
   return (
     <FrontendLink href={`/products/${product.slug}`} navigate={navigate} className="ps-catalog-card">
       <div className="ps-catalog-card-visual">
-        <span>{product.category}</span>
         <img src={product.imageSrc} alt={`${product.name} vial`} />
         <i>{product.coaCount} COAs</i>
         {product.coaCount === 0 ? <small className="ps-catalog-card-disclaimer">*Illustrative</small> : null}
