@@ -19,7 +19,7 @@ import {
   Truck,
   Users,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { PageComponentProps } from '../contracts'
 import { FrontendLink } from '../navigation'
 
@@ -179,6 +179,21 @@ function FaqPage() {
     ['How does PeptShop compare prices across vendors?', 'PeptShop normalizes all vendor offerings to a per-mg price, so you can compare a 2 mg × 10-vial pack from one vendor against a 5 mg × 10-vial pack from another on equal footing. We also display the total pack price, shipping cost, free shipping thresholds, and any volume discounts. The comparison table on each product page shows all active vendors side by side, sorted by per-mg price.'],
   ]
   const items = allItems.filter(([q, a]) => !faqQuery || `${q} ${a}`.toLowerCase().includes(faqQuery.toLowerCase()))
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.type = 'application/ld+json'
+    script.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: allItems.map(([q, a]) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
+    })
+    document.head.appendChild(script)
+    return () => { script.remove() }
+  }, [])
   return <div className="ps-faq-page ps-section-shell"><header><span className="ps-kicker">Help center</span><h1>Questions, answered clearly.</h1><label><Search size={18} /><input placeholder="Search help topics" value={faqQuery} onChange={(e) => setFaqQuery(e.target.value)} /></label></header><div className="ps-faq-layout"><aside><CircleHelp size={25} /><h2>Need a specific answer?</h2><p>Contact support with an order number when your question is tied to a purchase.</p><button type="button">Contact support <ArrowRight size={16} /></button></aside><div className="ps-faq-list">{items.map(([question, answer], index) => <article key={question}><button type="button" onClick={() => setOpen(open === index ? -1 : index)} aria-expanded={open === index}><span>{String(index + 1).padStart(2, '0')}</span><strong>{question}</strong><ChevronDown size={18} /></button>{open === index ? <p>{answer}</p> : null}</article>)}</div></div></div>
 }
 
