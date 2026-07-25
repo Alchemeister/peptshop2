@@ -6,6 +6,8 @@ import type {
   HTMLAttributes,
   ReactNode,
 } from 'react'
+import type { VialColorKey } from './contracts'
+import { VialImage } from './components/VialImage'
 import styles from './product-page.module.css'
 
 export type ProductPageTheme = 'light' | 'dark'
@@ -23,6 +25,7 @@ type ProductPageHeroProps = {
   formula?: string | null
   imageAlt?: string
   imageSrc?: string | null
+  vialColor?: VialColorKey
   overview?: string | null
   productName: string
 }
@@ -119,6 +122,7 @@ export function ProductPageHero({
   formula,
   imageAlt,
   imageSrc,
+  vialColor,
   overview,
   productName,
 }: ProductPageHeroProps) {
@@ -155,10 +159,10 @@ export function ProductPageHero({
         ) : null}
       </div>
 
-      {imageSrc ? (
+      {imageSrc || vialColor ? (
         <div className={styles.productVisual}>
           <div className={styles.productVisualField} aria-hidden="true" />
-          <img src={imageSrc} alt={imageAlt ?? `${productName} product vial`} />
+          <VialImage color={vialColor} alt={imageAlt ?? `${productName} product vial`} />
           <p className={styles.productVisualNote}>*Image is illustrative and may not match the actual vial.</p>
         </div>
       ) : null}

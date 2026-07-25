@@ -2,6 +2,17 @@ import type { ReactNode } from 'react'
 
 export type FrontendTheme = 'light' | 'dark'
 
+/** Vial color presets — maps to cap/content colors in VialImage component */
+export type VialColorKey =
+  | 'blue'      // standard peptides (BPC-157, TB-500, etc.)
+  | 'red'       // tissue repair / healing
+  | 'amber'     // NAD+, glutathione, metabolic (powder)
+  | 'green'     // growth hormone secretagogues
+  | 'purple'    // GLP-1 agonists
+  | 'cyan'      // neurological
+  | 'clear'     // BAC water, acetic acid (liquid)
+  | 'gold'      // growth factors
+
 export type ProductSummary = {
   id: string
   name: string
@@ -13,6 +24,7 @@ export type ProductSummary = {
   coaCount: number
   imageSrc: string
   availability: 'available' | 'watchlist'
+  vialColor?: VialColorKey
 }
 
 export type VendorSummary = {
@@ -47,6 +59,7 @@ export type CartLine = {
   quantity: number
   unitPrice: number
   imageSrc: string
+  vialColor?: VialColorKey
 }
 
 export type OrderSummary = {

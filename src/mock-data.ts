@@ -1976,6 +1976,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'red',
     },
     {
       id: 'p2',
@@ -1988,6 +1989,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'purple',
     },
     {
       id: 'p3',
@@ -2000,6 +2002,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'amber',
     },
     {
       id: 'p4',
@@ -2012,6 +2015,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'amber',
     },
     {
       id: 'p5',
@@ -2024,6 +2028,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'cyan',
     },
     {
       id: 'p6',
@@ -2036,6 +2041,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'cyan',
     },
     {
       id: 'p7',
@@ -2048,6 +2054,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'blue',
     },
     {
       id: 'p8',
@@ -2060,6 +2067,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'purple',
     },
     {
       id: 'p9',
@@ -2072,6 +2080,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'amber',
     },
     {
       id: 'p10',
@@ -2084,6 +2093,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'amber',
     },
     {
       id: 'p11',
@@ -2096,6 +2106,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'purple',
     },
     {
       id: 'p12',
@@ -2108,6 +2119,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'cyan',
     },
     {
       id: 'p13',
@@ -2120,6 +2132,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'amber',
     },
     {
       id: 'p14',
@@ -2132,6 +2145,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'amber',
     },
     {
       id: 'p15',
@@ -2144,6 +2158,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'red',
     },
     {
       id: 'p16',
@@ -2156,6 +2171,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'amber',
     },
     {
       id: 'p17',
@@ -2168,6 +2184,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'red',
     },
     {
       id: 'p18',
@@ -2180,6 +2197,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'cyan',
     },
     {
       id: 'p19',
@@ -2192,6 +2210,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'red',
     },
     {
       id: 'p20',
@@ -2204,6 +2223,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'cyan',
     },
     {
       id: 'p21',
@@ -2216,6 +2236,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'purple',
     },
     {
       id: 'p22',
@@ -2228,6 +2249,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'red',
     },
     {
       id: 'p24',
@@ -2240,6 +2262,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'clear',
     },
     {
       id: 'p25',
@@ -2252,6 +2275,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'clear',
     },
     {
       id: 'p26',
@@ -2264,6 +2288,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'red',
     },
     {
       id: 'p27',
@@ -2276,6 +2301,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'green',
     },
     {
       id: 'p28',
@@ -2288,6 +2314,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'green',
     },
     {
       id: 'p29',
@@ -2300,6 +2327,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 1,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'blue',
     },
     {
       id: 'p30',
@@ -2312,6 +2340,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 1,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'green',
     },
     {
       id: 'p31',
@@ -2324,6 +2353,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'gold',
     },
     {
       id: 'p32',
@@ -2336,6 +2366,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 1,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'green',
     },
     {
       id: 'p33',
@@ -2348,6 +2379,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 1,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'gold',
     },
     {
       id: 'p34',
@@ -2360,6 +2392,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 1,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'green',
     },
     {
       id: 'p35',
@@ -2372,6 +2405,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 1,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'cyan',
     },
     {
       id: 'p36',
@@ -2384,6 +2418,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 3,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'red',
     },
     {
       id: 'p37',
@@ -2396,6 +2431,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 2,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'purple',
     },
     {
       id: 'p38',
@@ -2408,6 +2444,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 1,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'cyan',
     },
     {
       id: 'p41',
@@ -2420,6 +2457,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 1,
       imageSrc: '/vial.svg',
       availability: 'available',
+      vialColor: 'gold',
     },
     {
       id: 'p42',
@@ -2432,6 +2470,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'gold',
     },
     {
       id: 'p43',
@@ -2444,6 +2483,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'purple',
     },
     {
       id: 'p44',
@@ -2456,6 +2496,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'purple',
     },
     {
       id: 'p45',
@@ -2468,6 +2509,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'purple',
     },
     {
       id: 'p46',
@@ -2480,6 +2522,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'purple',
     },
     {
       id: 'p47',
@@ -2492,6 +2535,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'red',
     },
     {
       id: 'p48',
@@ -2504,6 +2548,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'red',
     },
     {
       id: 'p49',
@@ -2516,6 +2561,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'red',
     },
     {
       id: 'p50',
@@ -2528,6 +2574,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'red',
     },
     {
       id: 'p51',
@@ -2540,6 +2587,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'red',
     },
     {
       id: 'p52',
@@ -2552,6 +2600,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'red',
     },
     {
       id: 'p53',
@@ -2564,6 +2613,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'red',
     },
     {
       id: 'p54',
@@ -2576,6 +2626,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'cyan',
     },
     {
       id: 'p55',
@@ -2588,6 +2639,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'cyan',
     },
     {
       id: 'p56',
@@ -2600,6 +2652,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'cyan',
     },
     {
       id: 'p57',
@@ -2612,6 +2665,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'green',
     },
     {
       id: 'p58',
@@ -2624,6 +2678,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'green',
     },
     {
       id: 'p59',
@@ -2636,6 +2691,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'green',
     },
     {
       id: 'p60',
@@ -2648,6 +2704,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'gold',
     },
     {
       id: 'p61',
@@ -2660,6 +2717,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'gold',
     },
     {
       id: 'p62',
@@ -2672,6 +2730,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'amber',
     },
     {
       id: 'p63',
@@ -2684,6 +2743,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'amber',
     },
     {
       id: 'p64',
@@ -2696,6 +2756,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'amber',
     },
     {
       id: 'p65',
@@ -2708,6 +2769,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'amber',
     },
     {
       id: 'p66',
@@ -2720,6 +2782,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'amber',
     },
     {
       id: 'p67',
@@ -2732,6 +2795,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'amber',
     },
     {
       id: 'p68',
@@ -2744,6 +2808,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'blue',
     },
     {
       id: 'p69',
@@ -2756,6 +2821,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'blue',
     },
     {
       id: 'p70',
@@ -2768,6 +2834,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'blue',
     },
     {
       id: 'p71',
@@ -2780,6 +2847,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'blue',
     },
     {
       id: 'p72',
@@ -2792,6 +2860,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'cyan',
     },
     {
       id: 'p73',
@@ -2804,6 +2873,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'cyan',
     },
     {
       id: 'p74',
@@ -2816,6 +2886,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'green',
     },
     {
       id: 'p75',
@@ -2828,6 +2899,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'green',
     },
     {
       id: 'p76',
@@ -2840,6 +2912,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'green',
     },
     {
       id: 'p77',
@@ -2852,6 +2925,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'green',
     },
     {
       id: 'p78',
@@ -2864,6 +2938,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'clear',
     },
     {
       id: 'p79',
@@ -2876,6 +2951,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'clear',
     },
     {
       id: 'p80',
@@ -2888,6 +2964,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'clear',
     },
     {
       id: 'p81',
@@ -2900,6 +2977,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'red',
     },
     {
       id: 'p82',
@@ -2912,6 +2990,7 @@ export const mockModels: PeptShopViewModels = {
       coaCount: 0,
       imageSrc: '/vial.svg',
       availability: 'watchlist',
+      vialColor: 'amber',
     },
   ],
   vendors: [

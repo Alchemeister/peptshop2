@@ -25,6 +25,7 @@ import { useEffect, useMemo, useState } from 'react'
 import type { PageComponentProps, ProductSummary, VendorSummary } from '../contracts'
 import { mockAdminPricingItems, mockProduct, mockVendor } from '../mock-data'
 import { FrontendLink } from '../navigation'
+import { VialImage } from '../components/VialImage'
 import {
   CompoundWaitlistDescription,
   CompoundWaitlistForm,
@@ -162,7 +163,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
   return (
     <FrontendLink href={`/products/${product.slug}`} navigate={navigate} className="ps-catalog-card">
       <div className="ps-catalog-card-visual">
-        <img src={product.imageSrc} alt={`${product.name} vial`} />
+        <VialImage color={product.vialColor} alt={`${product.name} vial`} />
         <i>{product.coaCount} COAs</i>
         {product.coaCount === 0 ? <small className="ps-catalog-card-disclaimer">*Illustrative</small> : null}
       </div>
@@ -313,6 +314,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
           formula={details.formula}
           overview={details.description}
           imageSrc={source?.imageSrc ?? '/vial.svg'}
+          vialColor={source?.vialColor}
           backControl={
             <ProductBackControlFrame>
               <button type="button" aria-label="Return to catalog" onClick={() => actions.navigate('/products')}>
@@ -392,7 +394,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 <aside className="ps-cart-summary-card">
                   <h3>Order summary</h3>
                   <div className="ps-cart-summary-product">
-                    <img src={source?.imageSrc ?? '/vial.svg'} alt="" />
+                    <VialImage color={source?.vialColor} alt="" />
                     <div>
                       <strong>{source?.name ?? 'Product'}</strong>
                       <span>{selectedDose} · {selectedPackSize}-vial pack</span>
@@ -547,7 +549,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
           <div className="ps-compact-product-list">
             {models.products.filter((product) => product.availability === 'available').slice(0, 5).map((product) => (
               <FrontendLink key={product.id} href={`/products/${product.slug}`} navigate={actions.navigate}>
-                <img src={product.imageSrc} alt="" /><strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount} COAs</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
+                <VialImage color={product.vialColor} alt="" /><strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount} COAs</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
               </FrontendLink>
             ))}
           </div>

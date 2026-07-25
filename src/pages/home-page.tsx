@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import type { PageComponentProps, VendorSummary } from '../contracts'
 import { FrontendLink } from '../navigation'
+import { VialImage } from '../components/VialImage'
 
 export function HomePage({ actions, models }: PageComponentProps) {
   const popularProducts = [...models.products]
@@ -93,7 +94,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
 
               <div className="ps-featured-vial">
                 <span className="ps-vial-halo" />
-                <img src={heroProduct.imageSrc} alt={`${heroProduct.name} vial`} />
+                <VialImage color={heroProduct.vialColor} alt={`${heroProduct.name} vial`} />
               </div>
 
               <div className="ps-featured-market-copy">
@@ -179,7 +180,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
                 className="ps-catalog-card"
               >
                 <div className="ps-catalog-card-visual">
-                  <img src={product.imageSrc} alt={`${product.name} vial`} />
+                  <VialImage color={product.vialColor} alt={`${product.name} vial`} />
                   <i>{product.coaCount} COAs</i>
                   {product.coaCount === 0 ? <small className="ps-catalog-card-disclaimer">*Illustrative</small> : null}
                 </div>
