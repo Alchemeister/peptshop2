@@ -3,6 +3,7 @@ import {
   Bitcoin,
   Calculator,
   CheckCircle2,
+  Clock3,
   MapPin,
   Package,
   ShieldCheck,
@@ -234,36 +235,68 @@ export function HomePage({ actions, models }: PageComponentProps) {
           </div>
         </div>
 
-        <div className="ps-evidence-sheet">
-          <div className="ps-evidence-sheet-head">
-            <span>CoA</span>
-            <span>Janoshik Analytical</span>
-            <small>PS-001</small>
+        {models.coas.length > 0 ? (
+          <div className="ps-evidence-sheet">
+            <div className="ps-evidence-sheet-head">
+              <span>CoA</span>
+              <span>{models.coas[0].lab}</span>
+              <small>{models.coas[0].batch}</small>
+            </div>
+            <div className="ps-evidence-result">
+              <span>Purity</span>
+              <strong>{models.coas[0].purity}</strong>
+              <CheckCircle2 size={28} />
+            </div>
+            <dl>
+              <div>
+                <dt>Compound</dt>
+                <dd>{models.coas[0].product}</dd>
+              </div>
+              <div>
+                <dt>Vendor</dt>
+                <dd>{models.coas[0].vendor}</dd>
+              </div>
+              <div>
+                <dt>Tested</dt>
+                <dd>{models.coas[0].testedAt}</dd>
+              </div>
+              <div>
+                <dt>Result</dt>
+                <dd>{models.coas[0].result === 'pass' ? 'Pass' : 'In review'}</dd>
+              </div>
+            </dl>
           </div>
-          <div className="ps-evidence-result">
-            <span>Purity</span>
-            <strong>99.5%</strong>
-            <CheckCircle2 size={28} />
+        ) : (
+          <div className="ps-evidence-sheet ps-evidence-sheet-pending">
+            <div className="ps-evidence-sheet-head">
+              <span>Awaiting evidence</span>
+              <small>Pending</small>
+            </div>
+            <div className="ps-evidence-result ps-evidence-result-pending">
+              <span>No published record</span>
+              <strong>—</strong>
+              <Clock3 size={28} />
+            </div>
+            <dl>
+              <div>
+                <dt>Compound</dt>
+                <dd>Pending</dd>
+              </div>
+              <div>
+                <dt>Batch</dt>
+                <dd>Pending</dd>
+              </div>
+              <div>
+                <dt>Method</dt>
+                <dd>Pending</dd>
+              </div>
+              <div>
+                <dt>Lab ID</dt>
+                <dd>Pending</dd>
+              </div>
+            </dl>
           </div>
-          <dl>
-            <div>
-              <dt>Compound</dt>
-              <dd>BPC-157</dd>
-            </div>
-            <div>
-              <dt>Batch</dt>
-              <dd>PS-p1-2mg-A</dd>
-            </div>
-            <div>
-              <dt>Method</dt>
-              <dd>HPLC-UV</dd>
-            </div>
-            <div>
-              <dt>Lab ID</dt>
-              <dd>JK-2401</dd>
-            </div>
-          </dl>
-        </div>
+        )}
       </section>
 
       {/* ── How it works ── */}
