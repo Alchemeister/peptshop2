@@ -20,7 +20,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
     .map((slug) => models.products.find((p) => p.slug === slug))
     .filter((p): p is NonNullable<typeof p> => p !== undefined)
   const featuredVendors = models.vendors.slice(0, 3)
-  const heroProduct = popularProducts.find((product) => product.availability === 'available')
+  const heroProduct = models.products.find((p) => p.slug === 'bpc-157') ?? popularProducts.find((product) => product.availability === 'available')
   const heroVendors = featuredVendors.slice(0, Math.min(3, heroProduct?.vendorCount ?? 0))
 
   return (
