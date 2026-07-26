@@ -1,5 +1,7 @@
 # PeptShop frontend
 
+**Stack:** Vite + React + TypeScript. Built with `npm run build` (tsc + Vite).
+
 This is the complete presentation workspace for PeptShop. It covers the homepage, catalog, product
 details, vendors, COAs, batch verification, COA submission, cart, checkout, payment, private order
 flows, support and policy pages, articles, authentication, seller, staff, affiliate, and admin.
