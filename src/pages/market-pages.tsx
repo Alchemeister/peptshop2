@@ -401,7 +401,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <span><FileCheck2 size={15} /><small>Purity</small>≥{vendor.purity}%</span>
                         <span><PackageCheck size={15} /><small>Batch</small>{makeBatch(vendor.batchPrefix, selectedDose)}</span>
                         <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
-                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate('/coas')}>
+                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/verify?batch=${encodeURIComponent(makeBatch(vendor.batchPrefix, selectedDose))}&vendor=${encodeURIComponent(vendor.name)}&product=${encodeURIComponent(source?.name ?? 'Product')}`)}>
                           <FileCheck2 size={13} /> COA
                         </button>
                       </div>
@@ -453,30 +453,6 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 </aside>
               </div>
             </ProductOffersSection>
-
-            {/* COA section — per-vendor, per-compound */}
-            <section className="ps-product-coa-section">
-              <h2><FileCheck2 size={18} /> Certificates of Analysis · {source?.name ?? 'Product'}</h2>
-              <div className="ps-coa-list">
-                {productVendors.map((vendor) => (
-                  <div key={vendor.id} className="ps-coa-item">
-                    <div>
-                      <FileCheck2 size={16} />
-                      <div>
-                        <strong>{vendor.name} — Batch {makeBatch(vendor.batchPrefix, selectedDose)}</strong>
-                        <small style={{ display: 'block', color: 'var(--ps-muted)', fontSize: '0.75rem' }}>Purity ≥{vendor.purity}% · {source?.name ?? 'BPC-157'} · {selectedDose}</small>
-                      </div>
-                    </div>
-                    <span>Janoshik Lab #{vendor.id === 'vendor-northstar' ? 'JH-2025-0142' : vendor.id === 'vendor-retalux' ? 'JH-2025-0098' : 'Pending'}</span>
-                    {vendor.id === 'vendor-axiom' ? (
-                      <button type="button" onClick={() => setDialogOpen(true)}><Bell size={14} /> Notify me</button>
-                    ) : (
-                      <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
           </>
         )}
       </ProductPageFrame>

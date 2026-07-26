@@ -15,7 +15,7 @@ import type { PageComponentProps } from '../contracts'
 import { FrontendLink } from '../navigation'
 
 export function EvidencePage({ actions, models, pathname }: PageComponentProps) {
-  if (pathname === '/verify') return <VerifyPage actions={actions} />
+  if (pathname === '/verify' || pathname.startsWith('/verify')) return <VerifyPage actions={actions} pathname={pathname} />
   if (pathname.includes('submit-coa')) return <SubmitCoaPage actions={actions} models={models} />
 
   return (
@@ -56,9 +56,13 @@ export function EvidencePage({ actions, models, pathname }: PageComponentProps) 
   )
 }
 
-function VerifyPage({ actions }: Pick<PageComponentProps, 'actions'>) {
-  const [batch, setBatch] = useState('')
-  const [result, setResult] = useState(false)
+function VerifyPage({ actions, pathname }: Pick<PageComponentProps, 'actions' | 'pathname'>) {
+  const searchParams = new URLSearchParams(pathname.split('?')[1] ?? '')
+  const initialBatch = searchParams.get('batch') ?? ''
+  const vendorName = searchParams.get('vendor') ?? ''
+  const productName = searchParams.get('product') ?? ''
+  const [batch, setBatch] = useState(initialBatch)
+  const [result, setResult] = useState(Boolean(initialBatch.trim()))
   return (
     <div className="ps-verify-page">
       <section className="ps-verify-panel">
@@ -77,7 +81,7 @@ function VerifyPage({ actions }: Pick<PageComponentProps, 'actions'>) {
       {result ? (
         <section className="ps-verify-result" aria-live="polite">
           <div className="ps-verify-result-icon"><ShieldCheck size={24} /></div>
-          <div><span>Match found</span><h2>BPC-157 10 mg</h2><p>Northstar Research · Independent Analytical Lab · Tested Jun 18, 2026</p></div>
+          <div><span>Match found</span><h2>{productName ? `${productName}` : 'BPC-157'} · {batch || 'PS-0426-A'}</h2><p>{vendorName || 'Northstar Research'} · Independent Analytical Lab · Tested Jun 18, 2026</p></div>
           <div><span>Reported purity</span><strong>99.1%</strong></div>
           <button type="button"><Download size={17} /> View record</button>
         </section>
