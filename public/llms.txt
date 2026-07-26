@@ -1,53 +1,28 @@
-# PeptShop
+# PeptShop frontend presentation
 
-> PeptShop is a research compound marketplace that lets buyers compare per-mg pricing across vetted suppliers, view public Certificates of Analysis (CoAs), and checkout with cryptocurrency — no account required.
+> This repository owns presentation components for a research-compound marketplace interface.
 
-## What PeptShop does
+## Scope
 
-PeptShop aggregates vendor offerings for research compounds (peptides, nootropics, cosmetics) into a single catalog. Buyers can:
-- Compare **per-mg pricing** across multiple vendors for the same compound
-- View **public CoAs** (Certificates of Analysis) from independent testing labs
-- **Checkout with crypto** (BTC, ETH, USDT, USDC, XMR) — no signup, no email required
-- Track orders and open disputes with **buyer escrow protection**
+The frontend includes layouts for:
 
-Vendors are identity-checked before listing. Vendors set wholesale prices; PeptShop applies a transparent markup. There are no fees or commissions — the vendor gets their wholesale price, PeptShop keeps the spread.
+- Catalog and product comparison
+- Vendor directory and profiles
+- Public certificate-of-analysis presentation
+- Cart and checkout
+- Synthetic order lookup and status views
+- Informational and authentication pages
 
-## Key pages
+All records bundled with this repository are synthetic presentation fixtures. Names, prices,
+ratings, orders, certificates, dates, and operational states are illustrative and must not be
+described as production marketplace facts.
 
-- [Homepage](https://peptshop.io/) — Browse popular compounds and featured vendors
-- [Full catalog](https://peptshop.io/products) — All research compounds with vendor comparisons
-- [Vendors](https://peptshop.io/vendors) — All verified vendors with ratings, order counts, and CoA counts
-- [CoA Labs](https://peptshop.io/coas) — Independent lab test results for compounds
-- [How it works](https://peptshop.io/#how-it-works) — 3-step buying process
-- [Contact](https://peptshop.io/contact) — Support, vendor inquiries, press
+## Integration boundary
 
-## Value propositions
+The private application supplies reviewed view models and fixed callbacks. This repository does
+not contain database access, credentials, payment integrations, customer records, private
+algorithms, internal economics, incentive terms, or production order logic.
 
-1. **Transparent per-mg pricing** — Every offering shows price per milligram, so buyers can compare value across vendors and dosages at a glance
-2. **Public CoAs** — Lab test results (purity, identity, mass spec) are public on each vendor's profile, not hidden behind a login
-3. **Crypto checkout** — Bitcoin, Ethereum, USDT, USDC, and Monero accepted. No account required to browse or buy
-4. **Buyer escrow** — Payment is held in escrow until the buyer confirms delivery, protecting against non-shipment
-5. **Vetted vendors** — Vendor identity is verified before onboarding. Vendors with poor test results or high dispute rates are suspended
-
-## Compound categories
-
-PeptShop lists research compounds in categories including:
-- GLP-1 agonists (tirzepatide, retatrutide, semaglutide)
-- Growth hormone secretagogues (tesamorelin, CJC-1295, ipamorelin)
-- Cosmetics (GHK-Cu, copper peptides)
-- NAD+ precursors and related compounds
-- Other research peptides
-
-## For vendors
-
-Vendors can list on PeptShop by contacting vendors@peptshop.io. Vendors provide wholesale pricing; PeptShop handles the storefront, pricing display, payments, customer support, and buyer escrow. Vendors ship products and get paid their wholesale price in crypto — no fees, no commissions.
-
-## Technical
-
-- Built with Next.js 14 (App Router), deployed on Vercel
-- Server-side rendered for crawlability
-- Structured data (schema.org Product, Organization, AggregateOffer) on all product and vendor pages
-- Sitemap available at /sitemap.xml
-- Robots.txt at /robots.txt (AI crawlers explicitly allowed)
-- Full LLM context at /llms-full.txt — detailed compound info, FAQ answers, vendor standards
-- FAQ pages at /faq — common questions about peptide purchasing, CoAs, crypto escrow
+The protected production QA lane is documented in the repository README. It accepts only reserved
+synthetic values and keeps fake orders isolated from customer, payment, inventory, notification,
+and fulfillment systems.
