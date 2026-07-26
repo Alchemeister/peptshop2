@@ -554,7 +554,7 @@ const REVIEW_TEMPLATES: { stars: number; text: string }[] = [
   { stars: 5, text: 'Fast dispatch, product matched batch COA exactly. Will reorder.' },
   { stars: 5, text: 'Consistent quality across multiple orders. Packaging is professional.' },
   { stars: 4, text: 'Good product, shipping took one day longer than expected but quality was on point.' },
-  { stars: 5, text: 'Third order from this vendor. Always reliable, COAs always check out on Janoshik.' },
+  { stars: 5, text: 'Third order from this vendor. Always reliable, and the independent lab reports check out.' },
   { stars: 5, text: 'Great communication and fast fulfillment. Product was exactly as described.' },
   { stars: 4, text: 'Solid product. Took 2 days to dispatch but arrived quickly after that.' },
   { stars: 5, text: 'Best vendor I have used on this platform. Batch evidence is always published.' },
@@ -619,10 +619,10 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
         <div className="ps-vendor-profile-score"><strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong><span><Star size={16} /> {vendor?.reviewCount ?? 184} verified reviews</span></div>
       </header>
       <nav className="ps-subnav" aria-label="Vendor profile sections">
-        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}`} navigate={actions.navigate} aria-current={!catalogMode && !reviewsMode ? 'page' : undefined}>Overview</FrontendLink>
-        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}`} navigate={actions.navigate} aria-current={!catalogMode && !reviewsMode ? 'page' : undefined}>Overview</FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}/catalog`} navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
         <FrontendLink href={`/coas?vendor=${encodeURIComponent(vendor?.name ?? '')}`} navigate={actions.navigate}>COAs <span>{(vendor as any)?.coaCount ?? 0}</span></FrontendLink>
-        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/reviews`} navigate={actions.navigate} aria-current={reviewsMode ? 'page' : undefined}>Reviews <span>{vendor?.reviewCount ?? 0}</span></FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}/reviews`} navigate={actions.navigate} aria-current={reviewsMode ? 'page' : undefined}>Reviews <span>{vendor?.reviewCount ?? 0}</span></FrontendLink>
       </nav>
       {catalogMode ? (
         <div className="ps-vendor-catalog">
@@ -669,7 +669,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
           <section className="ps-vendor-reviews">
             <div className="ps-vendor-reviews-head">
               <h2>Reviews ({vendor?.reviewCount ?? 0})</h2>
-              <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/reviews`} navigate={actions.navigate} className="ps-reviews-view-all">View all <ArrowRight size={15} /></FrontendLink>
+              <FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}/reviews`} navigate={actions.navigate} className="ps-reviews-view-all">View all <ArrowRight size={15} /></FrontendLink>
             </div>
             <div className="ps-review-summary">
               <strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong>
