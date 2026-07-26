@@ -26,6 +26,45 @@ npm run build
 
 The build checks the public/private boundary, TypeScript, and the production Vite bundle.
 
+## Test the reviewed frontend in production
+
+The private application provides a protected production QA lane at:
+
+`https://www.peptshop.io/designer-qa/access`
+
+This lane verifies the reviewed frontend revision, production asset delivery, responsive layout,
+theme behavior, in-preview navigation, and the callback boundary. It uses synthetic presentation
+records only. It does not connect this repository to production data or private business logic.
+
+To run a QA pass:
+
+1. Push the frontend change to the repository's `main` branch.
+2. Wait for the private application to synchronize and deploy the reviewed revision.
+3. Open the QA access page and enter the access code shared through a private channel. The access
+   form does not require a personal account, name, or email.
+4. Use **Page explorer** to move through the available production QA routes and test both themes.
+5. Exercise the visible forms and controls. A successful synthetic callback produces a QA receipt
+   in the safety bar. No live action is performed.
+6. Report the tested route, viewport, browser, steps, expected result, actual result, and screenshot.
+   Include the QA receipt when the issue concerns a callback.
+7. End the session with **Sign out of QA**. Sessions also expire automatically.
+
+The production QA lane deliberately excludes private role workspaces and any surface that could
+suggest real commercial terms. Local preview content for those layouts remains illustrative only.
+
+Security rules:
+
+- Never put the access code in a URL, commit, issue, chat screenshot, or browser recording.
+- Never enter a real customer identity, address, order number, batch, vendor record, or payment
+  detail. Use obviously synthetic values.
+- Never describe preview values as live marketplace facts.
+- If the QA safety bar is absent, stop. You are no longer inside the isolated lane.
+- Send only the route, reproduction steps, visual evidence, and QA receipt in a bug report.
+
+The lane does not expose database access, authentication records, environment values, provider
+credentials, private algorithms, internal economics, or incentive terms. Its server callback
+accepts only a fixed presentation-action name and returns an ephemeral receipt.
+
 ## Where to edit
 
 - `src/pages/home-page.tsx`: homepage.
@@ -42,6 +81,7 @@ The build checks the public/private boundary, TypeScript, and the production Vit
 - `src/contracts.ts`: view models and callback boundary supplied by the private application.
 - `src/route-manifest.ts`: every route family owned by this presentation repository.
 - `src/mock-data.ts`: fake content used only by this preview.
+- `src/preview-fixtures.ts`: deliberately synthetic admin and offer fixtures.
 
 The product page retains smaller exported frame components because the private application already
 consumes them directly. The other route-level components use the same model-and-callback boundary.

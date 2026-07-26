@@ -1,5 +1,9 @@
 export { PeptShopFrontend } from './App'
-export type { PeptShopFrontendProps } from './App'
+export type {
+  FrontendNavigationMode,
+  FrontendPreviewAction,
+  PeptShopFrontendProps,
+} from './App'
 export * from './contracts'
 export * from './route-manifest'
 export * from './product-page'
