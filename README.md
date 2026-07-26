@@ -30,7 +30,7 @@ The build checks the public/private boundary, TypeScript, and the production Vit
 
 The private application provides a protected production QA lane at:
 
-`https://www.peptshop.com/designer-qa/access`
+`https://www.peptshop.io/designer-qa/access`
 
 This lane verifies the reviewed frontend revision, production asset delivery, responsive layout,
 theme behavior, in-preview navigation, and the callback boundary. It uses synthetic presentation
