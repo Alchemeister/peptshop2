@@ -401,7 +401,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <span><FileCheck2 size={15} /><small>Purity</small>≥{vendor.purity}%</span>
                         <span><PackageCheck size={15} /><small>Batch</small>{makeBatch(vendor.batchPrefix, selectedDose)}</span>
                         <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
-                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/verify?batch=${encodeURIComponent(makeBatch(vendor.batchPrefix, selectedDose))}&vendor=${encodeURIComponent(vendor.name)}&product=${encodeURIComponent(source?.name ?? 'Product')}`)}>
+                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/coas?vendor=${encodeURIComponent(vendor.name)}`)}>
                           <FileCheck2 size={13} /> COA
                         </button>
                       </div>
