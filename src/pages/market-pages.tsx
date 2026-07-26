@@ -51,7 +51,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
     const normalized = query.trim().toLowerCase()
     const filtered = models.products.filter((product) => {
       if (stockOnly && (product.availability !== 'available' || product.vendorCount === 0)) return false
-      if (regionFilter === 'eu' && product.vendorCount < 3) return false // EU = Axiom (3rd vendor)
+      if (regionFilter === 'eu' && product.vendorCount < 3) return false // EU = third sample vendor
       return !normalized || `${product.name}`.toLowerCase().includes(normalized)
     })
     return filtered.sort((left, right) => {
@@ -490,7 +490,22 @@ export function VendorsPage({ actions, models }: PageComponentProps) {
         <div><span className="ps-kicker">Marketplace partners</span><h1>Vendors</h1></div>
         <p>Compare fulfillment history, customer reviews, warehouse region, and published evidence.</p>
       </header>
-      <label className="ps-directory-search"><Search size={18} /><span className="ps-visually-hidden">Search vendors</span><input value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder="Search vendor names" /></label>
+      <div className="ps-directory-tools">
+        <div className="ps-directory-intro">
+          <p>Search the public directory or check delivery coverage for your country.</p>
+          {models.directoryShipping ? (
+            <FrontendLink
+              className="ps-directory-shipping-link"
+              href={models.directoryShipping.href}
+              navigate={actions.navigate}
+            >
+              {models.directoryShipping.label}
+              <ArrowRight size={15} />
+            </FrontendLink>
+          ) : null}
+        </div>
+        <label className="ps-directory-search"><Search size={18} /><span className="ps-visually-hidden">Search vendors</span><input value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder="Search vendor names" /></label>
+      </div>
       <div className="ps-vendor-directory">
         {vendors.map((vendor, index) => <VendorRow key={vendor.id} vendor={vendor} index={index} navigate={actions.navigate} />)}
       </div>
