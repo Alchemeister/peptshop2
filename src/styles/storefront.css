@@ -1649,6 +1649,58 @@
   font-size: 0.7rem;
 }
 
+.ps-vendor-reviews-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.ps-reviews-view-all {
+  font-size: 0.78rem;
+  color: var(--ps-accent, #FFA300);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ps-vendor-reviews-page {
+  padding-top: 1.5rem;
+}
+
+.ps-reviews-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--ps-line);
+}
+
+.ps-reviews-score {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.ps-reviews-score strong {
+  font-size: 2.5rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.ps-reviews-score span {
+  color: var(--ps-muted);
+  font-size: 0.85rem;
+}
+
+.ps-reviews-header > p {
+  margin: 0.5rem 0 0;
+  color: var(--ps-muted);
+  font-size: 0.82rem;
+}
+
+.ps-review-list-full {
+  gap: 1rem;
+}
+
 .ps-vendor-catalog {
   padding-top: 2.5rem;
 }

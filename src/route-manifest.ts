@@ -53,7 +53,7 @@ export const routeManifest: RouteDefinition[] = [
     family: 'vendor',
     access: 'public',
     label: 'Vendor profile and catalog',
-    paths: ['/vendors/:supplier', '/vendors/:supplier/catalog', '/supplier/:supplier'],
+    paths: ['/vendors/:supplier', '/vendors/:supplier/catalog', '/vendors/:supplier/reviews', '/supplier/:supplier'],
   },
   {
     family: 'evidence',

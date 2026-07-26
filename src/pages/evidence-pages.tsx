@@ -19,15 +19,18 @@ export function EvidencePage({ actions, models, pathname, query }: PageComponent
   if (pathname.includes('submit-coa')) return <SubmitCoaPage actions={actions} models={models} />
 
   const vendorFilter = query.get('vendor')
-  const filteredCoas = vendorFilter
-    ? models.coas.filter((coa) => coa.vendor.toLowerCase() === vendorFilter.toLowerCase())
-    : models.coas
+  const productFilter = query.get('product')
+  const filteredCoas = models.coas.filter((coa) => {
+    if (vendorFilter && coa.vendor.toLowerCase() !== vendorFilter.toLowerCase()) return false
+    if (productFilter && coa.product.toLowerCase() !== productFilter.toLowerCase()) return false
+    return true
+  })
 
   return (
     <div className="ps-evidence-page ps-section-shell">
       <header className="ps-page-masthead ps-page-masthead-split">
-        <div><span className="ps-kicker">Public evidence library</span><h1>{vendorFilter ? `${vendorFilter} — COAs` : 'Certificates of analysis'}</h1></div>
-        <p>{vendorFilter ? `Certificates of analysis published by ${vendorFilter}.` : 'Browse independent test records by compound, vendor, laboratory, or batch identifier.'}</p>
+        <div><span className="ps-kicker">Public evidence library</span><h1>{vendorFilter && productFilter ? `${productFilter} — ${vendorFilter}` : vendorFilter ? `${vendorFilter} — COAs` : 'Certificates of analysis'}</h1></div>
+        <p>{vendorFilter && productFilter ? `Certificates of analysis for ${productFilter} from ${vendorFilter}.` : vendorFilter ? `Certificates of analysis published by ${vendorFilter}.` : 'Browse independent test records by compound, vendor, laboratory, or batch identifier.'}</p>
       </header>
       <div className="ps-evidence-toolbar">
         <label><Search size={18} /><span className="ps-visually-hidden">Search COAs</span><input placeholder="Search product, vendor, lab, or batch" /></label>

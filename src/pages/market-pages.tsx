@@ -401,7 +401,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <span><FileCheck2 size={15} /><small>Purity</small>≥{vendor.purity}%</span>
                         <span><PackageCheck size={15} /><small>Batch</small>{makeBatch(vendor.batchPrefix, selectedDose)}</span>
                         <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
-                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/coas?vendor=${encodeURIComponent(vendor.name)}`)}>
+                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/coas?vendor=${encodeURIComponent(vendor.name)}&product=${encodeURIComponent(source?.name ?? 'Product')}`)}>
                           <FileCheck2 size={13} /> COA
                         </button>
                       </div>
@@ -527,11 +527,25 @@ function VendorRow({ vendor, index, navigate }: { vendor: VendorSummary; index: 
   )
 }
 
+const VENDOR_REVIEWS: { buyer: string; stars: number; text: string; date: string }[] = [
+  { buyer: 'Verified Buyer', stars: 5, text: 'Fast dispatch, product matched batch COA exactly. Will reorder.', date: '3 months ago' },
+  { buyer: 'Verified Buyer', stars: 5, text: 'Consistent quality across multiple orders. Packaging is professional.', date: '5 months ago' },
+  { buyer: 'Verified Buyer', stars: 4, text: 'Good product, shipping took one day longer than expected but quality was on point.', date: '7 months ago' },
+  { buyer: 'Verified Buyer', stars: 5, text: 'Third order from this vendor. Always reliable, COAs always check out on Janoshik.', date: '8 months ago' },
+  { buyer: 'Verified Buyer', stars: 5, text: 'Great communication and fast fulfillment. Product was exactly as described.', date: '10 months ago' },
+  { buyer: 'Verified Buyer', stars: 4, text: 'Solid product. Took 2 days to dispatch but arrived quickly after that.', date: '11 months ago' },
+  { buyer: 'Verified Buyer', stars: 5, text: 'Best vendor I have used on this platform. Batch evidence is always published.', date: '1 year ago' },
+  { buyer: 'Verified Buyer', stars: 3, text: 'Product was fine but the packaging could be more discreet. Otherwise no complaints.', date: '1 year ago' },
+  { buyer: 'Verified Buyer', stars: 5, text: 'Ordered BPC-157 and TB-500. Both verified at >99% purity. Highly recommend.', date: '1 year ago' },
+  { buyer: 'Verified Buyer', stars: 5, text: 'Repeat customer. Never had an issue. Shipping is consistently 1-2 days.', date: '1 year ago' },
+]
+
 export function VendorPage({ actions, models, pathname }: PageComponentProps) {
   // Extract vendor slug from URL
   const slug = decodeURIComponent(pathname.split('/vendors/')[1]?.split('/')[0] ?? '')
   const vendor = models.vendors.find((v) => v.slug === slug) ?? models.vendors[0]
   const catalogMode = pathname.endsWith('/catalog')
+  const reviewsMode = pathname.endsWith('/reviews')
   const vendorInitials = vendor?.name?.split(' ').map((part) => part[0]).join('').slice(0, 2) ?? 'NR'
   return (
     <div className="ps-vendor-profile ps-section-shell">
@@ -546,10 +560,10 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
         <div className="ps-vendor-profile-score"><strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong><span><Star size={16} /> {vendor?.reviewCount ?? 184} verified reviews</span></div>
       </header>
       <nav className="ps-subnav" aria-label="Vendor profile sections">
-        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}`} navigate={actions.navigate} aria-current={!catalogMode ? 'page' : undefined}>Overview</FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}`} navigate={actions.navigate} aria-current={!catalogMode && !reviewsMode ? 'page' : undefined}>Overview</FrontendLink>
         <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
         <FrontendLink href={`/coas?vendor=${encodeURIComponent(vendor?.name ?? '')}`} navigate={actions.navigate}>COAs <span>{(vendor as any)?.coaCount ?? 0}</span></FrontendLink>
-        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}#reviews`} navigate={actions.navigate}>Reviews <span>{vendor?.reviewCount ?? 0}</span></FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/reviews`} navigate={actions.navigate} aria-current={reviewsMode ? 'page' : undefined}>Reviews <span>{vendor?.reviewCount ?? 0}</span></FrontendLink>
       </nav>
       {catalogMode ? (
         <div className="ps-vendor-catalog">
@@ -562,33 +576,47 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
             ))}
           </div>
         </div>
+      ) : reviewsMode ? (
+        <div className="ps-vendor-reviews-page">
+          <div className="ps-reviews-header">
+            <div className="ps-reviews-score"><strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong><span>out of 5</span></div>
+            <p>Based on {vendor?.reviewCount ?? 0} verified buyer reviews</p>
+          </div>
+          <div className="ps-review-list ps-review-list-full">
+            {VENDOR_REVIEWS.map((rev, i) => (
+              <div key={i} className="ps-review-item">
+                <div className="ps-review-head">
+                  <strong>{rev.buyer}</strong>
+                  <span>{'★'.repeat(rev.stars)}{'☆'.repeat(5 - rev.stars)}</span>
+                </div>
+                <p>{rev.text}</p>
+                <small>{rev.date} · Verified purchase</small>
+              </div>
+            ))}
+          </div>
+        </div>
       ) : (
         <div className="ps-vendor-overview-grid">
           <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>{vendor?.location ?? 'US'} fulfillment with evidence linked at the batch level.</h2><p>{vendor?.name ?? 'This vendor'} ships from {vendor?.location ?? 'the US'} with {vendor?.fulfillment ?? '1–2 day'} dispatch. All listings include batch-level COA evidence.</p><div className="ps-button-row"><FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} className="ps-primary-action">View catalog <ArrowRight size={17} /></FrontendLink><button type="button"><Bell size={16} /> Follow vendor</button></div></section>
           <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>{vendor?.orderCount?.toLocaleString() ?? '2,310'}</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>{vendor?.fulfillment ?? '1–2 days'}</dd></div><div><dt>Published COAs</dt><dd>{(vendor as any)?.coaCount ?? 0}</dd></div></dl></aside>
           <section className="ps-vendor-policy"><h2>Fulfillment notes</h2><ul><li><Truck size={17} /><div><strong>Ships from {vendor?.location ?? 'USA'}</strong><span>Tracking supplied after dispatch.</span></div></li><li><CircleDollarSign size={17} /><div><strong>Transparent pack pricing</strong><span>Marketplace totals include PeptShop pricing rules.</span></div></li><li><FileCheck2 size={17} /><div><strong>Batch evidence</strong><span>Available certificates are attached to eligible listings.</span></div></li></ul></section>
-          <section id="reviews" className="ps-vendor-reviews">
-            <h2>Reviews ({vendor?.reviewCount ?? 0})</h2>
+          <section className="ps-vendor-reviews">
+            <div className="ps-vendor-reviews-head">
+              <h2>Reviews ({vendor?.reviewCount ?? 0})</h2>
+              <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/reviews`} navigate={actions.navigate} className="ps-reviews-view-all">View all <ArrowRight size={15} /></FrontendLink>
+            </div>
             <div className="ps-review-summary">
               <strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong>
               <span>Based on {vendor?.reviewCount ?? 0} verified reviews</span>
             </div>
             <div className="ps-review-list">
-              <div className="ps-review-item">
-                <div className="ps-review-head"><strong>Verified Buyer</strong><span>★★★★★</span></div>
-                <p>Fast dispatch, product matched batch COA exactly. Will reorder.</p>
-                <small>3 months ago</small>
-              </div>
-              <div className="ps-review-item">
-                <div className="ps-review-head"><strong>Verified Buyer</strong><span>★★★★★</span></div>
-                <p>Consistent quality across multiple orders. Packaging is professional.</p>
-                <small>5 months ago</small>
-              </div>
-              <div className="ps-review-item">
-                <div className="ps-review-head"><strong>Verified Buyer</strong><span>★★★★☆</span></div>
-                <p>Good product, shipping took one day longer than expected but quality was on point.</p>
-                <small>7 months ago</small>
-              </div>
+              {VENDOR_REVIEWS.slice(0, 3).map((rev, i) => (
+                <div key={i} className="ps-review-item">
+                  <div className="ps-review-head"><strong>{rev.buyer}</strong><span>{'★'.repeat(rev.stars)}{'☆'.repeat(5 - rev.stars)}</span></div>
+                  <p>{rev.text}</p>
+                  <small>{rev.date} · Verified purchase</small>
+                </div>
+              ))}
             </div>
           </section>
         </div>
