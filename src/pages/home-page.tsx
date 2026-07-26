@@ -14,14 +14,11 @@ import type { PageComponentProps, VendorSummary } from '../contracts'
 import { FrontendLink } from '../navigation'
 
 export function HomePage({ actions, models }: PageComponentProps) {
-  const popularProducts = [...models.products]
-    .sort((left, right) => {
-      if (left.availability !== right.availability) {
-        return left.availability === 'available' ? -1 : 1
-      }
-      return right.vendorCount - left.vendorCount
-    })
-    .slice(0, 6)
+  // Hand-picked popular products (by marketplace relevance, not just vendor count)
+  const popularSlugs = ['bpc-157', 'nad', 'tesamorelin', 'ghk-cu', 'retatrutide', 'semaglutide']
+  const popularProducts = popularSlugs
+    .map((slug) => models.products.find((p) => p.slug === slug))
+    .filter((p): p is NonNullable<typeof p> => p !== undefined)
   const featuredVendors = models.vendors.slice(0, 3)
   const heroProduct = popularProducts.find((product) => product.availability === 'available')
   const heroVendors = featuredVendors.slice(0, Math.min(3, heroProduct?.vendorCount ?? 0))

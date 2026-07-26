@@ -23,6 +23,7 @@ type ProductPageHeroProps = {
   formula?: string | null
   imageAlt?: string
   imageSrc?: string | null
+  mw?: string | null
   overview?: string | null
   productName: string
 }
@@ -119,10 +120,11 @@ export function ProductPageHero({
   formula,
   imageAlt,
   imageSrc,
+  mw,
   overview,
   productName,
 }: ProductPageHeroProps) {
-  const hasFacts = Boolean(cas || formula)
+  const hasFacts = Boolean(cas || formula || mw)
 
   return (
     <header className={styles.hero} data-testid="peptide-header">
@@ -149,6 +151,12 @@ export function ProductPageHero({
               <div>
                 <dt>Formula</dt>
                 <dd>{formula}</dd>
+              </div>
+            ) : null}
+            {mw ? (
+              <div>
+                <dt>MW</dt>
+                <dd>{mw} Da</dd>
               </div>
             ) : null}
           </dl>
