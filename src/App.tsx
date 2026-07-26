@@ -147,15 +147,15 @@ export function PeptShopFrontend({
     clearCart: () => setCartLines([]),
     beginCheckout: () => {
       previewAction('beginCheckout', 'Opened the synthetic checkout')
-      navigate('/checkout')
+      navigate('/cart')
     },
     submitCheckout: (_form: HTMLFormElement) => {
       const subtotal = cartLines.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
       setLastOrderTotal(subtotal + 12)
       setCartLines([])
-      demo('Order placed! Redirecting to payment…')
+      demo('Order placed! Redirecting to order status…')
       previewAction('submitCheckout', 'Synthetic checkout callback completed')
-      navigate('/payment')
+      navigate('/order/status/preview')
     },
     submitEmail: () => previewAction('submitEmail', 'Synthetic email callback completed'),
     submitLogin: () => previewAction('submitLogin', 'Synthetic sign-in callback completed'),

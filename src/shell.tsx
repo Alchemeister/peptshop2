@@ -21,7 +21,7 @@ const navItems = [
   { href: '/vendors', label: 'Vendors' },
   { href: '/coas', label: 'CoAs' },
   { href: '/verify', label: 'Verify' },
-  { href: '/checkout', label: 'Checkout' },
+  { href: '/cart', label: 'Cart' },
 ]
 
 type StorefrontShellProps = {

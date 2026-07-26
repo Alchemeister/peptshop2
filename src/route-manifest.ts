@@ -64,8 +64,8 @@ export const routeManifest: RouteDefinition[] = [
   {
     family: 'commerce',
     access: 'public',
-    label: 'Cart, checkout, and payment',
-    paths: ['/cart', '/checkout', '/:locale/checkout', '/payment'],
+    label: 'Cart and checkout',
+    paths: ['/cart'],
   },
   {
     family: 'orders',
@@ -239,7 +239,6 @@ export const previewRoutes = [
   '/verify',
   '/coa/submit-coa',
   '/cart',
-  '/checkout',
   '/order/status/preview',
   '/articles',
   '/about',

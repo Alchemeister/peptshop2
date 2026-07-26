@@ -15,7 +15,7 @@ import {
   Truck,
   WalletCards,
 } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import type { CartLine, OrderDisplayStatus, PageComponentProps } from '../contracts'
 import { FrontendLink } from '../navigation'
 
@@ -23,12 +23,13 @@ const money = (value: number) => `$${value.toFixed(2)}`
 
 export function CommercePage(props: PageComponentProps) {
   if (props.pathname === '/cart') return <CartPage {...props} />
-  if (props.pathname.endsWith('/checkout') || props.pathname === '/checkout') return <CheckoutPage {...props} />
-  return <PaymentPage {...props} />
+  return <CartPage {...props} />
 }
 
 function CartPage({ actions, models }: PageComponentProps) {
+  const shipping = 12
   const subtotal = models.cart.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
+  const total = subtotal + shipping
   // Group cart lines by vendor
   const vendorGroups = useMemo(() => {
     const groups: Record<string, { vendorName: string; lines: CartLine[] }> = {}
@@ -39,41 +40,89 @@ function CartPage({ actions, models }: PageComponentProps) {
     }
     return Object.values(groups)
   }, [models.cart])
+
+  if (models.cart.length === 0) {
+    return (
+      <div className="ps-cart-page ps-section-shell">
+        <div className="ps-empty-state">
+          <ShoppingBag size={24} />
+          <h2>Your cart is empty</h2>
+          <p>Browse the catalog to add items.</p>
+          <FrontendLink href="/products" navigate={actions.navigate} className="ps-primary-action">Browse catalog <ArrowRight size={16} /></FrontendLink>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="ps-cart-page ps-section-shell">
-      <header className="ps-page-masthead"><span className="ps-kicker">Order builder</span><div className="ps-page-title-row"><h1>Your cart</h1><p>{models.cart.length} items from {vendorGroups.length} vendor{vendorGroups.length === 1 ? '' : 's'}.</p></div></header>
-      <div className="ps-cart-layout">
-        <div className="ps-cart-lines">
-          {vendorGroups.length === 0 ? (
-            <div className="ps-empty-state">
-              <ShoppingBag size={24} />
-              <h2>Your cart is empty</h2>
-              <p>Browse the catalog to add items.</p>
-              <FrontendLink href="/products" navigate={actions.navigate} className="ps-primary-action">Browse catalog <ArrowRight size={16} /></FrontendLink>
-            </div>
-          ) : (
-            vendorGroups.map((group) => (
-              <div key={group.vendorName} className="ps-cart-vendor-group">
-                <div className="ps-cart-vendor-head"><div><span className="ps-status-dot" /><strong>{group.vendorName}</strong></div><span><MapPin size={14} /> Ships from USA · <Truck size={14} /> Tracked shipping</span></div>
-                {group.lines.map((line) => <CartLineItem key={line.id} line={line} actions={actions} />)}
-                <div className="ps-cart-vendor-subtotal">
-                  <span>Subtotal from {group.vendorName}</span>
-                  <strong>{money(group.lines.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0))}</strong>
+      <header className="ps-page-masthead">
+        <span className="ps-kicker">Secure checkout</span>
+        <div className="ps-page-title-row"><h1>Review & pay</h1><p>{models.cart.length} items from {vendorGroups.length} vendor{vendorGroups.length === 1 ? '' : 's'}.</p></div>
+      </header>
+      <div className="ps-checkout-layout">
+        <form className="ps-checkout-form" onSubmit={(event) => { event.preventDefault(); actions.submitCheckout(event.currentTarget) }}>
+          {/* Cart items */}
+          <fieldset className="ps-checkout-step">
+            <legend><span>01</span><div><strong>Your items</strong><small>Review before placing your order.</small></div></legend>
+            <div className="ps-cart-lines">
+              {vendorGroups.map((group) => (
+                <div key={group.vendorName} className="ps-cart-vendor-group">
+                  <div className="ps-cart-vendor-head"><div><span className="ps-status-dot" /><strong>{group.vendorName}</strong></div><span><MapPin size={14} /> Ships from USA · <Truck size={14} /> Tracked shipping</span></div>
+                  {group.lines.map((line) => <CartLineItem key={line.id} line={line} actions={actions} />)}
+                  <div className="ps-cart-vendor-subtotal">
+                    <span>Subtotal from {group.vendorName}</span>
+                    <strong>{money(group.lines.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0))}</strong>
+                  </div>
                 </div>
-              </div>
-            ))
-          )}
-          {vendorGroups.length > 0 ? (
-            <>
-              <div className="ps-shipping-progress"><div><Truck size={17} /><span><strong>Tracked shipping</strong><small>Calculated during checkout</small></span></div><div><i style={{ width: '76%' }} /></div></div>
-              <div className="ps-cart-secondary-actions">
-                <FrontendLink href="/products" navigate={actions.navigate} className="ps-back-link"><ArrowLeft size={16} /> Continue browsing</FrontendLink>
-                <button type="button" onClick={actions.clearCart}>Clear cart</button>
-              </div>
-            </>
-          ) : null}
-        </div>
-        {vendorGroups.length > 0 ? <OrderSummaryPanel subtotal={subtotal} beginCheckout={actions.beginCheckout} navigate={actions.navigate} /> : null}
+              ))}
+            </div>
+            <div className="ps-cart-secondary-actions">
+              <FrontendLink href="/products" navigate={actions.navigate} className="ps-back-link"><ArrowLeft size={16} /> Continue browsing</FrontendLink>
+              <button type="button" onClick={actions.clearCart}>Clear cart</button>
+            </div>
+          </fieldset>
+
+          {/* Contact */}
+          <fieldset className="ps-checkout-step">
+            <legend><span>02</span><div><strong>Contact</strong><small>Where should order updates go?</small></div></legend>
+            <label>Email address<input name="email" type="email" placeholder="Email address" required /></label>
+            <label>Phone number <small>Optional</small><input name="phone" type="tel" placeholder="Phone number" /></label>
+            <label className="ps-check-row"><input type="checkbox" /><span>Send essential fulfillment updates by text.</span></label>
+          </fieldset>
+
+          {/* Delivery */}
+          <fieldset className="ps-checkout-step">
+            <legend><span>03</span><div><strong>Delivery</strong><small>Used only to fulfill this order.</small></div></legend>
+            <div className="ps-form-grid">
+              <label>Full name<input name="name" placeholder="Full name" required /></label>
+              <label>Country<select name="country" defaultValue="US"><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option></select></label>
+              <label className="ps-field-wide">Street address<input name="address" placeholder="Street address" required /></label>
+              <label>City<input name="city" placeholder="City" required /></label>
+              <label>State or region<input name="region" placeholder="State or region" required /></label>
+              <label>Postal code<input name="postal" placeholder="Postal code" required /></label>
+            </div>
+            <div className="ps-delivery-choice"><Truck size={19} /><span><strong>Tracked shipping</strong><small>Estimated 3 to 5 business days</small></span><b>{money(shipping)}</b></div>
+          </fieldset>
+
+          {/* Payment */}
+          <fieldset className="ps-checkout-step">
+            <legend><span>04</span><div><strong>Payment</strong><small>Select your payment method.</small></div></legend>
+            <div className="ps-payment-options"><label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>NOWPayments</strong><small>BTC, ETH, USDT, USDC, XMR, 100+ coins</small></span></label></div>
+            <label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label>
+          </fieldset>
+
+          <div className="ps-checkout-actions"><button type="submit" className="ps-primary-action">Place order — {money(total)} <ArrowRight size={17} /></button></div>
+        </form>
+
+        {/* Order summary sidebar */}
+        <aside className="ps-checkout-summary">
+          <h2>Order summary</h2>
+          {models.cart.map((line) => <div key={line.id}><img src="/vial.svg" alt="" /><span><strong>{line.product}</strong><small>{line.format}</small></span><b>{money(line.unitPrice)}</b></div>)}
+          <dl><div><dt>Products</dt><dd>{money(subtotal)}</dd></div><div><dt>Shipping</dt><dd>{money(shipping)}</dd></div><div><dt>Total</dt><dd>{money(total)}</dd></div></dl>
+          <p><ShieldCheck size={15} /> Marketplace order protection included</p>
+          <div className="ps-summary-note"><ShieldCheck size={17} /><span><strong>Marketplace protection</strong>Order events and delivery confirmation remain attached to this checkout.</span></div>
+        </aside>
       </div>
     </div>
   )
@@ -88,78 +137,6 @@ function CartLineItem({ line, actions }: { line: CartLine; actions: PageComponen
       <strong className="ps-cart-line-total">{money(line.unitPrice * line.quantity)}</strong>
     </article>
   )
-}
-
-function OrderSummaryPanel({ subtotal, beginCheckout, navigate }: { subtotal: number; beginCheckout: () => void; navigate: (href: string) => void }) {
-  return (
-    <aside className="ps-order-summary-panel">
-      <h2>Order summary</h2>
-      <dl><div><dt>Products</dt><dd>{money(subtotal)}</dd></div><div><dt>Shipping</dt><dd>At checkout</dd></div><div><dt>Estimated total</dt><dd>{money(subtotal)}</dd></div></dl>
-      <button type="button" onClick={() => { beginCheckout(); navigate('/checkout') }}>Continue to checkout <ArrowRight size={17} /></button>
-      <p><LockKeyhole size={14} /> Secure order session</p>
-      <div className="ps-summary-note"><ShieldCheck size={17} /><span><strong>Marketplace protection</strong>Order events and delivery confirmation remain attached to this checkout.</span></div>
-    </aside>
-  )
-}
-
-function CheckoutPage({ actions, models }: PageComponentProps) {
-  const subtotal = models.cart.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
-  const shipping = 12
-  const total = subtotal + shipping
-  if (models.cart.length === 0) {
-    return <div className="ps-checkout-page ps-section-shell">
-      <div className="ps-empty-state"><ShoppingBag size={24} /><h2>Your cart is empty</h2><p>Add items before checking out.</p><FrontendLink href="/products" navigate={actions.navigate} className="ps-primary-action">Browse catalog <ArrowRight size={16} /></FrontendLink></div>
-    </div>
-  }
-  return (
-    <div className="ps-checkout-page ps-section-shell">
-      <button type="button" className="ps-back-link" onClick={() => actions.navigate('/cart')}><ArrowLeft size={16} /> Return to cart</button>
-      <header className="ps-checkout-head"><div><span className="ps-kicker">Secure checkout</span><h1>Complete your order</h1></div></header>
-      <div className="ps-checkout-layout">
-        <form className="ps-checkout-form" onSubmit={(event) => { event.preventDefault(); actions.submitCheckout(event.currentTarget) }}>
-          <fieldset className="ps-checkout-step">
-            <legend><span>01</span><div><strong>Contact</strong><small>Where should order updates go?</small></div></legend>
-            <label>Email address<input name="email" type="email" placeholder="Email address" required /></label>
-            <label>Phone number <small>Optional</small><input name="phone" type="tel" placeholder="Phone number" /></label>
-            <label className="ps-check-row"><input type="checkbox" /><span>Send essential fulfillment updates by text.</span></label>
-          </fieldset>
-          <fieldset className="ps-checkout-step">
-            <legend><span>02</span><div><strong>Delivery</strong><small>Used only to fulfill this order.</small></div></legend>
-            <div className="ps-form-grid">
-              <label>Full name<input name="name" placeholder="Full name" required /></label>
-              <label>Country<select name="country" defaultValue="US"><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option></select></label>
-              <label className="ps-field-wide">Street address<input name="address" placeholder="Street address" required /></label>
-              <label>City<input name="city" placeholder="City" required /></label>
-              <label>State or region<input name="region" placeholder="State or region" required /></label>
-              <label>Postal code<input name="postal" placeholder="Postal code" required /></label>
-            </div>
-            <div className="ps-delivery-choice"><Truck size={19} /><span><strong>Tracked shipping</strong><small>Estimated 3 to 5 business days</small></span><b>{money(shipping)}</b></div>
-          </fieldset>
-          <fieldset className="ps-checkout-step">
-            <legend><span>03</span><div><strong>Payment</strong><small>Select your payment method.</small></div></legend>
-            <div className="ps-payment-options"><label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>NOWPayments</strong><small>BTC, ETH, USDT, USDC, XMR, 100+ coins</small></span></label></div>
-            <label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label>
-          </fieldset>
-          <div className="ps-checkout-actions"><button type="submit" className="ps-primary-action">Place order — {money(total)} <ArrowRight size={17} /></button></div>
-        </form>
-        <aside className="ps-checkout-summary">
-          <h2>In this order</h2>
-          {models.cart.map((line) => <div key={line.id}><img src="/vial.svg" alt="" /><span><strong>{line.product}</strong><small>{line.format}</small></span><b>{money(line.unitPrice)}</b></div>)}
-          <dl><div><dt>Products</dt><dd>{money(subtotal)}</dd></div><div><dt>Shipping</dt><dd>{money(shipping)}</dd></div><div><dt>Total</dt><dd>{money(total)}</dd></div></dl>
-          <p><ShieldCheck size={15} /> Marketplace order protection included</p>
-        </aside>
-      </div>
-    </div>
-  )
-}
-
-function PaymentPage({ actions, models }: PageComponentProps) {
-  const [copied, setCopied] = useState(false)
-  const cartTotal = models.cart.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
-  const total = cartTotal > 0 ? cartTotal : (models.lastOrderTotal ?? 0)
-  const orderTotal = (total + (cartTotal > 0 ? 12 : 0)).toFixed(2) // total + shipping (already in lastOrderTotal if cart empty)
-  const orderId = `PS-${Math.floor(1000 + Math.random() * 9000)}`
-  return <div className="ps-payment-page"><section><span className="ps-kicker">Payment pending</span><h1>Send exactly <strong>${orderTotal}</strong></h1><p>Complete payment via NOWPayments. You'll receive a payment link by email with a live invoice and countdown timer. BTC, ETH, USDT, USDC, XMR, and 100+ coins accepted.</p><div className="ps-payment-address"><span>Order reference</span><code>{orderId}</code><button type="button" onClick={() => setCopied(true)}>{copied ? <Check size={16} /> : <Copy size={16} />}{copied ? 'Copied' : 'Copy'}</button></div><div className="ps-payment-notes"><p><strong>Processor</strong>NOWPayments</p><p><strong>Order</strong>{orderId}</p><p><strong>Status</strong>Waiting for payment</p></div><button type="button" className="ps-outline-action" onClick={() => actions.navigate('/order/status/preview')}>I have sent payment <ArrowRight size={17} /></button></section></div>
 }
 
 export function OrderFlowPage({ actions, models, pathname }: PageComponentProps) {
