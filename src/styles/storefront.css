@@ -194,7 +194,7 @@
 .ps-featured-vial {
   position: relative;
   display: grid;
-  min-height: 13rem;
+  min-height: 18rem;
   flex: 1;
   place-items: center;
   overflow: hidden;
@@ -221,19 +221,19 @@
 
 .ps-vial-halo {
   position: absolute;
-  width: 10rem;
-  height: 10rem;
+  width: 14rem;
+  height: 14rem;
   border-radius: 50%;
   background: var(--ps-accent);
-  filter: blur(38px);
+  filter: blur(48px);
   opacity: 0.34;
 }
 
 .ps-featured-vial img {
   position: relative;
   z-index: 1;
-  width: min(54%, 10rem);
-  max-height: 12rem;
+  width: min(75%, 16rem);
+  max-height: 17rem;
   object-fit: contain;
   filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.15));
 }
