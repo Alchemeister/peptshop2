@@ -194,7 +194,7 @@
 .ps-featured-vial {
   position: relative;
   display: grid;
-  min-height: 13rem;
+  min-height: 22rem;
   flex: 1;
   place-items: center;
   overflow: hidden;
@@ -221,19 +221,19 @@
 
 .ps-vial-halo {
   position: absolute;
-  width: 10rem;
-  height: 10rem;
+  width: 18rem;
+  height: 18rem;
   border-radius: 50%;
   background: var(--ps-accent);
-  filter: blur(38px);
+  filter: blur(58px);
   opacity: 0.34;
 }
 
 .ps-featured-vial img {
   position: relative;
   z-index: 1;
-  width: min(54%, 10rem);
-  max-height: 12rem;
+  width: min(85%, 20rem);
+  max-height: 21rem;
   object-fit: contain;
   filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.15));
 }
@@ -1003,24 +1003,24 @@
 
 .ps-catalog-card-visual::before {
   position: absolute;
-  width: 11rem;
-  height: 11rem;
+  width: 12rem;
+  height: 12rem;
   border-radius: 50%;
   background: var(--ps-accent);
   content: '';
-  filter: blur(36px);
-  opacity: 0.18;
+  filter: blur(48px);
+  opacity: 0.10;
 }
 
 .ps-catalog-card-visual::after {
   position: absolute;
-  width: 9rem;
-  height: 9rem;
+  width: 10rem;
+  height: 10rem;
   border-radius: 50%;
   background: var(--ps-accent);
   content: '';
-  filter: blur(32px);
-  opacity: 0.12;
+  filter: blur(42px);
+  opacity: 0.06;
 }
 
 .ps-catalog-card-visual > span,
@@ -1660,6 +1660,175 @@
   color: var(--ps-muted);
   font-size: 0.72rem;
   line-height: 1.5;
+}
+
+.ps-vendor-reviews {
+  grid-column: 1 / -1;
+  padding-top: 1rem;
+}
+
+.ps-vendor-reviews h2 {
+  font-size: 1.1rem;
+  font-weight: 650;
+  margin: 0 0 0.75rem;
+}
+
+.ps-review-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ps-review-summary strong {
+  font-size: 1.5rem;
+  font-weight: 650;
+}
+
+.ps-review-summary span {
+  color: var(--ps-muted);
+  font-size: 0.8rem;
+}
+
+.ps-review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ps-review-item {
+  border: 1px solid var(--ps-line);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  background: var(--ps-surface-raised);
+}
+
+.ps-review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.ps-review-head strong {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.ps-review-head span {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.ps-review-item p {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ps-ink);
+}
+
+.ps-review-item small {
+  color: var(--ps-muted);
+  font-size: 0.7rem;
+}
+
+.ps-vendor-reviews-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.ps-reviews-view-all {
+  font-size: 0.78rem;
+  color: var(--ps-accent, #FFA300);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ps-vendor-reviews-page {
+  padding-top: 1.5rem;
+}
+
+.ps-reviews-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--ps-line);
+}
+
+.ps-reviews-score {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.ps-reviews-score strong {
+  font-size: 2.5rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.ps-reviews-score span {
+  color: var(--ps-muted);
+  font-size: 0.85rem;
+}
+
+.ps-reviews-header > p {
+  margin: 0.5rem 0 0;
+  color: var(--ps-muted);
+  font-size: 0.82rem;
+}
+
+.ps-review-list-full {
+  gap: 1rem;
+}
+
+.ps-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ps-line);
+}
+
+.ps-pagination button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--ps-line-strong);
+  border-radius: 8px;
+  background: var(--ps-surface-raised);
+  color: var(--ps-ink);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.ps-pagination button:hover:not(:disabled) {
+  border-color: var(--ps-accent, #FFA300);
+}
+
+.ps-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ps-pagination .ps-pagination-prev {
+  transform: rotate(90deg);
+}
+
+.ps-pagination .ps-pagination-next {
+  transform: rotate(-90deg);
+}
+
+.ps-pagination-info {
+  font-size: 0.78rem;
+  color: var(--ps-muted);
 }
 
 .ps-vendor-catalog {

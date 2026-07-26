@@ -39,12 +39,12 @@
 .pageInner {
   width: min(100%, 78rem);
   margin: 0 auto;
-  padding: clamp(1.5rem, 3vw, 3.25rem) clamp(1rem, 3vw, 2.5rem) 5rem;
+  padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 3vw, 2.5rem) 3rem;
 }
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(17rem, 0.75fr);
+  grid-template-columns: 1fr;
   overflow: hidden;
   border: 1px solid var(--ps-line);
   border-radius: 16px;
@@ -56,7 +56,7 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  padding: clamp(1.5rem, 4vw, 4rem);
+  padding: clamp(1rem, 2.5vw, 1.75rem);
 }
 
 .backControl {
@@ -70,11 +70,11 @@
 .backControlFrame > a,
 .backControlFrame > button {
   display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
   place-items: center;
   border: 1px solid var(--ps-line-strong);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--ps-surface-raised);
   color: var(--ps-ink);
   cursor: pointer;
@@ -96,42 +96,42 @@
 }
 
 .heroTitleBlock {
-  margin-top: clamp(2.5rem, 6vw, 5.5rem);
+  margin-top: 0.5rem;
 }
 
 .heroTitleBlock h1 {
-  max-width: 12ch;
+  max-width: 18ch;
   margin: 0;
   color: var(--ps-ink);
-  font-size: clamp(2.9rem, 7vw, 6.6rem);
+  font-size: clamp(1.6rem, 3.5vw, 2.5rem);
   font-weight: 650;
   letter-spacing: -0.062em;
-  line-height: 0.92;
+  line-height: 0.95;
   text-wrap: balance;
 }
 
 .heroTitleBlock p {
   max-width: 34rem;
-  margin: 1.4rem 0 0;
+  margin: 0.75rem 0 0;
   color: var(--ps-muted);
-  font-size: clamp(1rem, 1.4vw, 1.15rem);
-  line-height: 1.65;
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  line-height: 1.5;
 }
 
 .heroOverview {
   max-width: 38rem;
-  margin: 1.4rem 0 0;
+  margin: 0.75rem 0 0;
   color: var(--ps-muted);
-  font-size: clamp(1rem, 1.4vw, 1.15rem);
-  line-height: 1.65;
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  line-height: 1.5;
 }
 
 .facts {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, max-content));
-  gap: 1.75rem;
-  margin: auto 0 0;
-  padding-top: 4rem;
+  grid-template-columns: repeat(3, minmax(0, max-content));
+  gap: 1.5rem;
+  margin: 0.75rem 0 0;
+  padding-top: 0;
 }
 
 .facts div {
@@ -160,7 +160,7 @@
 .productVisual {
   position: relative;
   display: grid;
-  min-height: 26rem;
+  min-height: 30rem;
   place-items: center;
   overflow: hidden;
   border-left: 1px solid var(--ps-line);
@@ -170,17 +170,19 @@
 
 .productVisualField {
   position: absolute;
-  inset: 12% 13% 10% 20%;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 50%;
   z-index: -1;
-  border-radius: 18px;
   background: var(--ps-accent);
-  box-shadow: 0 0 0 14rem rgba(255, 163, 0, 0.06);
+  filter: blur(50px);
+  opacity: 0.28;
   transform: rotate(0deg);
 }
 
 .productVisual img {
-  width: min(74%, 20rem);
-  max-height: 22rem;
+  width: min(90%, 26rem);
+  max-height: 26rem;
   object-fit: contain;
   filter: drop-shadow(0 28px 24px rgba(37, 42, 49, 0.22));
 }
@@ -202,12 +204,12 @@
 .dosageRail {
   display: grid;
   grid-column: 1 / -1;
-  grid-template-columns: minmax(10rem, 0.28fr) minmax(0, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: minmax(8rem, 0.22fr) minmax(0, 1fr);
+  gap: 1rem;
   align-items: center;
   border-top: 1px solid var(--ps-line);
   background: var(--ps-surface);
-  padding: 1.15rem clamp(1.5rem, 4vw, 4rem);
+  padding: 0.75rem clamp(1rem, 2.5vw, 1.75rem);
 }
 
 .dosagePrompt {
@@ -278,19 +280,19 @@
 .unavailable {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 1.25rem;
+  gap: 1rem;
   align-items: center;
-  margin-top: 1.25rem;
+  margin-top: 0.75rem;
   border: 1px solid var(--ps-line);
-  border-radius: 16px;
+  border-radius: 12px;
   background: var(--ps-surface-raised);
-  padding: clamp(1.25rem, 3vw, 2rem);
+  padding: clamp(0.85rem, 2vw, 1.25rem);
 }
 
 .unavailableIcon {
   display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
   place-items: center;
   border-radius: 50%;
   background: var(--ps-accent-soft);
@@ -375,10 +377,10 @@
 .offers {
   display: grid;
   grid-template-columns: minmax(12rem, 0.32fr) minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 4rem);
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  margin-top: 0.75rem;
   border-top: 1px solid var(--ps-line-strong);
-  padding-top: clamp(1.25rem, 2.5vw, 2rem);
+  padding-top: clamp(0.85rem, 2vw, 1.25rem);
 }
 
 .about h2,
@@ -614,18 +616,18 @@
   }
 
   .heroTitleBlock {
-    margin-top: 2.5rem;
+    margin-top: 0.5rem;
   }
 
   .heroTitleBlock h1 {
-    font-size: clamp(2.8rem, 15vw, 4.7rem);
+    font-size: clamp(1.4rem, 7vw, 2rem);
     line-height: 0.95;
   }
 
   .facts {
     grid-template-columns: 1fr;
-    gap: 1rem;
-    padding-top: 2.5rem;
+    gap: 0.5rem;
+    padding-top: 0;
   }
 
   .productVisual {

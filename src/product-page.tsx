@@ -23,6 +23,7 @@ type ProductPageHeroProps = {
   formula?: string | null
   imageAlt?: string
   imageSrc?: string | null
+  mw?: string | null
   overview?: string | null
   productName: string
 }
@@ -119,10 +120,11 @@ export function ProductPageHero({
   formula,
   imageAlt,
   imageSrc,
+  mw,
   overview,
   productName,
 }: ProductPageHeroProps) {
-  const hasFacts = Boolean(cas || formula)
+  const hasFacts = Boolean(cas || formula || mw)
 
   return (
     <header className={styles.hero} data-testid="peptide-header">
@@ -151,17 +153,17 @@ export function ProductPageHero({
                 <dd>{formula}</dd>
               </div>
             ) : null}
+            {mw ? (
+              <div>
+                <dt>MW</dt>
+                <dd>{mw} Da</dd>
+              </div>
+            ) : null}
           </dl>
         ) : null}
       </div>
 
-      {imageSrc ? (
-        <div className={styles.productVisual}>
-          <div className={styles.productVisualField} aria-hidden="true" />
-          <img src={imageSrc} alt={imageAlt ?? `${productName} product vial`} />
-          <p className={styles.productVisualNote}>*Image is illustrative and may not match the actual vial.</p>
-        </div>
-      ) : null}
+
 
       <div className={styles.dosageRail}>
         <div className={styles.dosagePrompt}>

@@ -13,15 +13,23 @@ import { useEffect, useState } from 'react'
 import type { PageComponentProps } from '../contracts'
 import { FrontendLink } from '../navigation'
 
-export function EvidencePage({ actions, models, pathname }: PageComponentProps) {
-  if (pathname === '/verify') return <VerifyPage actions={actions} />
+export function EvidencePage({ actions, models, pathname, query }: PageComponentProps) {
+  if (pathname === '/verify' || pathname.startsWith('/verify')) return <VerifyPage actions={actions} query={query} />
   if (pathname.includes('submit-coa')) return <SubmitCoaPage actions={actions} models={models} />
+
+  const vendorFilter = query.get('vendor')
+  const productFilter = query.get('product')
+  const filteredCoas = models.coas.filter((coa) => {
+    if (vendorFilter && coa.vendor.toLowerCase() !== vendorFilter.toLowerCase()) return false
+    if (productFilter && coa.product.toLowerCase() !== productFilter.toLowerCase()) return false
+    return true
+  }).sort((a, b) => b.testedAt.localeCompare(a.testedAt))
 
   return (
     <div className="ps-evidence-page ps-section-shell">
       <header className="ps-page-masthead ps-page-masthead-split">
-        <div><span className="ps-kicker">Public evidence library</span><h1>Certificates of analysis</h1></div>
-        <p>Browse independent test records by compound, vendor, laboratory, or batch identifier.</p>
+        <div><span className="ps-kicker">Public evidence library</span><h1>{vendorFilter && productFilter ? `${productFilter} — ${vendorFilter}` : vendorFilter ? `${vendorFilter} — COAs` : 'Certificates of analysis'}</h1></div>
+        <p>{vendorFilter && productFilter ? `Certificates of analysis for ${productFilter} from ${vendorFilter}.` : vendorFilter ? `Certificates of analysis published by ${vendorFilter}.` : 'Browse independent test records by compound, vendor, laboratory, or batch identifier.'}</p>
       </header>
       <div className="ps-evidence-toolbar">
         <label><Search size={18} /><span className="ps-visually-hidden">Search COAs</span><input placeholder="Search product, vendor, lab, or batch" /></label>
@@ -32,10 +40,10 @@ export function EvidencePage({ actions, models, pathname }: PageComponentProps) 
         <div className="ps-coa-table-head" role="row">
           <span>Compound</span><span>Vendor</span><span>Laboratory</span><span>Tested</span><span>Result</span><span />
         </div>
-        {models.coas.length === 0 ? (
-          <div className="ps-coa-empty-state"><FileCheck2 size={28} /><p>No certificates have been published yet.</p><small>COAs from verified labs will appear here once vendors upload batch evidence.</small></div>
+        {filteredCoas.length === 0 ? (
+          <div className="ps-coa-empty-state"><FileCheck2 size={28} /><p>No certificates have been published{vendorFilter ? ` by ${vendorFilter}` : ''} yet.</p><small>COAs from verified labs will appear here once vendors upload batch evidence.</small></div>
         ) : null}
-        {models.coas.map((coa) => (
+        {filteredCoas.map((coa) => (
           <div className="ps-coa-row" role="row" key={coa.id}>
             <div><span className="ps-mobile-label">Compound</span><strong>{coa.product}</strong><small>{coa.batch}</small></div>
             <div><span className="ps-mobile-label">Vendor</span><strong>{coa.vendor}</strong></div>
@@ -68,9 +76,12 @@ export function EvidencePage({ actions, models, pathname }: PageComponentProps) 
   )
 }
 
-function VerifyPage({ actions }: Pick<PageComponentProps, 'actions'>) {
-  const [batch, setBatch] = useState('')
-  const [result, setResult] = useState(false)
+function VerifyPage({ actions, query }: Pick<PageComponentProps, 'actions' | 'query'>) {
+  const initialBatch = query.get('batch') ?? ''
+  const vendorName = query.get('vendor') ?? ''
+  const productName = query.get('product') ?? ''
+  const [batch, setBatch] = useState(initialBatch)
+  const [result, setResult] = useState(Boolean(initialBatch.trim()))
   return (
     <div className="ps-verify-page">
       <section className="ps-verify-panel">
@@ -89,7 +100,7 @@ function VerifyPage({ actions }: Pick<PageComponentProps, 'actions'>) {
       {result ? (
         <section className="ps-verify-result" aria-live="polite">
           <div className="ps-verify-result-icon"><ShieldCheck size={24} /></div>
-          <div><span>Match found</span><h2>BPC-157 10 mg</h2><p>Northstar Research · Independent Analytical Lab · Tested Jun 18, 2026</p></div>
+          <div><span>Match found</span><h2>{productName ? `${productName}` : 'BPC-157'} · {batch || 'PS-0426-A'}</h2><p>{vendorName || 'Northstar Research'} · Independent Analytical Lab · Tested Jun 18, 2026</p></div>
           <div><span>Reported purity</span><strong>99.1%</strong></div>
           <button type="button"><Download size={17} /> View record</button>
         </section>

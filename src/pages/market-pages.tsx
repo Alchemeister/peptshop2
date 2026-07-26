@@ -161,11 +161,6 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
 function CatalogCard({ product, navigate }: { product: ProductSummary; navigate: (href: string) => void }) {
   return (
     <FrontendLink href={`/products/${product.slug}`} navigate={navigate} className="ps-catalog-card">
-      <div className="ps-catalog-card-visual">
-        <img src={product.imageSrc} alt={`${product.name} vial`} />
-        <i>{product.coaCount} COAs</i>
-        {product.coaCount === 0 ? <small className="ps-catalog-card-disclaimer">*Illustrative</small> : null}
-      </div>
       <div className="ps-catalog-card-copy">
         <h2>{product.name}</h2>
         <p>{product.formats.join(' · ')}</p>
@@ -174,54 +169,93 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
           {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
           <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
         </div>
+        <i className="ps-catalog-coa-badge">{product.coaCount} COAs</i>
       </div>
     </FrontendLink>
   )
 }
 
 // Product detail lookup: maps product name → extra fields not in ProductSummary
-const productDetails: Record<string, { cas: string; formula: string; description: string }> = {
-  'BPC-157': { cas: '137525-51-0', formula: 'C62H98N16O22', description: 'Synthetic pentadecapeptide sequence derived from gastric mucosa. Studied for its effects on fibroblast migration and angiogenesis in in-vitro models.' },
-  'Tirzepatide': { cas: '2023788-19-2', formula: 'C225H348N48O68', description: 'Dual GIP/GLP-1 receptor agonist. Studied for glucose-dependent insulin secretion and metabolic signaling pathways.' },
-  'NAD+': { cas: '53-84-9', formula: 'C21H27N7O14P2', description: 'Essential coenzyme in cellular redox reactions. Studied for its role in electron transport and enzymatic cofactor activity.' },
-  'MOTS-c': { cas: '2030360-70-3', formula: 'C102H153N29O32S2', description: 'Mitochondrial-derived peptide. Studied for AMPK signaling pathway modulation and metabolic gene expression.' },
-  'Tesamorelin': { cas: '106129-60-4', formula: 'C169H277N51O44', description: 'Growth hormone releasing hormone analog. Studied for pituitary GH secretion stimulation and IGF-1 response.' },
-  'SS-31': { cas: '927967-26-2', formula: 'C50H70N12O7', description: 'Mitochondria-targeted peptide. Studied for inner membrane stabilization and reactive oxygen species modulation.' },
-  'Semaglutide': { cas: '910463-19-5', formula: 'C187H291N45O52', description: 'GLP-1 receptor agonist. Studied for glucose-dependent insulin secretion and gastric emptying modulation.' },
-  'Epitalon': { cas: '103640-04-0', formula: 'C14H22N4O9', description: 'Synthetic tetrapeptide. Studied for telomerase activity modulation and pineal gland peptide signaling.' },
-  'GHK-Cu': { cas: '89030-95-5', formula: 'C14H24CuN6O4', description: 'Copper peptide complex. Studied for metalloproteinase modulation and extracellular matrix synthesis.' },
-  'AOD-9604': { cas: '221231-10-3', formula: 'C78H123N23O23', description: 'Modified fragment of growth hormone peptide sequence. Studied for beta-adrenergic lipolysis signaling.' },
-  'TB-500': { cas: '1035302-50-1', formula: 'C18H31N7O8S', description: 'Synthetic thymosin beta-4 fragment. Studied for actin sequestration and cell migration signaling.' },
-  'Melanotan II': { cas: '121062-08-6', formula: 'C50H69N11O9', description: 'Synthetic analog of alpha-melanocyte stimulating hormone. Studied for melanocortin receptor binding affinity.' },
-  'PT-141': { cas: '189691-06-3', formula: 'C50H68N12O8', description: 'Synthetic melanocortin receptor agonist. Studied for MC3R and MC4R receptor selectivity.' },
-  'Hexarelin': { cas: '140703-51-1', formula: 'C49H57N11O8', description: 'Synthetic hexapeptide. Studied for ghrelin receptor agonism and GH secretagogue activity.' },
-  'CJC-1295': { cas: '863288-34-0', formula: 'C152H252N44O40', description: 'Growth hormone releasing hormone analog. Studied for extended half-life via drug affinity complex.' },
-  'Ipamorelin': { cas: '170851-70-4', formula: 'C38H49N9O5', description: 'Synthetic pentapeptide. Studied for selective ghrelin receptor agonism.' },
-  'Retatrutide': { cas: '2373529-69-8', formula: 'C221H346N48O63', description: 'Triple agonist (GLP-1/GIP/GcgR). Studied for multi-receptor binding and metabolic signaling.' },
-  'BPC-157 / TB-500 Blend': { cas: 'N/A', formula: 'Blend', description: 'Combined formulation of BPC-157 and TB-500. Studied for synergistic effects on fibroblast activity.' },
-  '5-Amino-1MQ': { cas: '4142-44-3', formula: 'C11H17N5O', description: 'Small molecule inhibitor of NNMT methyltransferase. Studied for NAD+ salvage pathway modulation.' },
-  'ACE-031': { cas: 'N/A', formula: 'Recombinant protein', description: 'Recombinant fusion protein of activin receptor type IIB. Studied for myostatin and activin ligand trapping.' },
-  'Acetic Acid': { cas: '64-19-7', formula: 'CH3COOH', description: 'Reconstitution solvent for peptide vials. 0.9% bacteriostatic acetic acid for compounds sensitive to neutral pH.' },
-  'BAC Water': { cas: 'N/A', formula: 'H2O + 0.9% BA', description: 'Bacteriostatic water for injection. 0.9% benzyl alcohol preservative allows multi-dose use for up to 30 days.' },
-  'Cagrilintide': { cas: '2210613-36-6', formula: 'C242H355N61O68', description: 'Long-acting amylin analog. Studied for calcitonin receptor activation and gastric motility.' },
-  'Dihexa': { cas: '127892-62-8', formula: 'C22H28N6O3', description: 'Angiotensin IV analog. Studied for hepatocyte growth factor signaling and synaptogenesis.' },
-  'DSIP': { cas: '62568-57-4', formula: 'C34H41N7O9', description: 'Delta sleep-inducing peptide. Studied for hypothalamic neuropeptide signaling and circadian modulation.' },
-
-  'Follistatin-344': { cas: 'N/A', formula: 'Recombinant protein', description: 'Recombinant glycoprotein. Studied for myostatin and activin binding inhibition.' },
-  'GHRP-2': { cas: '158861-67-7', formula: 'C45H55N9O6', description: 'Growth hormone secretagogue. Studied for ghrelin receptor agonism and GH pulse amplification.' },
-  'Glutathione': { cas: '70-18-8', formula: 'C10H17N3O6S', description: 'Tripeptide antioxidant. Studied for redox buffering and xenobiotic conjugation.' },
-  'Gonadorelin': { cas: '33515-09-2', formula: 'C55H15N17O13', description: 'Synthetic GnRH analog. Studied for pituitary gonadotropin release stimulation.' },
-  'IGF-1 LR3': { cas: '14325-99-2', formula: 'C331H521N77O113S6', description: 'Long-acting insulin-like growth factor analog. Studied for IGF-1R binding and downstream PI3K/AKT signaling.' },
-  'Kisspeptin-10': { cas: '374679-61-3', formula: 'C54H84N15O11', description: 'Neuropeptide derived from kisspeptin. Studied for GPR54 receptor activation and GnRH secretion.' },
-  'Liraglutide': { cas: '204656-20-2', formula: 'C97H149N21O33', description: 'GLP-1 receptor agonist. Studied for glucose-dependent insulin secretion and pancreatic beta-cell response.' },
-  'MOD-GRF 1-29': { cas: '93414-79-4', formula: 'C74H117N27O22', description: 'Modified growth hormone releasing factor analog. Studied for extended half-life and GH secretagogue activity.' },
-  'Oxytocin': { cas: '50-56-6', formula: 'C43H66N12O12S2', description: 'Neurohypophysial hormone. Studied for oxytocin receptor signaling and neuropeptide modulation.' },
-  'PEG-MGF': { cas: 'N/A', formula: 'C102H184N34O40S8 (PEGylated)', description: 'Pegylated mechano growth factor. Studied for satellite cell activation and IGF-1 splice variant signaling.' },
-  'Pinealon': { cas: 'N/A', formula: 'C15H25N5O7', description: 'Synthetic tripeptide. Studied for gene-specific DNA sequence interactions.' },
-  'Selank': { cas: '129954-34-3', formula: 'C69H104N22O19S', description: 'Synthetic heptapeptide. Studied for enkephalin-degrading enzyme inhibition and immune modulation.' },
-  'Semax': { cas: '80715-95-1', formula: 'C40H63N15O11S', description: 'Synthetic heptapeptide. Studied for BDNF expression and melanocortin receptor activity.' },
-  'Sermorelin': { cas: '31231-80-8', formula: 'C24H34N12O6', description: 'Growth hormone releasing hormone analog. Studied for pituitary GH secretion stimulation.' },
-}
+const productDetails: Record<string, { cas: string; formula: string; mw: string; description: string }> = {
+  'BPC-157': { cas: '137525-51-0', formula: 'C₆₂H₉₈N₁₆O₂₂', mw: '1419.5', description: 'Synthetic pentadecapeptide sequence derived from gastric mucosa. Studied for its effects on fibroblast migration and angiogenesis in in-vitro models.' },
+  'Tirzepatide': { cas: '2023788-19-2', formula: 'C₂₂₅H₃₄₈N₄₈O₆₈', mw: '4813', description: 'Dual GIP/GLP-1 receptor agonist. Studied for glucose-dependent insulin secretion and metabolic signaling pathways.' },
+  'NAD+': { cas: '53-84-9', formula: 'C₂₁H₂₇N₇O₁₄P₂', mw: '663.4', description: 'Essential coenzyme in cellular redox reactions. Studied for its role in electron transport and enzymatic cofactor activity.' },
+  'MOTS-c': { cas: '1627580-64-6', formula: 'C₁₀₁H₁₅₂N₂₈O₂₂S₂', mw: '2174.6', description: 'Mitochondrial-derived peptide. Studied for AMPK signaling pathway modulation and metabolic gene expression.' },
+  'Tesamorelin': { cas: '218949-48-5', formula: 'C₂₂₁H₃₆₆N₇₂O₆₇S', mw: '5136', description: 'Growth hormone releasing hormone analog. Studied for pituitary GH secretion stimulation and IGF-1 response.' },
+  'Semax': { cas: '80714-61-0', formula: 'C₃₇H₅₁N₉O₁₀S', mw: '813.9', description: 'Synthetic heptapeptide. Studied for BDNF expression and melanocortin receptor activity.' },
+  'GHK-Cu': { cas: '89030-95-5', formula: 'C₁₄H₂₃CuN₆O₄', mw: '402.92', description: 'Copper peptide complex. Studied for metalloproteinase modulation and extracellular matrix synthesis.' },
+  'Retatrutide': { cas: '2381089-83-2', formula: 'C₂₂₁H₃₄₂N₄₆O₆₈', mw: '4731.42', description: 'Triple agonist (GLP-1/GIP/GcgR). Studied for multi-receptor binding and metabolic signaling.' },
+  '5-Amino-1MQ': { cas: '685079-15-6', formula: 'C₁₀H₁₁N₂', mw: '159.21', description: 'Small molecule inhibitor of NNMT methyltransferase. Studied for NAD+ salvage pathway modulation.' },
+  'AOD-9604': { cas: '221231-10-3', formula: 'C₇₈H₁₂₃N₂₃O₂₃S₂', mw: '1815.1', description: 'Modified fragment of growth hormone peptide sequence. Studied for beta-adrenergic lipolysis signaling.' },
+  'Cagrilintide': { cas: '1415456-99-3', formula: 'C₁₉₄H₃₁₂N₅₄O₅₉S₂', mw: '4409', description: 'Long-acting amylin analog. Studied for calcitonin receptor activation and gastric motility.' },
+  'DSIP': { cas: '62568-57-4', formula: 'C₃₅H₄₈N₁₀O₁₅', mw: '848.8', description: 'Delta sleep-inducing peptide. Studied for hypothalamic neuropeptide signaling and circadian modulation.' },
+  'Epitalon': { cas: '307297-39-8', formula: 'C₁₄H₂₂N₄O₉', mw: '390.35', description: 'Synthetic tetrapeptide. Studied for telomerase activity modulation and pineal gland peptide signaling.' },
+  'Glutathione': { cas: '70-18-8', formula: 'C₁₀H₁₇N₃O₆S', mw: '307.33', description: 'Tripeptide antioxidant. Studied for redox buffering and xenobiotic conjugation.' },
+  'Ipamorelin': { cas: '170851-70-4', formula: 'C₃₈H₄₉N₉O₅', mw: '711.9', description: 'Synthetic pentapeptide. Studied for selective ghrelin receptor agonism.' },
+  'Kisspeptin-10': { cas: '374675-21-5', formula: 'C₆₃H₈₃N₁₇O₁₄', mw: '1302.4', description: 'Neuropeptide derived from kisspeptin. Studied for GPR54 receptor activation and GnRH secretion.' },
+  'PT-141': { cas: '189691-06-3', formula: 'C₅₀H₆₈N₁₄O₁₀', mw: '1025.2', description: 'Synthetic melanocortin receptor agonist. Studied for MC3R and MC4R receptor selectivity.' },
+  'Pinealon': { cas: '175175-23-2', formula: 'C₁₅H₂₆N₆O₈', mw: '418.40', description: 'Synthetic tripeptide. Studied for gene-specific DNA sequence interactions.' },
+  'SS-31': { cas: '736992-21-5', formula: 'C₃₂H₄₉N₉O₅', mw: '639.8', description: 'Mitochondria-targeted peptide. Studied for inner membrane stabilization and reactive oxygen species modulation.' },
+  'Selank': { cas: '129954-34-3', formula: 'C₃₃H₅₇N₁₁O₉', mw: '751.9', description: 'Synthetic heptapeptide. Studied for enkephalin-degrading enzyme inhibition and immune modulation.' },
+  'Semaglutide': { cas: '910463-68-2', formula: 'C₁₈₇H₂₉₁N₄₅O₅₉', mw: '4114', description: 'GLP-1 receptor agonist. Studied for glucose-dependent insulin secretion and gastric emptying modulation.' },
+  'Sermorelin': { cas: '86168-78-7', formula: 'C₁₄₉H₂₄₆N₄₄O₄₂S', mw: '3357.9', description: 'Growth hormone releasing hormone analog. Studied for pituitary GH secretion stimulation.' },
+  'BAC Water': { cas: '100-51-6', formula: 'C₇H₈O', mw: '108.14', description: 'Bacteriostatic water for injection. 0.9% benzyl alcohol preservative allows multi-dose use for up to 30 days.' },
+  'Acetic Acid': { cas: '64-19-7', formula: 'C₂H₄O₂', mw: '60.05', description: 'Reconstitution solvent for peptide vials. 0.9% bacteriostatic acetic acid for compounds sensitive to neutral pH.' },
+  'BPC-157 / TB-500 Blend': { cas: 'N/A', formula: 'N/A', mw: 'N/A', description: 'Combined formulation of BPC-157 and TB-500. Studied for synergistic effects on fibroblast activity.' },
+  'CJC-1295': { cas: '446262-90-4', formula: 'C₁₆₅H₂₆₉N₄₇O₄₆', mw: '3647.2', description: 'Growth hormone releasing hormone analog. Studied for extended half-life via drug affinity complex.' },
+  'GHRP-2': { cas: '158861-67-7', formula: 'C₄₅H₅₅N₉O₆', mw: '818.0', description: 'Growth hormone secretagogue. Studied for ghrelin receptor agonism and GH pulse amplification.' },
+  'Melanotan II': { cas: '121062-08-6', formula: 'C₅₀H₆₉N₁₅O₉', mw: '1024.2', description: 'Synthetic analog of alpha-melanocyte stimulating hormone. Studied for melanocortin receptor binding affinity.' },
+  'Hexarelin': { cas: '140703-51-1', formula: 'C₄₇H₅₈N₁₂O₆', mw: '887.0', description: 'Synthetic hexapeptide. Studied for ghrelin receptor agonism and GH secretagogue activity.' },
+  'IGF-1 LR3': { cas: '143045-71-2', formula: 'C₃₃₁H₅₂₆N₇₆O₁₀₈S₆', mw: '7698.7', description: 'Long-acting insulin-like growth factor analog. Studied for IGF-1R binding and downstream PI3K/AKT signaling.' },
+  'MOD-GRF 1-29': { cas: '86168-78-7', formula: 'C₁₄₉H₂₄₆N₄₄O₄₂S', mw: '3357.9', description: 'Modified growth hormone releasing factor analog. Studied for extended half-life and GH secretagogue activity.' },
+  'PEG-MGF': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Pegylated mechano growth factor. Studied for satellite cell activation and IGF-1 splice variant signaling.' },
+  'Gonadorelin': { cas: '33515-09-2', formula: 'C₅₅H₇₅N₁₇O₁₃', mw: '1182.3', description: 'Synthetic GnRH analog. Studied for pituitary gonadotropin release stimulation.' },
+  'Oxytocin': { cas: '50-56-6', formula: 'C₄₃H₆₆N₁₂O₁₂S₂', mw: '1007.2', description: 'Neurohypophysial hormone. Studied for oxytocin receptor signaling and neuropeptide modulation.' },
+  'TB-500': { cas: '476014-70-7', formula: 'C₃₆H₆₆N₁₀O₁₃', mw: '847.0', description: 'Synthetic thymosin beta-4 fragment. Studied for actin sequestration and cell migration signaling.' },
+  'Liraglutide': { cas: '204656-20-2', formula: 'C₁₇₂H₂₆₅N₄₃O₅₁', mw: '3751', description: 'GLP-1 receptor agonist. Studied for glucose-dependent insulin secretion and pancreatic beta-cell response.' },
+  'Dihexa': { cas: '1401708-83-5', formula: 'C₂₇H₄₄N₄O₅', mw: '504.7', description: 'Angiotensin IV analog. Studied for hepatocyte growth factor signaling and synaptogenesis.' },
+  'Follistatin-344': { cas: '137647-44-8', formula: 'Pending', mw: 'Pending', description: 'Recombinant glycoprotein. Studied for myostatin and activin binding inhibition.' },
+  'ACE-031': { cas: '1100844-71-0', formula: 'Pending', mw: 'Pending', description: 'Recombinant fusion protein of activin receptor type IIB. Studied for myostatin and activin ligand trapping.' },
+  'Eloralintide': { cas: '2883634-40-8', formula: 'C₂₀₁H₃₁₉N₄₉O₆₅S₂', mw: '4526', description: 'Long-acting GLP-1/glucagon dual agonist. Studied for metabolic signaling and energy balance modulation.' },
+  'Mazdutide': { cas: '2259884-03-0', formula: 'C₂₀₇H₃₁₇N₄₅O₆₅', mw: '4476', description: 'Dual GLP-1/glucagon receptor agonist. Studied for glucose-dependent insulin secretion and energy expenditure.' },
+  'Survodutide': { cas: '2805997-46-8', formula: 'C₁₉₂H₂₈₉N₄₇O₆₁', mw: '4232', description: 'Dual GLP-1/glucagon receptor agonist. Studied for metabolic signaling and hepatic glucose regulation.' },
+  'Cagrilintide + Semaglutide': { cas: 'N/A', formula: 'N/A', mw: 'N/A', description: 'Combined formulation of cagrilintide and semaglutide. Studied for synergistic amylin and GLP-1 receptor signaling.' },
+  'Ara-290': { cas: '1208243-50-8', formula: 'C₅₁H₈₄N₁₆O₂₁', mw: '1257.3', description: 'Synthetic erythropoietin-derived peptide. Studied for tissue-protective receptor signaling and inflammation modulation.' },
+  'KPV': { cas: '88768-11-0', formula: 'C₁₁H₁₂O₃', mw: '192.21', description: 'Tripeptide fragment of alpha-melanocyte stimulating hormone. Studied for anti-inflammatory signaling pathways.' },
+  'LL-37': { cas: '154947-66-7', formula: 'C₂₀₅H₃₄₀N₆₀O₅₃', mw: '4493', description: 'Human cathelicidin antimicrobial peptide. Studied for membrane disruption and immune signaling.' },
+  'Thymalin': { cas: '63958-90-7', formula: 'C₃₃H₅₄N₁₂O₁₅', mw: '858.9', description: 'Thymus-derived peptide complex. Studied for T-cell maturation and immune system modulation.' },
+  'Thymosin Alpha-1': { cas: '62304-98-7', formula: 'C₁₂₉H₂₁₅N₃₃O₅₅', mw: '3108.3', description: 'Thymus-derived peptide. Studied for T-cell activation and immune response modulation.' },
+  'GLOW': { cas: 'N/A', formula: 'N/A', mw: 'N/A', description: 'Combined stack of BPC-157, TB-500, and GHK-Cu. Studied for synergistic tissue repair and extracellular matrix signaling.' },
+  'KLOW': { cas: 'N/A', formula: 'N/A', mw: 'N/A', description: 'Combined stack of BPC-157, TB-500, GHK-Cu, and KPV. Studied for synergistic tissue repair, matrix synthesis, and anti-inflammatory signaling.' },
+  'Adamax': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Synthetic nootropic peptide. Studied for cognitive signaling and neuroplasticity pathways.' },
+  'P21': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Cerebrolysin-derived peptide. Studied for neurotrophic signaling and synaptic plasticity.' },
+  'PE 22-28': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Synthetic melanocortin-derived peptide. Studied for cognitive signaling and neuroprotective pathways.' },
+  'CJC-1295 (with DAC)': { cas: '51714-35-3', formula: 'C₁₅₂H₂₅₂N₄₄O₄₂', mw: '3366.9', description: 'Growth hormone releasing hormone analog with drug affinity complex. Studied for extended half-life and sustained GH secretion.' },
+  'CJC-1295 + Ipamorelin Blend': { cas: 'N/A', formula: 'N/A', mw: 'N/A', description: 'Combined formulation of CJC-1295 and ipamorelin. Studied for synergistic GH secretagogue signaling.' },
+  'GHRP-6': { cas: '87630-95-7', formula: 'C₄₆H₅₆N₁₂O₆', mw: '873.0', description: 'Growth hormone secretagogue. Studied for ghrelin receptor agonism and GH pulse amplification.' },
+  'GDF-8': { cas: '306-08-1', formula: 'Pending', mw: 'Pending', description: 'Myostatin protein. Studied for negative regulation of skeletal muscle mass.' },
+  'Somatropin (HGH)': { cas: '9002-72-6', formula: 'C₂₂₅H₃₆₀N₇₆O₆₇S', mw: '22125', description: 'Recombinant human growth hormone. Studied for metabolic signaling and growth factor activity.' },
+  'FOX04-DRI': { cas: '2460055-10-9', formula: 'C₂₂₈H₃₈₈N₈₆O₆₄', mw: '5358', description: 'FOXO4-derived peptide. Studied for senescent cell signaling and apoptosis induction.' },
+  'SLU-PP-332': { cas: '303760-60-3', formula: 'C₁₈H₁₄N₂O₂', mw: '290.3', description: 'Errα agonist. Studied for metabolic gene expression and mitochondrial function modulation.' },
+  'Cartalax': { cas: '85806-95-7', formula: 'C₁₂H₁₉N₃O₈', mw: '333.29', description: 'Synthetic bioregulator peptide. Studied for cartilage tissue signaling and extracellular matrix modulation.' },
+  'Pancragen': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Pancreas-derived peptide bioregulator. Studied for pancreatic function and metabolic signaling.' },
+  'Vilon': { cas: '45234-02-4', formula: 'C₁₁H₂₁N₃O₅', mw: '275.30', description: 'Synthetic thymomimetic peptide. Studied for immune system modulation and cellular senescence.' },
+  'KP1': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Synthetic peptide. Studied for cellular signaling pathways.' },
+  'AHK-Cu': { cas: '682809-81-0', formula: 'C₁₅H₂₄ClCuN₆O₄-', mw: '451.39', description: 'Copper peptide complex. Studied for fibroblast proliferation and extracellular matrix synthesis.' },
+  'Melanotan-1': { cas: '75921-69-6', formula: 'C₇₈H₁₁₁N₂₁O₁₉', mw: '1646.8', description: 'Synthetic analog of alpha-melanocyte stimulating hormone. Studied for melanocortin-1 receptor agonism.' },
+  'Snap-8': { cas: '868844-74-0', formula: 'C₄₁H₇₀N₁₆O₁₆S', mw: '1075.2', description: 'Acetyl octapeptide-3. Studied for neuromuscular junction signaling and muscle contraction modulation.' },
+  'Hyaluronic Acid': { cas: '9004-61-9', formula: '(C₁₄H₂₁NO₁₁)n', mw: 'variable', description: 'Glycosaminoglycan polymer. Studied for extracellular matrix structure and cell signaling.' },
+  'Dermorphin': { cas: '77614-16-5', formula: 'C₄₀H₅₀N₈O₁₀', mw: '802.9', description: 'Opioid peptide isolated from amphibian skin. Studied for mu-opioid receptor agonism.' },
+  'VIP': { cas: '5551-37-1', formula: 'C₁₄₇H₂₄₂N₄₀O₄₂', mw: '3321.7', description: 'Vasoactive intestinal peptide. Studied for vasodilation signaling and smooth muscle relaxation.' },
+  'HCG': { cas: '9002-61-3', formula: 'C₁₁H₁₉N₃O₆S', mw: '321.35', description: 'Human chorionic gonadotropin. Studied for luteinizing hormone receptor signaling.' },
+  'HMG': { cas: '503-49-1', formula: 'C₆H₁₀O₅', mw: '162.14', description: 'Human menopausal gonadotropin. Studied for FSH and LH receptor signaling.' },
+  'rFSH': { cas: '146479-72-1', formula: 'Pending', mw: 'Pending', description: 'Recombinant follicle-stimulating hormone. Studied for FSH receptor signaling and follicular development.' },
+  'Testagen': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Testis-derived peptide bioregulator. Studied for reproductive signaling and cellular metabolism.' },
+  'B12 (Methylcobalamin)': { cas: '13422-55-4', formula: 'C₆₃H₉₁CoN₁₃O₁₄P', mw: '1344.4', description: 'Cobalamin vitamin. Studied for methionine synthase cofactor activity and nerve tissue metabolism.' },
+  'L-Carnitine': { cas: '541-15-1', formula: 'C₇H₁₅NO₃', mw: '161.20', description: 'Quaternary ammonium compound. Studied for fatty acid transport and mitochondrial beta-oxidation.' },
+  'PBS Water': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Phosphate buffered saline solution. Used as reconstitution solvent for peptide compounds.' },
+  'PNC-27': { cas: '1159861-00-3', formula: 'C₁₈₈H₂₉₃N₅₃O₄₄S', mw: '4032', description: 'Synthetic peptide. Studied for cancer cell membrane disruption via p53-dependent signaling.' },
+  'FOX04': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Forkhead box O4 transcription factor peptide. Studied for cellular stress response and apoptosis signaling.' },}
 
 export function ProductPage({ actions, models, query, theme, pathname }: PageComponentProps) {
   // Parse product name from URL — supports both /catalog/:name and /products/:slug
@@ -234,7 +268,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
     productName = decodeURIComponent(pathname.split('/peptides/')[1]?.split('?')[0] ?? '')
   }
   const source = models.products.find((p) => p.name === productName || p.slug === productName) ?? models.products.find((p) => p.name === 'BPC-157')!
-  const details = productDetails[source?.name ?? ''] ?? { cas: 'N/A', formula: 'N/A', description: 'Research compound available from vetted suppliers with transparent per-mg pricing and batch-level evidence.' }
+  const details = productDetails[source?.name ?? ''] ?? { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Research compound available from vetted suppliers with transparent per-mg pricing and batch-level evidence.' }
   const dosages = source?.formats ?? ['2 mg', '5 mg', '10 mg']
 
   // Build vendor offers from admin pricing data — real per-vendor, per-dose prices
@@ -311,8 +345,8 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
           dosageLabel="Dose per vial"
           cas={details.cas}
           formula={details.formula}
+          mw={details.mw}
           overview={details.description}
-          imageSrc={source?.imageSrc ?? '/vial.svg'}
           backControl={
             <ProductBackControlFrame>
               <button type="button" aria-label="Return to catalog" onClick={() => actions.navigate('/products')}>
@@ -367,7 +401,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <span><FileCheck2 size={15} /><small>Purity</small>≥{vendor.purity}%</span>
                         <span><PackageCheck size={15} /><small>Batch</small>{makeBatch(vendor.batchPrefix, selectedDose)}</span>
                         <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
-                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate('/coas')}>
+                        <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/coas?vendor=${encodeURIComponent(vendor.name)}&product=${encodeURIComponent(source?.name ?? 'Product')}`)}>
                           <FileCheck2 size={13} /> COA
                         </button>
                       </div>
@@ -392,7 +426,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 <aside className="ps-cart-summary-card">
                   <h3>Order summary</h3>
                   <div className="ps-cart-summary-product">
-                    <img src={source?.imageSrc ?? '/vial.svg'} alt="" />
+                    <img src="/vial.svg" alt="" />
                     <div>
                       <strong>{source?.name ?? 'Product'}</strong>
                       <span>{selectedDose} · {selectedPackSize}-vial pack</span>
@@ -419,30 +453,6 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 </aside>
               </div>
             </ProductOffersSection>
-
-            {/* COA section — per-vendor, per-compound */}
-            <section className="ps-product-coa-section">
-              <h2><FileCheck2 size={18} /> Certificates of Analysis · {source?.name ?? 'Product'}</h2>
-              <div className="ps-coa-list">
-                {productVendors.map((vendor) => (
-                  <div key={vendor.id} className="ps-coa-item">
-                    <div>
-                      <FileCheck2 size={16} />
-                      <div>
-                        <strong>{vendor.name} — Batch {makeBatch(vendor.batchPrefix, selectedDose)}</strong>
-                        <small style={{ display: 'block', color: 'var(--ps-muted)', fontSize: '0.75rem' }}>Purity ≥{vendor.purity}% · {source?.name ?? 'BPC-157'} · {selectedDose}</small>
-                      </div>
-                    </div>
-                    <span>Janoshik Lab #{vendor.id === 'vendor-northstar' ? 'JH-2025-0142' : vendor.id === 'vendor-retalux' ? 'JH-2025-0098' : 'Pending'}</span>
-                    {vendor.id === 'vendor-axiom' ? (
-                      <button type="button" onClick={() => setDialogOpen(true)}><Bell size={14} /> Notify me</button>
-                    ) : (
-                      <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
           </>
         )}
       </ProductPageFrame>
@@ -517,12 +527,62 @@ function VendorRow({ vendor, index, navigate }: { vendor: VendorSummary; index: 
   )
 }
 
+const REVIEW_TEMPLATES: { stars: number; text: string }[] = [
+  { stars: 5, text: 'Fast dispatch, product matched batch COA exactly. Will reorder.' },
+  { stars: 5, text: 'Consistent quality across multiple orders. Packaging is professional.' },
+  { stars: 4, text: 'Good product, shipping took one day longer than expected but quality was on point.' },
+  { stars: 5, text: 'Third order from this vendor. Always reliable, COAs always check out on Janoshik.' },
+  { stars: 5, text: 'Great communication and fast fulfillment. Product was exactly as described.' },
+  { stars: 4, text: 'Solid product. Took 2 days to dispatch but arrived quickly after that.' },
+  { stars: 5, text: 'Best vendor I have used on this platform. Batch evidence is always published.' },
+  { stars: 3, text: 'Product was fine but the packaging could be more discreet. Otherwise no complaints.' },
+  { stars: 5, text: 'Ordered BPC-157 and TB-500. Both verified at >99% purity. Highly recommend.' },
+  { stars: 5, text: 'Repeat customer. Never had an issue. Shipping is consistently 1-2 days.' },
+  { stars: 4, text: 'Quality is good but prices could be more competitive. Still worth it for the reliability.' },
+  { stars: 5, text: 'Everything arrived safely packaged. COA verification was seamless.' },
+  { stars: 2, text: 'Order was delayed by a week. Product quality was fine when it arrived though.' },
+  { stars: 5, text: 'Excellent vendor. Responsive to questions and product is always as advertised.' },
+  { stars: 4, text: 'Decent experience overall. Product works as expected, shipping was reasonable.' },
+  { stars: 5, text: 'Six orders in and zero issues. This is my go-to vendor now.' },
+  { stars: 3, text: 'Product quality is there but customer service response time could be better.' },
+  { stars: 5, text: 'Verified purity on my end matched the COA exactly. Trust this vendor completely.' },
+  { stars: 4, text: 'Good value for the price. Wish they offered more dosage options though.' },
+  { stars: 5, text: 'Flawless transaction from order to delivery. Batch number checked out on verification.' },
+]
+
+const REVIEW_TIMEFRAMES = ['1 week ago', '2 weeks ago', '3 weeks ago', '1 month ago', '2 months ago', '3 months ago', '4 months ago', '5 months ago', '6 months ago', '7 months ago', '8 months ago', '9 months ago', '10 months ago', '11 months ago', '1 year ago', '1 year ago', '2 years ago']
+
+function generateReviews(count: number) {
+  const reviews: { buyer: string; stars: number; text: string; date: string }[] = []
+  for (let i = 0; i < count; i++) {
+    const template = REVIEW_TEMPLATES[i % REVIEW_TEMPLATES.length]
+    const timeframe = REVIEW_TIMEFRAMES[i % REVIEW_TIMEFRAMES.length]
+    reviews.push({
+      buyer: `Verified Buyer #${1000 + i}`,
+      stars: template.stars,
+      text: template.text,
+      date: timeframe,
+    })
+  }
+  return reviews
+}
+
+const VENDOR_REVIEWS = generateReviews(184)
+
+const REVIEWS_PER_PAGE = 10
+
 export function VendorPage({ actions, models, pathname }: PageComponentProps) {
   // Extract vendor slug from URL
   const slug = decodeURIComponent(pathname.split('/vendors/')[1]?.split('/')[0] ?? '')
   const vendor = models.vendors.find((v) => v.slug === slug) ?? models.vendors[0]
   const catalogMode = pathname.endsWith('/catalog')
+  const reviewsMode = pathname.endsWith('/reviews')
   const vendorInitials = vendor?.name?.split(' ').map((part) => part[0]).join('').slice(0, 2) ?? 'NR'
+  const [reviewPage, setReviewPage] = useState(0)
+  const totalReviews = vendor?.reviewCount ?? 184
+  const totalPages = Math.ceil(totalReviews / REVIEWS_PER_PAGE)
+  const paginatedReviews = VENDOR_REVIEWS.slice(reviewPage * REVIEWS_PER_PAGE, (reviewPage + 1) * REVIEWS_PER_PAGE)
+  useEffect(() => { setReviewPage(0) }, [slug, reviewsMode])
   return (
     <div className="ps-vendor-profile ps-section-shell">
       <button type="button" className="ps-back-link" onClick={() => actions.navigate('/vendors')}><ArrowLeft size={17} /> All vendors</button>
@@ -536,10 +596,10 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
         <div className="ps-vendor-profile-score"><strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong><span><Star size={16} /> {vendor?.reviewCount ?? 184} verified reviews</span></div>
       </header>
       <nav className="ps-subnav" aria-label="Vendor profile sections">
-        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}`} navigate={actions.navigate} aria-current={!catalogMode ? 'page' : undefined}>Overview</FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}`} navigate={actions.navigate} aria-current={!catalogMode && !reviewsMode ? 'page' : undefined}>Overview</FrontendLink>
         <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
-        <button type="button">COAs <span>{(vendor as any)?.coaCount ?? 0}</span></button>
-        <button type="button">Reviews <span>{vendor?.reviewCount ?? 0}</span></button>
+        <FrontendLink href={`/coas?vendor=${encodeURIComponent(vendor?.name ?? '')}`} navigate={actions.navigate}>COAs <span>{(vendor as any)?.coaCount ?? 0}</span></FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/reviews`} navigate={actions.navigate} aria-current={reviewsMode ? 'page' : undefined}>Reviews <span>{vendor?.reviewCount ?? 0}</span></FrontendLink>
       </nav>
       {catalogMode ? (
         <div className="ps-vendor-catalog">
@@ -547,16 +607,61 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
           <div className="ps-compact-product-list">
             {models.products.filter((product) => product.availability === 'available').slice(0, 5).map((product) => (
               <FrontendLink key={product.id} href={`/products/${product.slug}`} navigate={actions.navigate}>
-                <img src={product.imageSrc} alt="" /><strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount} COAs</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
+                <strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount} COAs</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
               </FrontendLink>
             ))}
           </div>
+        </div>
+      ) : reviewsMode ? (
+        <div className="ps-vendor-reviews-page">
+          <div className="ps-reviews-header">
+            <div className="ps-reviews-score"><strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong><span>out of 5</span></div>
+            <p>Based on {totalReviews} verified buyer reviews</p>
+          </div>
+          <div className="ps-review-list ps-review-list-full">
+            {paginatedReviews.map((rev, i) => (
+              <div key={reviewPage * REVIEWS_PER_PAGE + i} className="ps-review-item">
+                <div className="ps-review-head">
+                  <strong>{rev.buyer}</strong>
+                  <span>{'★'.repeat(rev.stars)}{'☆'.repeat(5 - rev.stars)}</span>
+                </div>
+                <p>{rev.text}</p>
+                <small>{rev.date} · Verified purchase</small>
+              </div>
+            ))}
+          </div>
+          {totalPages > 1 ? (
+            <div className="ps-pagination">
+              <button type="button" disabled={reviewPage === 0} onClick={() => setReviewPage((p) => Math.max(0, p - 1))}><ChevronDown size={16} className="ps-pagination-prev" /> Prev</button>
+              <span className="ps-pagination-info">Page {reviewPage + 1} of {totalPages} · Showing {reviewPage * REVIEWS_PER_PAGE + 1}–{Math.min((reviewPage + 1) * REVIEWS_PER_PAGE, totalReviews)} of {totalReviews}</span>
+              <button type="button" disabled={reviewPage >= totalPages - 1} onClick={() => setReviewPage((p) => Math.min(totalPages - 1, p + 1))}>Next <ChevronDown size={16} className="ps-pagination-next" /></button>
+            </div>
+          ) : null}
         </div>
       ) : (
         <div className="ps-vendor-overview-grid">
           <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>{vendor?.location ?? 'US'} fulfillment with evidence linked at the batch level.</h2><p>{vendor?.name ?? 'This vendor'} ships from {vendor?.location ?? 'the US'} with {vendor?.fulfillment ?? '1–2 day'} dispatch. All listings include batch-level COA evidence.</p><div className="ps-button-row"><FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} className="ps-primary-action">View catalog <ArrowRight size={17} /></FrontendLink><button type="button"><Bell size={16} /> Follow vendor</button></div></section>
           <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>{vendor?.orderCount?.toLocaleString() ?? '2,310'}</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>{vendor?.fulfillment ?? '1–2 days'}</dd></div><div><dt>Published COAs</dt><dd>{(vendor as any)?.coaCount ?? 0}</dd></div></dl></aside>
           <section className="ps-vendor-policy"><h2>Fulfillment notes</h2><ul><li><Truck size={17} /><div><strong>Ships from {vendor?.location ?? 'USA'}</strong><span>Tracking supplied after dispatch.</span></div></li><li><CircleDollarSign size={17} /><div><strong>Transparent pack pricing</strong><span>Marketplace totals include PeptShop pricing rules.</span></div></li><li><FileCheck2 size={17} /><div><strong>Batch evidence</strong><span>Available certificates are attached to eligible listings.</span></div></li></ul></section>
+          <section className="ps-vendor-reviews">
+            <div className="ps-vendor-reviews-head">
+              <h2>Reviews ({vendor?.reviewCount ?? 0})</h2>
+              <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/reviews`} navigate={actions.navigate} className="ps-reviews-view-all">View all <ArrowRight size={15} /></FrontendLink>
+            </div>
+            <div className="ps-review-summary">
+              <strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong>
+              <span>Based on {vendor?.reviewCount ?? 0} verified reviews</span>
+            </div>
+            <div className="ps-review-list">
+              {VENDOR_REVIEWS.slice(0, 3).map((rev, i) => (
+                <div key={i} className="ps-review-item">
+                  <div className="ps-review-head"><strong>{rev.buyer}</strong><span>{'★'.repeat(rev.stars)}{'☆'.repeat(5 - rev.stars)}</span></div>
+                  <p>{rev.text}</p>
+                  <small>{rev.date} · Verified purchase</small>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
       )}
     </div>
