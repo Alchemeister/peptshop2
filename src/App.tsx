@@ -1,6 +1,6 @@
 import { Check, ChevronUp, Copy, Moon, Route, Sun, X } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import type { FrontendTheme, PeptShopActions, PeptShopViewModels } from './contracts'
+import type { CartLine, FrontendTheme, PeptShopActions, PeptShopViewModels } from './contracts'
 import { mockModels } from './mock-data'
 import { ApiDocsPage, ContentPage, LibraryPage } from './pages/content-pages'
 import { CommercePage, OrderFlowPage } from './pages/commerce-pages'
@@ -59,7 +59,9 @@ export function PeptShopFrontend({
   const [theme, setTheme] = useState<FrontendTheme>(providedTheme ?? 'light')
   const [previewOpen, setPreviewOpen] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
-  const [cartCount, setCartCount] = useState(() => models.cart.reduce((sum, line) => sum + line.quantity, 0))
+  const [cartLines, setCartLines] = useState<CartLine[]>(() => models.cart ?? [])
+  const [lastOrderTotal, setLastOrderTotal] = useState<number | null>(null)
+  const cartCount = cartLines.reduce((sum, line) => sum + line.quantity, 0)
   const allowedFamilies = useMemo(
     () => (allowedRouteFamilies ? new Set(allowedRouteFamilies) : null),
     [allowedRouteFamilies],
@@ -108,20 +110,53 @@ export function PeptShopFrontend({
   const actions = useMemo<PeptShopActions>(() => ({
     navigate,
     searchProducts: (searchQuery) => navigate(`/products?q=${encodeURIComponent(searchQuery)}`),
-    addToCart: () => {
-      setCartCount((count) => count + 1)
-      previewAction('addToCart', 'Added to the synthetic preview cart')
+    addToCart: (productId: string, vendorId?: string, vendorName?: string, unitPrice?: number, format?: string) => {
+      const product = models.products.find((p) => p.id === productId)
+      if (!product) return
+      const fmt = format ?? product.formats?.[0] ?? '2 mg'
+      const price = unitPrice ?? product.startingPrice ?? 20
+      const vName = vendorName ?? models.vendors.find((v) => v.id === vendorId)?.name ?? vendorId ?? 'Sample Vendor'
+      const lineId = `${productId}-${vendorId ?? 'default'}`
+      setCartLines((prev) => {
+        const existing = prev.find((l) => l.id === lineId)
+        if (existing) {
+          return prev.map((l) => l.id === lineId ? { ...l, quantity: l.quantity + 1 } : l)
+        }
+        return [...prev, {
+          id: lineId,
+          product: product.name,
+          format: fmt,
+          vendor: vName,
+          quantity: 1,
+          unitPrice: price,
+          imageSrc: '/vial.svg',
+        }]
+      })
+      demo(`${product.name} added to cart`)
     },
-    updateCartQuantity: () =>
-      previewAction('updateCartQuantity', 'Synthetic quantity callback completed'),
-    removeCartLine: () => previewAction('removeCartLine', 'Synthetic remove callback completed'),
-    clearCart: () => previewAction('clearCart', 'Synthetic clear-cart callback completed'),
+    updateCartQuantity: (lineId: string, quantity: number) => {
+      if (quantity <= 0) {
+        setCartLines((prev) => prev.filter((l) => l.id !== lineId))
+      } else {
+        setCartLines((prev) => prev.map((l) => l.id === lineId ? { ...l, quantity } : l))
+      }
+    },
+    removeCartLine: (lineId: string) => {
+      setCartLines((prev) => prev.filter((l) => l.id !== lineId))
+    },
+    clearCart: () => setCartLines([]),
     beginCheckout: () => {
       previewAction('beginCheckout', 'Opened the synthetic checkout')
       navigate('/checkout')
     },
-    submitCheckout: () =>
-      previewAction('submitCheckout', 'Synthetic checkout callback completed'),
+    submitCheckout: (_form: HTMLFormElement) => {
+      const subtotal = cartLines.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
+      setLastOrderTotal(subtotal + 12)
+      setCartLines([])
+      demo('Order placed! Redirecting to payment…')
+      previewAction('submitCheckout', 'Synthetic checkout callback completed')
+      navigate('/payment')
+    },
     submitEmail: () => previewAction('submitEmail', 'Synthetic email callback completed'),
     submitLogin: () => previewAction('submitLogin', 'Synthetic sign-in callback completed'),
     submitCoa: () => previewAction('submitCoa', 'Synthetic submission callback completed'),
@@ -130,10 +165,11 @@ export function PeptShopFrontend({
     sellerAction: () => previewAction('sellerAction', 'Synthetic seller callback completed'),
     adminAction: () => previewAction('adminAction', 'Synthetic admin callback completed'),
     ...providedActions,
-  }), [navigate, previewAction, providedActions])
+  }), [navigate, previewAction, providedActions, cartLines])
 
   const route = resolveRoute(pathname)
-  const pageProps = { actions, models, pathname, query, theme }
+  const liveModels = { ...models, cart: cartLines, lastOrderTotal }
+  const pageProps = { actions, models: liveModels, pathname, query, theme }
   const isPortal = ['seller', 'admin', 'staff', 'affiliate'].includes(route.family)
   const page = renderPage(route.family, pageProps)
 

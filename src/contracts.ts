@@ -95,6 +95,7 @@ export type PeptShopViewModels = {
   vendors: VendorSummary[]
   coas: CoaSummary[]
   cart: CartLine[]
+  lastOrderTotal: number | null
   orders: OrderSummary[]
   sellerMetrics: SellerMetric[]
   directoryShipping?: {
@@ -106,7 +107,7 @@ export type PeptShopViewModels = {
 export type PeptShopActions = {
   navigate: (href: string) => void
   searchProducts: (query: string) => void
-  addToCart: (productId: string, vendorId?: string) => void
+  addToCart: (productId: string, vendorId?: string, vendorName?: string, unitPrice?: number, format?: string) => void
   updateCartQuantity: (lineId: string, quantity: number) => void
   removeCartLine: (lineId: string) => void
   clearCart: () => void

@@ -419,7 +419,12 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                           <span>{selectedVendorId === vendor.id ? quantity : 1}</span>
                           <button type="button" onClick={() => { setSelectedVendorId(vendor.id); setQuantity((value) => value + 1) }} aria-label="Increase quantity"><Plus size={15} /></button>
                         </div>
-                        <button type="button" className="ps-add-to-cart-btn" onClick={() => { setSelectedVendorId(vendor.id); actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id) }}>
+                        <button type="button" className="ps-add-to-cart-btn" onClick={() => {
+                          setSelectedVendorId(vendor.id)
+                          const vPrice = lookupVendorPrice(selectedDose, vendor.id)
+                          const linePrice = (selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * (selectedVendorId === vendor.id ? quantity : 1)
+                          actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id, vendor.name, linePrice, `${selectedDose} · ${selectedPackSize} vials`)
+                        }}>
                           <ShoppingBag size={17} /> Add ${(() => {
                             const vPrice = lookupVendorPrice(selectedDose, vendor.id)
                             return ((selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * (selectedVendorId === vendor.id ? quantity : 1)).toFixed(2)

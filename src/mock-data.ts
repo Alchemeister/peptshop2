@@ -1148,6 +1148,7 @@ export const mockModels: PeptShopViewModels = {
     },
   ],
   cart: [],
+  lastOrderTotal: null,
   orders: [
     {
       id: 'order-1048',
