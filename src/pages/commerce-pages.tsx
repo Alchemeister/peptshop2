@@ -80,7 +80,7 @@ function CartPage({ actions, models }: PageComponentProps) {
 function CartLineItem({ line, actions }: { line: CartLine; actions: PageComponentProps['actions'] }) {
   return (
     <article className="ps-cart-line">
-      <div className="ps-cart-line-image"><img src={line.imageSrc} alt="" /></div>
+      <div className="ps-cart-line-image"><img src="/vial.svg" alt="" /></div>
       <div className="ps-cart-line-copy"><h2>{line.product}</h2><p>{line.format}</p><button type="button" onClick={() => actions.removeCartLine(line.id)}>Remove</button></div>
       <div className="ps-quantity-control"><button type="button" aria-label="Decrease quantity" onClick={() => actions.updateCartQuantity(line.id, Math.max(1, line.quantity - 1))}><Minus size={14} /></button><span>{line.quantity}</span><button type="button" aria-label="Increase quantity" onClick={() => actions.updateCartQuantity(line.id, line.quantity + 1)}><Plus size={14} /></button></div>
       <strong className="ps-cart-line-total">{money(line.unitPrice * line.quantity)}</strong>
@@ -114,7 +114,7 @@ function CheckoutPage({ actions, models }: PageComponentProps) {
           {step === 3 ? <CheckoutPayment /> : null}
           <div className="ps-checkout-actions">{step > 1 ? <button type="button" onClick={() => setStep((value) => value - 1)}>Back</button> : <span /> }<button type="submit">{step === 3 ? 'Place order' : 'Continue'} <ArrowRight size={17} /></button></div>
         </form>
-        <aside className="ps-checkout-summary"><h2>In this order</h2>{models.cart.map((line) => <div key={line.id}><img src={line.imageSrc} alt="" /><span><strong>{line.product}</strong><small>{line.format}</small></span><b>{money(line.unitPrice)}</b></div>)}<dl><div><dt>Products</dt><dd>{money(subtotal)}</dd></div><div><dt>Shipping</dt><dd>$12.00</dd></div><div><dt>Total</dt><dd>{money(subtotal + 12)}</dd></div></dl><p><ShieldCheck size={15} /> Marketplace order protection included</p></aside>
+        <aside className="ps-checkout-summary"><h2>In this order</h2>{models.cart.map((line) => <div key={line.id}><img src="/vial.svg" alt="" /><span><strong>{line.product}</strong><small>{line.format}</small></span><b>{money(line.unitPrice)}</b></div>)}<dl><div><dt>Products</dt><dd>{money(subtotal)}</dd></div><div><dt>Shipping</dt><dd>$12.00</dd></div><div><dt>Total</dt><dd>{money(subtotal + 12)}</dd></div></dl><p><ShieldCheck size={15} /> Marketplace order protection included</p></aside>
       </div>
     </div>
   )

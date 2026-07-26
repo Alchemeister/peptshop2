@@ -163,13 +163,7 @@ export function ProductPageHero({
         ) : null}
       </div>
 
-      {imageSrc ? (
-        <div className={styles.productVisual}>
-          <div className={styles.productVisualField} aria-hidden="true" />
-          <img src={imageSrc} alt={imageAlt ?? `${productName} product vial`} />
-          <p className={styles.productVisualNote}>*Image is illustrative and may not match the actual vial.</p>
-        </div>
-      ) : null}
+
 
       <div className={styles.dosageRail}>
         <div className={styles.dosagePrompt}>

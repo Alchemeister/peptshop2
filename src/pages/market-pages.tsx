@@ -347,7 +347,6 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
           formula={details.formula}
           mw={details.mw}
           overview={details.description}
-          imageSrc={source?.imageSrc ?? '/vial.svg'}
           backControl={
             <ProductBackControlFrame>
               <button type="button" aria-label="Return to catalog" onClick={() => actions.navigate('/products')}>
@@ -427,7 +426,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 <aside className="ps-cart-summary-card">
                   <h3>Order summary</h3>
                   <div className="ps-cart-summary-product">
-                    <img src={source?.imageSrc ?? '/vial.svg'} alt="" />
+                    <img src="/vial.svg" alt="" />
                     <div>
                       <strong>{source?.name ?? 'Product'}</strong>
                       <span>{selectedDose} · {selectedPackSize}-vial pack</span>
