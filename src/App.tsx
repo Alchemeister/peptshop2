@@ -26,6 +26,7 @@ export type PeptShopFrontendProps = {
   models?: PeptShopViewModels
   navigationMode?: FrontendNavigationMode
   onPreviewAction?: (action: FrontendPreviewAction) => void
+  requestedPath?: string
   showPreviewTools?: boolean
   theme?: FrontendTheme
 }
@@ -44,6 +45,7 @@ export function PeptShopFrontend({
   models = mockModels,
   navigationMode = 'browser',
   onPreviewAction,
+  requestedPath,
   showPreviewTools = false,
   theme: providedTheme,
 }: PeptShopFrontendProps) {
@@ -90,6 +92,10 @@ export function PeptShopFrontend({
     setLocation({ pathname: target.pathname, query: target.searchParams })
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [allowedFamilies, demo, navigationMode])
+
+  useEffect(() => {
+    if (requestedPath) navigate(requestedPath)
+  }, [navigate, requestedPath])
 
   const previewAction = useCallback(
     (action: FrontendPreviewAction, message: string) => {

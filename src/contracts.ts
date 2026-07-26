@@ -58,13 +58,30 @@ export type CartLine = {
   imageSrc: string
 }
 
+export type OrderDisplayStatus =
+  | 'accepted'
+  | 'cancelled'
+  | 'delivered'
+  | 'paid'
+  | 'payment_pending'
+  | 'refunded'
+  | 'review'
+  | 'shipped'
+
 export type OrderSummary = {
+  destination?: string
+  events?: Array<{
+    at: string
+    status: OrderDisplayStatus
+  }>
   id: string
+  itemSummary?: string
   number: string
   customer: string
   total: number
-  status: 'paid' | 'review' | 'shipped' | 'delivered'
+  status: OrderDisplayStatus
   updatedAt: string
+  vendor?: string
 }
 
 export type SellerMetric = {

@@ -66,7 +66,7 @@ export function AuthPage({ actions, pathname }: PageComponentProps) {
 export function SellerPage(props: PageComponentProps) {
   return (
     <PortalShell actions={props.actions} pathname={props.pathname} role="seller">
-      <PortalTopbar eyebrow="Seller overview" title="Northstar Research" action={<button type="button" onClick={() => props.actions.sellerAction('availability')}><Activity size={16} /> Update availability</button>} />
+      <PortalTopbar eyebrow="Seller overview" title="Sample Vendor Zero" action={<button type="button" onClick={() => props.actions.sellerAction('availability')}><Activity size={16} /> Update availability</button>} />
       <div className="ps-portal-content">
         <div className="ps-portal-alert"><CircleAlert size={18} /><div><strong>Sample orders need review</strong><span>All queue values in this workspace are illustrative.</span></div><button type="button">Review now <ArrowRight size={15} /></button></div>
         <div className="ps-metric-grid">{props.models.sellerMetrics.map((metric, index) => <article key={metric.label}><div><span>{metric.label}</span>{index % 2 ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}</div><strong>{metric.value}</strong><p>{metric.detail}</p></article>)}</div>

@@ -34,7 +34,8 @@ The private application provides a protected production QA lane at:
 
 This lane verifies the reviewed frontend revision, production asset delivery, responsive layout,
 theme behavior, in-preview navigation, and the callback boundary. It uses synthetic presentation
-records only. It does not connect this repository to production data or private business logic.
+records only. It also provides a separate, expiring fake-order store for testing the checkout and
+order lifecycle. It does not connect this repository to production data or private business logic.
 
 To run a QA pass:
 
@@ -43,11 +44,33 @@ To run a QA pass:
 3. Open the QA access page and enter the access code shared through a private channel. The access
    form does not require a personal account, name, or email.
 4. Use **Page explorer** to move through the available production QA routes and test both themes.
-5. Exercise the visible forms and controls. A successful synthetic callback produces a QA receipt
-   in the safety bar. No live action is performed.
-6. Report the tested route, viewport, browser, steps, expected result, actual result, and screenshot.
+5. To place a fake order, open **Cart** and continue through checkout using only these reserved
+   values:
+   - Email: `qa+designer@example.test`
+   - Full name: `QA Tester`
+   - Street: `100 Test Street`
+   - City: `Testville`
+   - State or region: `NY`
+   - Postal code: `00000`
+   - Country: `United States`
+6. Select **Place order**. The safety bar shows a QA receipt and opens the persisted synthetic order.
+   The order is also available from **QA orders** and the order-status presentation. Creation sends
+   a clearly marked QA-only order email to Resend's controlled test sink. It never sends to the
+   reserved `example.test` address or to a customer, seller, operator, or user-selected recipient.
+7. In **QA orders**, test the fixed fake lifecycle: confirm fake payment, accept, mark shipped, mark
+   delivered, cancel where available, or simulate a fake refund. Each transition produces another
+   QA receipt, updates the imported order-status layout, and sends a sanitized QA-only status email
+   to the same fixed test sink.
+8. Before advancing to the next state, confirm that the order card says **QA email accepted by test
+   sink**. If it reports a failure, use **Retry QA email**. Lifecycle actions remain disabled until
+   the current synthetic event's email is accepted.
+9. Refresh or sign in again to confirm persistence. Fake orders expire after seven days, and the
+   shared QA workspace holds at most 50 active orders.
+10. Exercise other visible forms and controls. Presentation-only callbacks still return ephemeral QA
+   receipts without performing a live action.
+11. Report the tested route, viewport, browser, steps, expected result, actual result, and screenshot.
    Include the QA receipt when the issue concerns a callback.
-7. End the session with **Sign out of QA**. Sessions also expire automatically.
+12. End the session with **Sign out of QA**. Sessions also expire automatically.
 
 The production QA lane deliberately excludes private role workspaces and any surface that could
 suggest real commercial terms. Local preview content for those layouts remains illustrative only.
@@ -56,14 +79,18 @@ Security rules:
 
 - Never put the access code in a URL, commit, issue, chat screenshot, or browser recording.
 - Never enter a real customer identity, address, order number, batch, vendor record, or payment
-  detail. Use obviously synthetic values.
+  detail. The order API rejects identities and addresses outside the reserved synthetic format.
 - Never describe preview values as live marketplace facts.
 - If the QA safety bar is absent, stop. You are no longer inside the isolated lane.
 - Send only the route, reproduction steps, visual evidence, and QA receipt in a bug report.
 
 The lane does not expose database access, authentication records, environment values, provider
-credentials, private algorithms, internal economics, or incentive terms. Its server callback
-accepts only a fixed presentation-action name and returns an ephemeral receipt.
+credentials, private algorithms, internal economics, or incentive terms. Synthetic orders are
+stored in an isolated server-only table and cannot invoke real payments, inventory changes,
+customer or seller notifications, fulfillment, seller actions, staff actions, or administrative
+actions. The private host sends only a sanitized event summary to Resend's documented fixed test
+sink; no recipient can be supplied from the browser. Delivery records contain only the synthetic
+event, delivery state, and provider message ID. Order updates accept only fixed fake transitions.
 
 ## Where to edit
 
