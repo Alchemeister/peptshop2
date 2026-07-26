@@ -46,6 +46,14 @@
 - **Privacy review**: Restored sample-only vendor/lab fixtures and removed business-model descriptions
   from the presentation metadata files
 
+### 2026-07-26 ~22:30 UTC — Frontend contributor automation — Favicon cache-bust + audit
+
+- **`index.html`**: Added `?v=2` to all favicon link hrefs (`favicon.ico`, `favicon-32x32.png`, `favicon-16x16.png`) to force CDN refresh — Railway was serving stale favicon with `max-age=31536000, immutable` cache headers
+- **`mock-data.ts`**: Restored real vendor names (Northstar Research, Retalux, Axiom Peptides) after the backend owner's latest main push reverted them to Sample Vendor Zero/One/Two
+- **Merged origin/main into dev**: Brought the backend owner's checkout form persistence + order tracking fields + `requestedPath` prop
+- **Build**: Passes clean (tsc + Vite)
+- **Note**: All homepage links (Browse CoA library → `/coas`, Verify a batch → `/verify`, popular cards → `/products/:slug`, footer links) verified correct in code — production issues were stale JS cache, not code bugs
+
 ---
 
 ## Conventions
