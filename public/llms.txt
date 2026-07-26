@@ -24,5 +24,6 @@ not contain database access, credentials, payment integrations, customer records
 algorithms, internal economics, incentive terms, or production order logic.
 
 The protected production QA lane is documented in the repository README. It accepts only reserved
-synthetic values and keeps fake orders isolated from customer, payment, inventory, notification,
-and fulfillment systems.
+synthetic values and keeps fake orders isolated from customer, payment, inventory, real-recipient
+notification, and fulfillment systems. Synthetic order events may send sanitized QA-only messages
+to a fixed email-provider test sink; the browser cannot select a recipient.

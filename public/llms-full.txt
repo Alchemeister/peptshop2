@@ -32,8 +32,9 @@ view models and narrowly typed callbacks. The presentation repository does not r
 
 The README documents a protected production-hosted QA lane. The lane uses a separate, expiring
 fake-order store and reserved example.test identities. It can exercise order creation and fixed
-synthetic lifecycle transitions without invoking real payment, customer, inventory, email,
-fulfillment, seller, staff, or administrative systems.
+synthetic lifecycle transitions without invoking real payment, customer, inventory, fulfillment,
+seller, staff, or administrative systems. Each synthetic order event can send a sanitized QA-only
+message to a fixed email-provider test sink. No browser-selected or real recipient is accepted.
 
 The QA access code must be shared privately and must never appear in a URL, commit, issue,
 screenshot, or recording.

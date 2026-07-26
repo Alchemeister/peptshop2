@@ -54,17 +54,23 @@ To run a QA pass:
    - Postal code: `00000`
    - Country: `United States`
 6. Select **Place order**. The safety bar shows a QA receipt and opens the persisted synthetic order.
-   The order is also available from **QA orders** and the order-status presentation.
+   The order is also available from **QA orders** and the order-status presentation. Creation sends
+   a clearly marked QA-only order email to Resend's controlled test sink. It never sends to the
+   reserved `example.test` address or to a customer, seller, operator, or user-selected recipient.
 7. In **QA orders**, test the fixed fake lifecycle: confirm fake payment, accept, mark shipped, mark
    delivered, cancel where available, or simulate a fake refund. Each transition produces another
-   QA receipt and updates the imported order-status layout.
-8. Refresh or sign in again to confirm persistence. Fake orders expire after seven days, and the
+   QA receipt, updates the imported order-status layout, and sends a sanitized QA-only status email
+   to the same fixed test sink.
+8. Before advancing to the next state, confirm that the order card says **QA email accepted by test
+   sink**. If it reports a failure, use **Retry QA email**. Lifecycle actions remain disabled until
+   the current synthetic event's email is accepted.
+9. Refresh or sign in again to confirm persistence. Fake orders expire after seven days, and the
    shared QA workspace holds at most 50 active orders.
-9. Exercise other visible forms and controls. Presentation-only callbacks still return ephemeral QA
+10. Exercise other visible forms and controls. Presentation-only callbacks still return ephemeral QA
    receipts without performing a live action.
-10. Report the tested route, viewport, browser, steps, expected result, actual result, and screenshot.
+11. Report the tested route, viewport, browser, steps, expected result, actual result, and screenshot.
    Include the QA receipt when the issue concerns a callback.
-11. End the session with **Sign out of QA**. Sessions also expire automatically.
+12. End the session with **Sign out of QA**. Sessions also expire automatically.
 
 The production QA lane deliberately excludes private role workspaces and any surface that could
 suggest real commercial terms. Local preview content for those layouts remains illustrative only.
@@ -81,8 +87,10 @@ Security rules:
 The lane does not expose database access, authentication records, environment values, provider
 credentials, private algorithms, internal economics, or incentive terms. Synthetic orders are
 stored in an isolated server-only table and cannot invoke real payments, inventory changes,
-notifications, fulfillment, seller actions, staff actions, or administrative actions. Order
-updates accept only fixed fake transitions.
+customer or seller notifications, fulfillment, seller actions, staff actions, or administrative
+actions. The private host sends only a sanitized event summary to Resend's documented fixed test
+sink; no recipient can be supplied from the browser. Delivery records contain only the synthetic
+event, delivery state, and provider message ID. Order updates accept only fixed fake transitions.
 
 ## Where to edit
 
