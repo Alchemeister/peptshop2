@@ -25,6 +25,13 @@ records, or unrestricted customer data.
 login, COA submission, batch verification, vendor creation, seller operations, and admin
 operations. The frontend may invoke a callback. It may not implement the operation.
 
+For an isolated host preview, `PeptShopFrontend` also accepts:
+
+- `navigationMode="memory"` to keep preview navigation inside the mounted surface.
+- `allowedRouteFamilies` to limit which presentation families can be reached.
+- `onPreviewAction`, which emits only a fixed action name. It never emits form fields, identities,
+  prices, credentials, or other entered values.
+
 The production adapter currently supplies:
 
 - Product formats, warehouse regions, per-measure starting price, price unit, pack size, active
@@ -94,6 +101,10 @@ the selected vendor, apply the database mutation, and expire catalog caches.
 The standalone `/admin/pricing` route uses mock records and a mock save response. It cannot change
 production data. Visual markup, copy, responsive behavior, and styles may be changed freely as long
 as the exported prop contract remains compatible with the private adapter.
+
+All standalone pricing and portal fixtures must be obviously synthetic. They must never be copied
+from private supplier records, private prices, commercial terms, incentive rules, or production
+analytics.
 
 ## Security gate
 

@@ -89,7 +89,7 @@ function VerifyPage({ actions }: Pick<PageComponentProps, 'actions'>) {
       {result ? (
         <section className="ps-verify-result" aria-live="polite">
           <div className="ps-verify-result-icon"><ShieldCheck size={24} /></div>
-          <div><span>Match found</span><h2>BPC-157 10 mg</h2><p>Northstar Research · Independent Analytical Lab · Tested Jun 18, 2026</p></div>
+          <div><span>Match found</span><h2>BPC-157 10 mg</h2><p>Sample Vendor Zero · Independent Analytical Lab · Tested Jun 18, 2026</p></div>
           <div><span>Reported purity</span><strong>99.1%</strong></div>
           <button type="button"><Download size={17} /> View record</button>
         </section>

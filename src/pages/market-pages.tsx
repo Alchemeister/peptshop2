@@ -23,7 +23,6 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import type { PageComponentProps, ProductSummary, VendorSummary } from '../contracts'
-import { mockAdminPricingItems, mockProduct, mockVendor } from '../mock-data'
 import { FrontendLink } from '../navigation'
 import {
   CompoundWaitlistDescription,
@@ -223,6 +222,45 @@ const productDetails: Record<string, { cas: string; formula: string; description
   'Sermorelin': { cas: '31231-80-8', formula: 'C24H34N12O6', description: 'Growth hormone releasing hormone analog. Studied for pituitary GH secretion stimulation.' },
 }
 
+const previewVendorOffers = [
+  {
+    id: 'sample-vendor-one',
+    name: 'Sample Vendor One',
+    slug: 'sample-vendor-one',
+    location: 'Sample region A',
+    rating: 4.8,
+    reviewCount: 120,
+    fulfillment: '2–3 days',
+    purity: 99.2,
+    batchPrefix: 'QA-A',
+    priceMultiplier: 1,
+  },
+  {
+    id: 'sample-vendor-two',
+    name: 'Sample Vendor Two',
+    slug: 'sample-vendor-two',
+    location: 'Sample region B',
+    rating: 4.7,
+    reviewCount: 80,
+    fulfillment: '3–5 days',
+    purity: 99,
+    batchPrefix: 'QA-B',
+    priceMultiplier: 1.08,
+  },
+  {
+    id: 'sample-vendor-three',
+    name: 'Sample Vendor Three',
+    slug: 'sample-vendor-three',
+    location: 'Sample region C',
+    rating: 4.6,
+    reviewCount: 60,
+    fulfillment: '2–4 days',
+    purity: 99.1,
+    batchPrefix: 'QA-C',
+    priceMultiplier: 0.94,
+  },
+] as const
+
 export function ProductPage({ actions, models, query, theme, pathname }: PageComponentProps) {
   // Parse product name from URL — supports both /catalog/:name and /products/:slug
   let productName = ''
@@ -237,35 +275,13 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const details = productDetails[source?.name ?? ''] ?? { cas: 'N/A', formula: 'N/A', description: 'Research compound available from vetted suppliers with transparent per-mg pricing and batch-level evidence.' }
   const dosages = source?.formats ?? ['2 mg', '5 mg', '10 mg']
 
-  // Build vendor offers from admin pricing data — real per-vendor, per-dose prices
+  // Deterministic presentation math only. It is not derived from private pricing or marketplace rules.
   const lookupVendorPrice = (dose: string, vendorId: string): number => {
     const doseNum = parseInt(dose) || 5
-    // Use word-boundary matching to avoid "5 mg" matching "15 mg" or "50 mg"
-    // Also handle no-space format like "3mL"
-    const doseRegex = new RegExp(`\\b${doseNum} ?(mg|mL)\\b`)
-    const adminItem = mockAdminPricingItems.find(
-      (item) => item.vendorId === vendorId && item.name === source?.name && doseRegex.test(item.dosage)
-    )
-    if (adminItem && adminItem.tiers[0]) {
-      return adminItem.tiers[0].price
-    }
-    // Fallback: try any vendor with this product+dose, use as base
-    const anyVendorItem = mockAdminPricingItems.find(
-      (item) => item.name === source?.name && doseRegex.test(item.dosage)
-    )
-    if (anyVendorItem && anyVendorItem.tiers[0]) {
-      return anyVendorItem.tiers[0].price
-    }
-    // Last resort fallback
-    return source?.startingPrice ?? 42
-  }
-
-  // Vendor display data — mapped to real admin vendor IDs
-  const vendorDisplayMap: Record<string, { name: string; slug: string; location: string; rating: number; reviewCount: number; coaCount: number; fulfillment: string; purity: number; batchPrefix: string }> = {
-    'vendor-retalux': { name: 'Retalux', slug: 'retalux', location: 'United States', rating: 4.8, reviewCount: 142, coaCount: 24, fulfillment: '2–3 days', purity: 99.2, batchPrefix: 'RX' },
-    'vendor-axiom-peptides': { name: 'Axiom Peptides', slug: 'axiom-peptides', location: 'European Union', rating: 4.7, reviewCount: 98, coaCount: 15, fulfillment: '3–5 days', purity: 99.0, batchPrefix: 'AX' },
-    'vendor-lumira': { name: 'Lumira', slug: 'lumira', location: 'Canada', rating: 4.6, reviewCount: 76, coaCount: 12, fulfillment: '2–4 days', purity: 99.1, batchPrefix: 'LM' },
-    'vendor-nova-bio-research': { name: 'Nova Bio Research', slug: 'nova-bio-research', location: 'United Kingdom', rating: 4.5, reviewCount: 54, coaCount: 8, fulfillment: '4–6 days', purity: 98.8, batchPrefix: 'NB' },
+    const baseDose = parseInt(dosages[0] ?? '') || 5
+    const vendor = previewVendorOffers.find((candidate) => candidate.id === vendorId)
+    const base = Math.max(1, source?.startingPrice ?? 20)
+    return Math.round(base * Math.max(1, doseNum / baseDose) * (vendor?.priceMultiplier ?? 1) * 100) / 100
   }
 
   // Generate dose-specific batch number
@@ -275,17 +291,10 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
     return `${prefix}-${doseNum}mg-${letter}`
   }
 
-  // Find which admin vendors actually sell this product
-  const productVendors = useMemo(() => {
-    const vendorIdsWithProduct = [...new Set(
-      mockAdminPricingItems
-        .filter((item) => item.name === source?.name)
-        .map((item) => item.vendorId)
-    )]
-    return vendorIdsWithProduct
-      .map((vid) => ({ id: vid, ...(vendorDisplayMap[vid] ?? { name: vid, slug: vid, location: 'Unknown', rating: 4.5, reviewCount: 50, coaCount: 5, fulfillment: '2–3 days', purity: 99.0, batchPrefix: 'XX' }) }))
-      .slice(0, Math.max(1, source?.vendorCount ?? 1))
-  }, [source])
+  const productVendors = useMemo(
+    () => previewVendorOffers.slice(0, Math.max(1, Math.min(source?.vendorCount ?? 1, 3))),
+    [source?.vendorCount],
+  )
 
   const [selectedDose, setSelectedDose] = useState(dosages[1] ?? dosages[0])
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -297,8 +306,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const empty = query.get('state') === 'empty' || source?.availability === 'watchlist' || (source?.vendorCount === 0 && source?.availability !== 'available')
   const selectedVendor = productVendors.find((v) => v.id === selectedVendorId) ?? productVendors[0]
 
-  // Get price from admin pricing data based on selected dose + vendor
-  const dosePrice = lookupVendorPrice(selectedDose, selectedVendor?.id ?? 'vendor-retalux')
+  const dosePrice = lookupVendorPrice(selectedDose, selectedVendor?.id ?? 'sample-vendor-one')
   const unitPrice = selectedPackSize === 20
     ? dosePrice * 1.9
     : dosePrice
@@ -424,7 +432,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
             <section className="ps-product-coa-section">
               <h2><FileCheck2 size={18} /> Certificates of Analysis · {source?.name ?? 'Product'}</h2>
               <div className="ps-coa-list">
-                {productVendors.map((vendor) => (
+                {productVendors.map((vendor, index) => (
                   <div key={vendor.id} className="ps-coa-item">
                     <div>
                       <FileCheck2 size={16} />
@@ -433,8 +441,8 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <small style={{ display: 'block', color: 'var(--ps-muted)', fontSize: '0.75rem' }}>Purity ≥{vendor.purity}% · {source?.name ?? 'BPC-157'} · {selectedDose}</small>
                       </div>
                     </div>
-                    <span>Janoshik Lab #{vendor.id === 'vendor-northstar' ? 'JH-2025-0142' : vendor.id === 'vendor-retalux' ? 'JH-2025-0098' : 'Pending'}</span>
-                    {vendor.id === 'vendor-axiom' ? (
+                    <span>Sample Lab report QA-{String(index + 1).padStart(3, '0')}</span>
+                    {vendor.id === 'sample-vendor-two' ? (
                       <button type="button" onClick={() => setDialogOpen(true)}><Bell size={14} /> Notify me</button>
                     ) : (
                       <button type="button" onClick={() => actions.navigate('/coas')}>View COA <ArrowRight size={14} /></button>
@@ -530,14 +538,14 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
         <div className={`ps-vendor-profile-mark`}>{vendorInitials}</div>
         <div className="ps-vendor-profile-title">
           <span className="ps-trust-label ps-trust-trusted"><ShieldCheck size={14} /> Trusted vendor</span>
-          <h1>{vendor?.name ?? 'Northstar Research'}</h1>
+          <h1>{vendor?.name ?? 'Sample Vendor Zero'}</h1>
           <p><MapPin size={16} /> {vendor?.location ?? 'United States'} warehouse <span /> Active since 2024</p>
         </div>
         <div className="ps-vendor-profile-score"><strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong><span><Star size={16} /> {vendor?.reviewCount ?? 184} verified reviews</span></div>
       </header>
       <nav className="ps-subnav" aria-label="Vendor profile sections">
-        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}`} navigate={actions.navigate} aria-current={!catalogMode ? 'page' : undefined}>Overview</FrontendLink>
-        <FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}`} navigate={actions.navigate} aria-current={!catalogMode ? 'page' : undefined}>Overview</FrontendLink>
+        <FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}/catalog`} navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
         <button type="button">COAs <span>{(vendor as any)?.coaCount ?? 0}</span></button>
         <button type="button">Reviews <span>{vendor?.reviewCount ?? 0}</span></button>
       </nav>
@@ -554,7 +562,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
         </div>
       ) : (
         <div className="ps-vendor-overview-grid">
-          <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>{vendor?.location ?? 'US'} fulfillment with evidence linked at the batch level.</h2><p>{vendor?.name ?? 'This vendor'} ships from {vendor?.location ?? 'the US'} with {vendor?.fulfillment ?? '1–2 day'} dispatch. All listings include batch-level COA evidence.</p><div className="ps-button-row"><FrontendLink href={`/vendors/${vendor?.slug ?? 'northstar-research'}/catalog`} navigate={actions.navigate} className="ps-primary-action">View catalog <ArrowRight size={17} /></FrontendLink><button type="button"><Bell size={16} /> Follow vendor</button></div></section>
+          <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>{vendor?.location ?? 'US'} fulfillment with evidence linked at the batch level.</h2><p>{vendor?.name ?? 'This vendor'} ships from {vendor?.location ?? 'the US'} with {vendor?.fulfillment ?? '1–2 day'} dispatch. All listings include batch-level COA evidence.</p><div className="ps-button-row"><FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}/catalog`} navigate={actions.navigate} className="ps-primary-action">View catalog <ArrowRight size={17} /></FrontendLink><button type="button"><Bell size={16} /> Follow vendor</button></div></section>
           <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>{vendor?.orderCount?.toLocaleString() ?? '2,310'}</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>{vendor?.fulfillment ?? '1–2 days'}</dd></div><div><dt>Published COAs</dt><dd>{(vendor as any)?.coaCount ?? 0}</dd></div></dl></aside>
           <section className="ps-vendor-policy"><h2>Fulfillment notes</h2><ul><li><Truck size={17} /><div><strong>Ships from {vendor?.location ?? 'USA'}</strong><span>Tracking supplied after dispatch.</span></div></li><li><CircleDollarSign size={17} /><div><strong>Transparent pack pricing</strong><span>Marketplace totals include PeptShop pricing rules.</span></div></li><li><FileCheck2 size={17} /><div><strong>Batch evidence</strong><span>Available certificates are attached to eligible listings.</span></div></li></ul></section>
         </div>

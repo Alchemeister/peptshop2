@@ -234,7 +234,7 @@ export const previewRoutes = [
   '/products',
   '/catalog/BPC-157',
   '/vendors',
-  '/vendors/northstar-research',
+  '/vendors/sample-vendor-zero',
   '/coas',
   '/verify',
   '/coa/submit-coa',
