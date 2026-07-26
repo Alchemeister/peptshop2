@@ -102,63 +102,55 @@ function OrderSummaryPanel({ subtotal, beginCheckout, navigate }: { subtotal: nu
   )
 }
 
-type CheckoutDraft = Record<string, string>
-
-const readCheckoutDraft = (form: HTMLFormElement): CheckoutDraft => {
-  const draft: CheckoutDraft = {}
-  for (const [name, value] of new FormData(form)) {
-    if (typeof value === 'string') draft[name] = value
-  }
-  return draft
-}
-
 function CheckoutPage({ actions, models }: PageComponentProps) {
-  const [step, setStep] = useState(1)
-  const [draft, setDraft] = useState<CheckoutDraft>({})
   const subtotal = models.cart.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
-  const goBack = (form: HTMLFormElement | null) => {
-    if (form) setDraft((current) => ({ ...current, ...readCheckoutDraft(form) }))
-    setStep((value) => Math.max(1, value - 1))
+  const shipping = 12
+  const total = subtotal + shipping
+  if (models.cart.length === 0) {
+    return <div className="ps-checkout-page ps-section-shell">
+      <div className="ps-empty-state"><ShoppingBag size={24} /><h2>Your cart is empty</h2><p>Add items before checking out.</p><FrontendLink href="/products" navigate={actions.navigate} className="ps-primary-action">Browse catalog <ArrowRight size={16} /></FrontendLink></div>
+    </div>
   }
   return (
     <div className="ps-checkout-page ps-section-shell">
       <button type="button" className="ps-back-link" onClick={() => actions.navigate('/cart')}><ArrowLeft size={16} /> Return to cart</button>
-      <header className="ps-checkout-head"><div><span className="ps-kicker">Secure checkout</span><h1>Complete your order</h1></div><ol><li data-active={step >= 1}><span>1</span>Contact</li><li data-active={step >= 2}><span>2</span>Delivery</li><li data-active={step >= 3}><span>3</span>Payment</li></ol></header>
+      <header className="ps-checkout-head"><div><span className="ps-kicker">Secure checkout</span><h1>Complete your order</h1></div></header>
       <div className="ps-checkout-layout">
-        <form className="ps-checkout-form" onSubmit={(event) => {
-          event.preventDefault()
-          const nextDraft = { ...draft, ...readCheckoutDraft(event.currentTarget) }
-          if (step < 3) {
-            setDraft(nextDraft)
-            setStep((value) => value + 1)
-          } else {
-            actions.submitCheckout(event.currentTarget)
-          }
-        }}>
-          {step === 3 ? Object.entries(draft).map(([name, value]) => (
-            <input key={name} name={name} type="hidden" value={value} />
-          )) : null}
-          {step === 1 ? <CheckoutContact draft={draft} /> : null}
-          {step === 2 ? <CheckoutDelivery draft={draft} /> : null}
-          {step === 3 ? <CheckoutPayment /> : null}
-          <div className="ps-checkout-actions">{step > 1 ? <button type="button" onClick={(event) => goBack(event.currentTarget.form)}>Back</button> : <span /> }<button type="submit">{step === 3 ? 'Place order' : 'Continue'} <ArrowRight size={17} /></button></div>
+        <form className="ps-checkout-form" onSubmit={(event) => { event.preventDefault(); actions.submitCheckout(event.currentTarget) }}>
+          <fieldset className="ps-checkout-step">
+            <legend><span>01</span><div><strong>Contact</strong><small>Where should order updates go?</small></div></legend>
+            <label>Email address<input name="email" type="email" placeholder="Email address" required /></label>
+            <label>Phone number <small>Optional</small><input name="phone" type="tel" placeholder="Phone number" /></label>
+            <label className="ps-check-row"><input type="checkbox" /><span>Send essential fulfillment updates by text.</span></label>
+          </fieldset>
+          <fieldset className="ps-checkout-step">
+            <legend><span>02</span><div><strong>Delivery</strong><small>Used only to fulfill this order.</small></div></legend>
+            <div className="ps-form-grid">
+              <label>Full name<input name="name" placeholder="Full name" required /></label>
+              <label>Country<select name="country" defaultValue="US"><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option></select></label>
+              <label className="ps-field-wide">Street address<input name="address" placeholder="Street address" required /></label>
+              <label>City<input name="city" placeholder="City" required /></label>
+              <label>State or region<input name="region" placeholder="State or region" required /></label>
+              <label>Postal code<input name="postal" placeholder="Postal code" required /></label>
+            </div>
+            <div className="ps-delivery-choice"><Truck size={19} /><span><strong>Tracked shipping</strong><small>Estimated 3 to 5 business days</small></span><b>{money(shipping)}</b></div>
+          </fieldset>
+          <fieldset className="ps-checkout-step">
+            <legend><span>03</span><div><strong>Payment</strong><small>Select your payment method.</small></div></legend>
+            <div className="ps-payment-options"><label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>NOWPayments</strong><small>BTC, ETH, USDT, USDC, XMR, 100+ coins</small></span></label></div>
+            <label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label>
+          </fieldset>
+          <div className="ps-checkout-actions"><button type="submit" className="ps-primary-action">Place order — {money(total)} <ArrowRight size={17} /></button></div>
         </form>
-        <aside className="ps-checkout-summary"><h2>In this order</h2>{models.cart.map((line) => <div key={line.id}><img src="/vial.svg" alt="" /><span><strong>{line.product}</strong><small>{line.format}</small></span><b>{money(line.unitPrice)}</b></div>)}<dl><div><dt>Products</dt><dd>{money(subtotal)}</dd></div><div><dt>Shipping</dt><dd>$12.00</dd></div><div><dt>Total</dt><dd>{money(subtotal + 12)}</dd></div></dl><p><ShieldCheck size={15} /> Marketplace order protection included</p></aside>
+        <aside className="ps-checkout-summary">
+          <h2>In this order</h2>
+          {models.cart.map((line) => <div key={line.id}><img src="/vial.svg" alt="" /><span><strong>{line.product}</strong><small>{line.format}</small></span><b>{money(line.unitPrice)}</b></div>)}
+          <dl><div><dt>Products</dt><dd>{money(subtotal)}</dd></div><div><dt>Shipping</dt><dd>{money(shipping)}</dd></div><div><dt>Total</dt><dd>{money(total)}</dd></div></dl>
+          <p><ShieldCheck size={15} /> Marketplace order protection included</p>
+        </aside>
       </div>
     </div>
   )
-}
-
-function CheckoutContact({ draft }: { draft: CheckoutDraft }) {
-  return <fieldset className="ps-checkout-step"><legend><span>01</span><div><strong>Contact</strong><small>Where should order updates go?</small></div></legend><label>Email address<input defaultValue={draft.email} name="email" type="email" placeholder="Email address" required /></label><label>Phone number <small>Optional</small><input defaultValue={draft.phone} name="phone" type="tel" placeholder="Phone number" /></label><label className="ps-check-row"><input type="checkbox" /><span>Send essential fulfillment updates by text.</span></label></fieldset>
-}
-
-function CheckoutDelivery({ draft }: { draft: CheckoutDraft }) {
-  return <fieldset className="ps-checkout-step"><legend><span>02</span><div><strong>Delivery</strong><small>Used only to fulfill this order.</small></div></legend><div className="ps-form-grid"><label>Full name<input defaultValue={draft.name} name="name" placeholder="Full name" required /></label><label>Country<select name="country" defaultValue={draft.country ?? 'US'}><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option></select></label><label className="ps-field-wide">Street address<input defaultValue={draft.address} name="address" placeholder="Street address" required /></label><label>City<input defaultValue={draft.city} name="city" placeholder="City" required /></label><label>State or region<input defaultValue={draft.region} name="region" placeholder="State or region" required /></label><label>Postal code<input defaultValue={draft.postal} name="postal" placeholder="Postal code" required /></label></div><div className="ps-delivery-choice"><Truck size={19} /><span><strong>Tracked shipping</strong><small>Estimated 3 to 5 business days</small></span><b>$12.00</b></div></fieldset>
-}
-
-function CheckoutPayment() {
-  return <fieldset className="ps-checkout-step"><legend><span>03</span><div><strong>Payment</strong><small>Select your payment method.</small></div></legend><div className="ps-payment-options"><label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>NOWPayments</strong><small>BTC, ETH, USDT, USDC, XMR, 100+ coins</small></span></label></div><label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label></fieldset>
 }
 
 function PaymentPage({ actions, models }: PageComponentProps) {
