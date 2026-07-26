@@ -24,7 +24,7 @@ export function EvidencePage({ actions, models, pathname, query }: PageComponent
     if (vendorFilter && coa.vendor.toLowerCase() !== vendorFilter.toLowerCase()) return false
     if (productFilter && coa.product.toLowerCase() !== productFilter.toLowerCase()) return false
     return true
-  })
+  }).sort((a, b) => b.testedAt.localeCompare(a.testedAt))
 
   return (
     <div className="ps-evidence-page ps-section-shell">

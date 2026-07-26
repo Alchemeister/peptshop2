@@ -1701,6 +1701,53 @@
   gap: 1rem;
 }
 
+.ps-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ps-line);
+}
+
+.ps-pagination button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--ps-line-strong);
+  border-radius: 8px;
+  background: var(--ps-surface-raised);
+  color: var(--ps-ink);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.ps-pagination button:hover:not(:disabled) {
+  border-color: var(--ps-accent, #FFA300);
+}
+
+.ps-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ps-pagination .ps-pagination-prev {
+  transform: rotate(90deg);
+}
+
+.ps-pagination .ps-pagination-next {
+  transform: rotate(-90deg);
+}
+
+.ps-pagination-info {
+  font-size: 0.78rem;
+  color: var(--ps-muted);
+}
+
 .ps-vendor-catalog {
   padding-top: 2.5rem;
 }

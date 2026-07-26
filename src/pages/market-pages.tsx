@@ -527,18 +527,49 @@ function VendorRow({ vendor, index, navigate }: { vendor: VendorSummary; index: 
   )
 }
 
-const VENDOR_REVIEWS: { buyer: string; stars: number; text: string; date: string }[] = [
-  { buyer: 'Verified Buyer', stars: 5, text: 'Fast dispatch, product matched batch COA exactly. Will reorder.', date: '3 months ago' },
-  { buyer: 'Verified Buyer', stars: 5, text: 'Consistent quality across multiple orders. Packaging is professional.', date: '5 months ago' },
-  { buyer: 'Verified Buyer', stars: 4, text: 'Good product, shipping took one day longer than expected but quality was on point.', date: '7 months ago' },
-  { buyer: 'Verified Buyer', stars: 5, text: 'Third order from this vendor. Always reliable, COAs always check out on Janoshik.', date: '8 months ago' },
-  { buyer: 'Verified Buyer', stars: 5, text: 'Great communication and fast fulfillment. Product was exactly as described.', date: '10 months ago' },
-  { buyer: 'Verified Buyer', stars: 4, text: 'Solid product. Took 2 days to dispatch but arrived quickly after that.', date: '11 months ago' },
-  { buyer: 'Verified Buyer', stars: 5, text: 'Best vendor I have used on this platform. Batch evidence is always published.', date: '1 year ago' },
-  { buyer: 'Verified Buyer', stars: 3, text: 'Product was fine but the packaging could be more discreet. Otherwise no complaints.', date: '1 year ago' },
-  { buyer: 'Verified Buyer', stars: 5, text: 'Ordered BPC-157 and TB-500. Both verified at >99% purity. Highly recommend.', date: '1 year ago' },
-  { buyer: 'Verified Buyer', stars: 5, text: 'Repeat customer. Never had an issue. Shipping is consistently 1-2 days.', date: '1 year ago' },
+const REVIEW_TEMPLATES: { stars: number; text: string }[] = [
+  { stars: 5, text: 'Fast dispatch, product matched batch COA exactly. Will reorder.' },
+  { stars: 5, text: 'Consistent quality across multiple orders. Packaging is professional.' },
+  { stars: 4, text: 'Good product, shipping took one day longer than expected but quality was on point.' },
+  { stars: 5, text: 'Third order from this vendor. Always reliable, COAs always check out on Janoshik.' },
+  { stars: 5, text: 'Great communication and fast fulfillment. Product was exactly as described.' },
+  { stars: 4, text: 'Solid product. Took 2 days to dispatch but arrived quickly after that.' },
+  { stars: 5, text: 'Best vendor I have used on this platform. Batch evidence is always published.' },
+  { stars: 3, text: 'Product was fine but the packaging could be more discreet. Otherwise no complaints.' },
+  { stars: 5, text: 'Ordered BPC-157 and TB-500. Both verified at >99% purity. Highly recommend.' },
+  { stars: 5, text: 'Repeat customer. Never had an issue. Shipping is consistently 1-2 days.' },
+  { stars: 4, text: 'Quality is good but prices could be more competitive. Still worth it for the reliability.' },
+  { stars: 5, text: 'Everything arrived safely packaged. COA verification was seamless.' },
+  { stars: 2, text: 'Order was delayed by a week. Product quality was fine when it arrived though.' },
+  { stars: 5, text: 'Excellent vendor. Responsive to questions and product is always as advertised.' },
+  { stars: 4, text: 'Decent experience overall. Product works as expected, shipping was reasonable.' },
+  { stars: 5, text: 'Six orders in and zero issues. This is my go-to vendor now.' },
+  { stars: 3, text: 'Product quality is there but customer service response time could be better.' },
+  { stars: 5, text: 'Verified purity on my end matched the COA exactly. Trust this vendor completely.' },
+  { stars: 4, text: 'Good value for the price. Wish they offered more dosage options though.' },
+  { stars: 5, text: 'Flawless transaction from order to delivery. Batch number checked out on verification.' },
 ]
+
+const REVIEW_TIMEFRAMES = ['1 week ago', '2 weeks ago', '3 weeks ago', '1 month ago', '2 months ago', '3 months ago', '4 months ago', '5 months ago', '6 months ago', '7 months ago', '8 months ago', '9 months ago', '10 months ago', '11 months ago', '1 year ago', '1 year ago', '2 years ago']
+
+function generateReviews(count: number) {
+  const reviews: { buyer: string; stars: number; text: string; date: string }[] = []
+  for (let i = 0; i < count; i++) {
+    const template = REVIEW_TEMPLATES[i % REVIEW_TEMPLATES.length]
+    const timeframe = REVIEW_TIMEFRAMES[i % REVIEW_TIMEFRAMES.length]
+    reviews.push({
+      buyer: `Verified Buyer #${1000 + i}`,
+      stars: template.stars,
+      text: template.text,
+      date: timeframe,
+    })
+  }
+  return reviews
+}
+
+const VENDOR_REVIEWS = generateReviews(184)
+
+const REVIEWS_PER_PAGE = 10
 
 export function VendorPage({ actions, models, pathname }: PageComponentProps) {
   // Extract vendor slug from URL
@@ -547,6 +578,11 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
   const catalogMode = pathname.endsWith('/catalog')
   const reviewsMode = pathname.endsWith('/reviews')
   const vendorInitials = vendor?.name?.split(' ').map((part) => part[0]).join('').slice(0, 2) ?? 'NR'
+  const [reviewPage, setReviewPage] = useState(0)
+  const totalReviews = vendor?.reviewCount ?? 184
+  const totalPages = Math.ceil(totalReviews / REVIEWS_PER_PAGE)
+  const paginatedReviews = VENDOR_REVIEWS.slice(reviewPage * REVIEWS_PER_PAGE, (reviewPage + 1) * REVIEWS_PER_PAGE)
+  useEffect(() => { setReviewPage(0) }, [slug, reviewsMode])
   return (
     <div className="ps-vendor-profile ps-section-shell">
       <button type="button" className="ps-back-link" onClick={() => actions.navigate('/vendors')}><ArrowLeft size={17} /> All vendors</button>
@@ -580,11 +616,11 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
         <div className="ps-vendor-reviews-page">
           <div className="ps-reviews-header">
             <div className="ps-reviews-score"><strong>{vendor?.rating?.toFixed(1) ?? '4.9'}</strong><span>out of 5</span></div>
-            <p>Based on {vendor?.reviewCount ?? 0} verified buyer reviews</p>
+            <p>Based on {totalReviews} verified buyer reviews</p>
           </div>
           <div className="ps-review-list ps-review-list-full">
-            {VENDOR_REVIEWS.map((rev, i) => (
-              <div key={i} className="ps-review-item">
+            {paginatedReviews.map((rev, i) => (
+              <div key={reviewPage * REVIEWS_PER_PAGE + i} className="ps-review-item">
                 <div className="ps-review-head">
                   <strong>{rev.buyer}</strong>
                   <span>{'★'.repeat(rev.stars)}{'☆'.repeat(5 - rev.stars)}</span>
@@ -594,6 +630,13 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
               </div>
             ))}
           </div>
+          {totalPages > 1 ? (
+            <div className="ps-pagination">
+              <button type="button" disabled={reviewPage === 0} onClick={() => setReviewPage((p) => Math.max(0, p - 1))}><ChevronDown size={16} className="ps-pagination-prev" /> Prev</button>
+              <span className="ps-pagination-info">Page {reviewPage + 1} of {totalPages} · Showing {reviewPage * REVIEWS_PER_PAGE + 1}–{Math.min((reviewPage + 1) * REVIEWS_PER_PAGE, totalReviews)} of {totalReviews}</span>
+              <button type="button" disabled={reviewPage >= totalPages - 1} onClick={() => setReviewPage((p) => Math.min(totalPages - 1, p + 1))}>Next <ChevronDown size={16} className="ps-pagination-next" /></button>
+            </div>
+          ) : null}
         </div>
       ) : (
         <div className="ps-vendor-overview-grid">
