@@ -59,9 +59,19 @@ export function PeptShopFrontend({
   const [theme, setTheme] = useState<FrontendTheme>(providedTheme ?? 'light')
   const [previewOpen, setPreviewOpen] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
-  const [cartLines, setCartLines] = useState<CartLine[]>(() => models.cart ?? [])
+  const [cartLines, setCartLines] = useState<CartLine[]>(() => {
+    try {
+      const saved = localStorage.getItem('peptshop-cart')
+      if (saved) return JSON.parse(saved)
+    } catch { /* ignore */ }
+    return models.cart ?? []
+  })
   const [lastOrderTotal, setLastOrderTotal] = useState<number | null>(null)
   const cartCount = cartLines.reduce((sum, line) => sum + line.quantity, 0)
+
+  useEffect(() => {
+    try { localStorage.setItem('peptshop-cart', JSON.stringify(cartLines)) } catch { /* ignore */ }
+  }, [cartLines])
   const allowedFamilies = useMemo(
     () => (allowedRouteFamilies ? new Set(allowedRouteFamilies) : null),
     [allowedRouteFamilies],
