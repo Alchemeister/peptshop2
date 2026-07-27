@@ -168,7 +168,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
           {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
           <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
         </div>
-        <i className="ps-catalog-coa-badge">{product.coaCount} COAs</i>
+        <i className="ps-catalog-coa-badge">{product.coaCount} COA{product.coaCount === 1 ? '' : 's'}</i>
       </div>
     </FrontendLink>
   )
@@ -602,7 +602,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
           <div className="ps-compact-product-list">
             {models.products.filter((product) => product.availability === 'available').slice(0, 5).map((product) => (
               <FrontendLink key={product.id} href={`/products/${product.slug}`} navigate={actions.navigate}>
-                <strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount} COAs</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
+                <strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount} COA{product.coaCount === 1 ? '' : 's'}</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
               </FrontendLink>
             ))}
           </div>
