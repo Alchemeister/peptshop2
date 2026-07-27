@@ -108,10 +108,28 @@ function CartPage({ actions, models }: PageComponentProps) {
           <section className="ps-checkout-card">
             <h2 className="ps-checkout-card-title">Payment</h2>
             <div className="ps-payment-options">
-              <label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>NOWPayments</strong><small>BTC, ETH, USDT, USDC, XMR, 100+ coins</small></span></label>
-              <label><input type="radio" name="payment" /><CreditCard size={20} /><span><strong>PeerPay</strong><small>Venmo, Zelle, Cash App, Revolut & more</small></span></label>
+              <label className="ps-pay-option"><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>NOWPayments</strong><small>BTC, ETH, USDT, USDC, XMR, 100+ coins</small></span></label>
+              <label className="ps-pay-option">
+                <input type="radio" name="payment" />
+                <CreditCard size={20} />
+                <span>
+                  <strong>PeerPay</strong>
+                  <small>Venmo, Zelle, Cash App, Revolut & more</small>
+                  <em className="ps-pay-fee">An extra 9% fee is applied by the provider</em>
+                  <div className="ps-pay-badges">
+                    <span className="ps-pay-badge ps-pay-venmo">V</span>
+                    <span className="ps-pay-badge ps-pay-cashapp">$</span>
+                    <span className="ps-pay-badge ps-pay-revolut">R</span>
+                    <span className="ps-pay-badge ps-pay-zelle">Z</span>
+                    <span className="ps-pay-badge ps-pay-wise">W</span>
+                    <span className="ps-pay-badge ps-pay-monzo">M</span>
+                    <span className="ps-pay-badge ps-pay-n26">N</span>
+                  </div>
+                </span>
+              </label>
             </div>
             <label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label>
+            <label className="ps-check-row"><input type="checkbox" required /><span>I confirm I am 21 years of age or older.</span></label>
           </section>
         </form>
 
