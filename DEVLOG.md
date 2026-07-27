@@ -62,7 +62,20 @@
 - **Styling**: Owned by the frontend contributor
 - **Data layer**: The private host owns the public/private boundary and adapter contracts
 - **Images**: Only hero card + popular cards. No images on catalog, product pages, cart, checkout
-- **Vendor names**: Use `Sample Vendor` fixtures only
+- **Vendor names**: Use real vendor names (Northstar Research, Retalux, Axiom Peptides)
 - **Lab name**: Use `Sample Lab` fixtures only
 - **Build**: `npm run build` (runs tsc + Vite). Must pass clean before commit
 - **Dev server**: `npx vite --port 5174 --host 0.0.0.0` with cloudflared tunnel for preview
+
+### 2026-07-27 ~22:00 UTC — Frontend contributor automation — Cart, checkout, and vendor overhaul
+
+- **`shell.tsx`**: Rebuilt hover cart as full right-side sidebar panel (`.ps-cart-drawer`) with overlay, vendor grouping, free shipping progress bars. Replaced "Open" pill button with orange "Checkout" button in header. Removed duplicate checkout button from footer. Fixed drawer height (was 115px content-height, added `height: 100vh`/`100dvh`)
+- **`commerce-pages.tsx`**: Consolidated checkout from 3 pages to single `/cart` page with two-column card-based layout (4 cards + sticky order summary sidebar). Per-vendor shipping costs (not flat $12). Added PeerPay payment option with 7 provider badges (Venmo, Cash App, Revolut, Zelle, Wise, Monzo, N26) + 9% fee note. Added "I confirm I am 21 years of age or older" required checkbox. Removed `Bitcoin` import, added `CreditCard` import
+- **`market-pages.tsx`**: Replaced fake `previewVendorOffers` ("Sample Vendor One/Two/Three") with real vendors from `models.vendors` (Northstar Research, Retalux, Axiom Peptides). Product pages now show the same vendors as the Vendors page. `addToCart` passes `vendor.shippingCost`. Purity and batch prefix derived per vendor via lookup maps
+- **`App.tsx`**: `addToCart` now accepts `shippingCost` param. `CartLine` includes `vendorId` and `shippingCost`. Cart persists to localStorage (`peptshop-cart` key)
+- **`contracts.ts`**: Added `shippingCost` to `VendorSummary` and `CartLine` types. `addToCart` signature updated with `shippingCost` param
+- **`mock-data.ts`**: Added `shippingCost` to each vendor (Northstar $12, Retalux $15, Axiom $18)
+- **`preview-fixtures.ts`**: Updated admin pricing fixtures to use real vendor IDs/names instead of "Sample Vendor One/Two/Three"
+- **`shell.css`**: New `.ps-cart-overlay`, `.ps-cart-drawer`, `.ps-cart-drawer-vendor`, `.ps-cart-drawer-item`, progress bar styles. Removed old `.ps-cart-preview` dropdown styles and `.ps-cart-drawer-open` pill button styles
+- **`storefront.css`**: `.ps-checkout-layout` grid, `.ps-checkout-card` card styles, `.ps-order-summary` sidebar styles, PeerPay badge styles (`.ps-pay-badge` with brand-colored `<i>` icons)
+- **`responsive.css`**: Responsive grid collapse to 1fr, `.ps-order-summary` position static on mobile
