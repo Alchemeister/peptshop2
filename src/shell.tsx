@@ -119,8 +119,8 @@ export function StorefrontShell({
                   <aside className="ps-cart-drawer" role="dialog" aria-label="Cart preview">
                     <header className="ps-cart-drawer-head">
                       <h2>Your cart</h2>
-                      <button type="button" className="ps-cart-drawer-open" onClick={() => actions.navigate('/cart')}>
-                        Open <ArrowRight size={15} />
+                      <button type="button" className="ps-primary-action ps-cart-drawer-checkout" onClick={() => actions.navigate('/cart')}>
+                        Checkout <ArrowRight size={15} />
                       </button>
                     </header>
                     <div className="ps-cart-drawer-body">
@@ -173,9 +173,6 @@ export function StorefrontShell({
                         <span>Total</span>
                         <strong>${cartLines.reduce((s, l) => s + l.unitPrice * l.quantity, 0).toFixed(2)}</strong>
                       </div>
-                      <button type="button" className="ps-primary-action ps-cart-drawer-checkout" onClick={() => actions.navigate('/cart')}>
-                        Checkout <ArrowRight size={16} />
-                      </button>
                     </footer>
                   </aside>
                 </>
