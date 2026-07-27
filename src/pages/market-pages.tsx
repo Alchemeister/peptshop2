@@ -439,7 +439,6 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 <aside className="ps-cart-summary-card">
                   <h3>Order summary</h3>
                   <div className="ps-cart-summary-product">
-                    <img src="/vial.svg" alt="" />
                     <div>
                       <strong>{source?.name ?? 'Product'}</strong>
                       <span>{selectedDose} · {selectedPackSize}-vial pack</span>

@@ -13,7 +13,7 @@ import {
   X,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import type { FrontendTheme, PeptShopActions } from './contracts'
+import type { CartLine, FrontendTheme, PeptShopActions } from './contracts'
 import { FrontendLink, routeIsActive } from './navigation'
 
 const navItems = [
@@ -21,12 +21,12 @@ const navItems = [
   { href: '/vendors', label: 'Vendors' },
   { href: '/coas', label: 'CoAs' },
   { href: '/verify', label: 'Verify' },
-  { href: '/cart', label: 'Cart' },
 ]
 
 type StorefrontShellProps = {
   actions: PeptShopActions
   cartCount: number
+  cartLines: CartLine[]
   children: React.ReactNode
   pathname: string
   theme: FrontendTheme
@@ -35,12 +35,14 @@ type StorefrontShellProps = {
 export function StorefrontShell({
   actions,
   cartCount,
+  cartLines,
   children,
   pathname,
   theme,
 }: StorefrontShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [query, setQuery] = useState('')
+  const [cartPreviewOpen, setCartPreviewOpen] = useState(false)
 
   useEffect(() => {
     if (pathname) setMobileOpen(false)
@@ -97,15 +99,50 @@ export function StorefrontShell({
           </nav>
 
           <div className="ps-header-actions">
-            <FrontendLink
-              href="/cart"
-              navigate={actions.navigate}
-              className="ps-icon-button ps-cart-button"
-              aria-label={`Cart with ${cartCount} items`}
+            <div
+              className="ps-cart-wrapper"
+              onMouseEnter={() => setCartPreviewOpen(true)}
+              onMouseLeave={() => setCartPreviewOpen(false)}
             >
-              <ShoppingBag size={23} strokeWidth={1.8} />
-              {cartCount > 0 ? <span>{cartCount}</span> : null}
-            </FrontendLink>
+              <FrontendLink
+                href="/cart"
+                navigate={actions.navigate}
+                className="ps-icon-button ps-cart-button"
+                aria-label={`Cart with ${cartCount} items`}
+              >
+                <ShoppingBag size={23} strokeWidth={1.8} />
+                {cartCount > 0 ? <span>{cartCount}</span> : null}
+              </FrontendLink>
+              {cartPreviewOpen && cartCount > 0 ? (
+                <div className="ps-cart-preview" role="tooltip">
+                  <div className="ps-cart-preview-items">
+                    {cartLines.map((line) => (
+                      <div key={line.id} className="ps-cart-preview-item">
+                        <div className="ps-cart-preview-item-info">
+                          <strong>{line.product}</strong>
+                          <small>{line.format} · {line.vendor}</small>
+                        </div>
+                        <span className="ps-cart-preview-item-price">
+                          {line.quantity} × ${line.unitPrice.toFixed(2)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="ps-cart-preview-footer">
+                    <span className="ps-cart-preview-total">
+                      ${cartLines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0).toFixed(2)} total
+                    </span>
+                    <button
+                      type="button"
+                      className="ps-primary-action ps-cart-preview-checkout"
+                      onClick={() => actions.navigate('/cart')}
+                    >
+                      Checkout
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+            </div>
             <button
               type="button"
               className="ps-icon-button ps-mobile-menu-button"
@@ -262,7 +299,6 @@ function ClassicHomeFooter({ navigate }: { navigate: (href: string) => void }) {
             links={[
               ['/products', 'All Products'],
               ['/vendors', 'Vendors'],
-              ['/cart', 'Cart'],
               ['/coas', 'CoA Labs'],
             ]}
             navigate={navigate}

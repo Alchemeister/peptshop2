@@ -139,7 +139,7 @@ export function PeptShopFrontend({
           vendor: vName,
           quantity: 1,
           unitPrice: price,
-          imageSrc: '/vial.svg',
+          imageSrc: '',
         }]
       })
       demo(`${product.name} added to cart`)
@@ -188,7 +188,7 @@ export function PeptShopFrontend({
       {isPortal || route.family === 'api' ? (
         <div className="ps-app" data-theme={theme}>{page}</div>
       ) : (
-        <StorefrontShell actions={actions} cartCount={cartCount} pathname={pathname} theme={theme}>
+        <StorefrontShell actions={actions} cartCount={cartCount} cartLines={cartLines} pathname={pathname} theme={theme}>
           {page}
         </StorefrontShell>
       )}
