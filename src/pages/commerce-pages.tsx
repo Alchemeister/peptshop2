@@ -6,7 +6,6 @@ import {
   FileText,
   LockKeyhole,
   Mail,
-  MapPin,
   Minus,
   PackageCheck,
   Plus,
@@ -57,62 +56,81 @@ function CartPage({ actions, models }: PageComponentProps) {
     <div className="ps-cart-page ps-section-shell">
       <header className="ps-page-masthead">
         <span className="ps-kicker">Secure checkout</span>
-        <div className="ps-page-title-row"><h1>Review & pay</h1><p>{models.cart.length} items from {vendorGroups.length} vendor{vendorGroups.length === 1 ? '' : 's'}.</p></div>
+        <div className="ps-page-title-row"><h1>Review & pay</h1><p>{models.cart.length} item{models.cart.length === 1 ? '' : 's'} from {vendorGroups.length} vendor{vendorGroups.length === 1 ? '' : 's'}.</p></div>
       </header>
       <div className="ps-checkout-layout">
+        {/* Left column: items + form */}
         <form className="ps-checkout-form" onSubmit={(event) => { event.preventDefault(); actions.submitCheckout(event.currentTarget) }}>
           {/* Cart items */}
-          <fieldset className="ps-checkout-step">
-            <legend><span>01</span><div><strong>Your items</strong><small>Review before placing your order.</small></div></legend>
+          <section className="ps-checkout-card">
+            <h2 className="ps-checkout-card-title">Your items</h2>
             <div className="ps-cart-lines">
               {vendorGroups.map((group) => (
                 <div key={group.vendorName} className="ps-cart-vendor-group">
-                  <div className="ps-cart-vendor-head"><div><span className="ps-status-dot" /><strong>{group.vendorName}</strong></div><span><MapPin size={14} /> Ships from USA · <Truck size={14} /> Tracked shipping</span></div>
+                  <div className="ps-cart-vendor-head"><span className="ps-status-dot" /><strong>{group.vendorName}</strong></div>
                   {group.lines.map((line) => <CartLineItem key={line.id} line={line} actions={actions} />)}
-                  <div className="ps-cart-vendor-subtotal">
-                    <span>Subtotal from {group.vendorName}</span>
-                    <strong>{money(group.lines.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0))}</strong>
-                  </div>
                 </div>
               ))}
             </div>
             <div className="ps-cart-secondary-actions">
               <FrontendLink href="/products" navigate={actions.navigate} className="ps-back-link"><ArrowLeft size={16} /> Continue browsing</FrontendLink>
-              <button type="button" onClick={actions.clearCart}>Clear cart</button>
+              <button type="button" onClick={actions.clearCart} className="ps-text-danger">Clear cart</button>
             </div>
-          </fieldset>
+          </section>
 
           {/* Contact */}
-          <fieldset className="ps-checkout-step">
-            <legend><span>02</span><div><strong>Contact</strong><small>Where should order updates go?</small></div></legend>
-            <label>Email address<input name="email" type="email" placeholder="Email address" required /></label>
-            <label>Phone number <small>Optional</small><input name="phone" type="tel" placeholder="Phone number" /></label>
-            <label className="ps-check-row"><input type="checkbox" /><span>Send essential fulfillment updates by text.</span></label>
-          </fieldset>
+          <section className="ps-checkout-card">
+            <h2 className="ps-checkout-card-title">Contact</h2>
+            <div className="ps-form-grid">
+              <label className="ps-field-wide">Email address<input name="email" type="email" placeholder="Email address" required /></label>
+              <label>Phone number <small>Optional</small><input name="phone" type="tel" placeholder="Phone number" /></label>
+              <label className="ps-field-wide ps-check-row"><input type="checkbox" /><span>Send essential fulfillment updates by text.</span></label>
+            </div>
+          </section>
 
           {/* Delivery */}
-          <fieldset className="ps-checkout-step">
-            <legend><span>03</span><div><strong>Delivery</strong><small>Used only to fulfill this order.</small></div></legend>
+          <section className="ps-checkout-card">
+            <h2 className="ps-checkout-card-title">Delivery</h2>
             <div className="ps-form-grid">
               <label>Full name<input name="name" placeholder="Full name" required /></label>
-              <label>Country<select name="country" defaultValue="US"><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option></select></label>
+              <label>Country<select name="country" defaultValue="US"><option value="US">United States</option><option value="GB">United Kingdom</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="DE">Germany</option><option value="FI">Finland</option></select></label>
               <label className="ps-field-wide">Street address<input name="address" placeholder="Street address" required /></label>
               <label>City<input name="city" placeholder="City" required /></label>
               <label>State or region<input name="region" placeholder="State or region" required /></label>
               <label>Postal code<input name="postal" placeholder="Postal code" required /></label>
             </div>
             <div className="ps-delivery-choice"><Truck size={19} /><span><strong>Tracked shipping</strong><small>Estimated 3 to 5 business days</small></span><b>{money(shipping)}</b></div>
-          </fieldset>
+          </section>
 
           {/* Payment */}
-          <fieldset className="ps-checkout-step">
-            <legend><span>04</span><div><strong>Payment</strong><small>Select your payment method.</small></div></legend>
+          <section className="ps-checkout-card">
+            <h2 className="ps-checkout-card-title">Payment</h2>
             <div className="ps-payment-options"><label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>NOWPayments</strong><small>BTC, ETH, USDT, USDC, XMR, 100+ coins</small></span></label></div>
             <label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label>
-          </fieldset>
-
-          <div className="ps-checkout-actions"><button type="submit" className="ps-primary-action">Place order — {money(total)} <ArrowRight size={17} /></button></div>
+          </section>
         </form>
+
+        {/* Right column: order summary */}
+        <aside className="ps-order-summary">
+          <h2>Order summary</h2>
+          <dl>
+            {vendorGroups.map((group) => (
+              group.lines.map((line) => (
+                <div key={line.id} className="ps-summary-line">
+                  <dt>{line.product} <small>{line.format}</small></dt>
+                  <dd>{money(line.unitPrice * line.quantity)}</dd>
+                </div>
+              ))
+            ))}
+            <div className="ps-summary-divider" />
+            <div className="ps-summary-line"><dt>Subtotal</dt><dd>{money(subtotal)}</dd></div>
+            <div className="ps-summary-line"><dt>Shipping</dt><dd>{money(shipping)}</dd></div>
+            <div className="ps-summary-divider" />
+            <div className="ps-summary-line ps-summary-total"><dt>Total</dt><dd>{money(total)}</dd></div>
+          </dl>
+          <button type="submit" className="ps-primary-action ps-summary-checkout" onClick={(e) => { e.preventDefault(); const form = document.querySelector('.ps-checkout-form') as HTMLFormElement | null; if (form) form.requestSubmit(); }}>Place order <ArrowRight size={17} /></button>
+          <p className="ps-summary-note"><LockKeyhole size={14} /> Encrypted checkout. Your details are used only to fulfill this order.</p>
+        </aside>
       </div>
     </div>
   )
@@ -121,7 +139,11 @@ function CartPage({ actions, models }: PageComponentProps) {
 function CartLineItem({ line, actions }: { line: CartLine; actions: PageComponentProps['actions'] }) {
   return (
     <article className="ps-cart-line">
-      <div className="ps-cart-line-copy"><h2>{line.product}</h2><p>{line.format}</p><button type="button" onClick={() => actions.removeCartLine(line.id)}>Remove</button></div>
+      <div className="ps-cart-line-copy">
+        <h2>{line.product}</h2>
+        <p>{line.format} · {line.vendor}</p>
+        <button type="button" onClick={() => actions.removeCartLine(line.id)} className="ps-cart-line-remove">Remove</button>
+      </div>
       <div className="ps-quantity-control"><button type="button" aria-label="Decrease quantity" onClick={() => actions.updateCartQuantity(line.id, Math.max(1, line.quantity - 1))}><Minus size={14} /></button><span>{line.quantity}</span><button type="button" aria-label="Increase quantity" onClick={() => actions.updateCartQuantity(line.id, line.quantity + 1)}><Plus size={14} /></button></div>
       <strong className="ps-cart-line-total">{money(line.unitPrice * line.quantity)}</strong>
     </article>

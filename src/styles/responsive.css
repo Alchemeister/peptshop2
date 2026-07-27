@@ -228,8 +228,7 @@
     grid-template-columns: 1fr;
   }
 
-  .ps-order-summary-panel,
-  .ps-checkout-summary {
+  .ps-order-summary {
     position: static;
   }
 
