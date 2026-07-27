@@ -14,7 +14,7 @@ import {
   Truck,
   WalletCards,
 } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import type { CartLine, OrderDisplayStatus, PageComponentProps } from '../contracts'
 import { FrontendLink } from '../navigation'
 
@@ -40,6 +40,22 @@ function CartPage({ actions, models }: PageComponentProps) {
   const totalShipping = vendorGroups.reduce((sum, g) => sum + g.shippingCost, 0)
   const total = subtotal + totalShipping
 
+  // Track form validity for Place Order button state
+  const formRef = useRef<HTMLFormElement>(null)
+  const [formValid, setFormValid] = useState(false)
+
+  const checkFormValidity = () => {
+    const form = formRef.current
+    if (!form) return
+    setFormValid(form.checkValidity())
+  }
+
+  // Check on mount and when cart changes (re-render)
+  useEffect(() => { checkFormValidity() }, [models.cart])
+
+  // Listen for input/checkbox changes
+  const handleFormInput = () => checkFormValidity()
+
   if (models.cart.length === 0) {
     return (
       <div className="ps-cart-page ps-section-shell">
@@ -61,7 +77,7 @@ function CartPage({ actions, models }: PageComponentProps) {
       </header>
       <div className="ps-checkout-layout">
         {/* Left column: items + form */}
-        <form className="ps-checkout-form" onSubmit={(event) => { event.preventDefault(); actions.submitCheckout(event.currentTarget) }}>
+        <form ref={formRef} className="ps-checkout-form" onChange={handleFormInput} onInput={handleFormInput} onSubmit={(event) => { event.preventDefault(); if (!formValid) return; actions.submitCheckout(event.currentTarget) }}>
           {/* Cart items */}
           <section className="ps-checkout-card">
             <h2 className="ps-checkout-card-title">Your items</h2>
@@ -155,7 +171,7 @@ function CartPage({ actions, models }: PageComponentProps) {
             <div className="ps-summary-divider" />
             <div className="ps-summary-line ps-summary-total"><dt>Total</dt><dd>{money(total)}</dd></div>
           </dl>
-          <button type="submit" className="ps-primary-action ps-summary-checkout" onClick={(e) => { e.preventDefault(); const form = document.querySelector('.ps-checkout-form') as HTMLFormElement | null; if (form) form.requestSubmit(); }}>Place order <ArrowRight size={17} /></button>
+          <button type="submit" disabled={!formValid} aria-disabled={!formValid} className={`ps-primary-action ps-summary-checkout${!formValid ? ' ps-btn-disabled' : ''}`} onClick={(e) => { e.preventDefault(); const form = document.querySelector('.ps-checkout-form') as HTMLFormElement | null; if (form && formValid) form.requestSubmit(); }}>Place order <ArrowRight size={17} /></button>
           <p className="ps-summary-note"><LockKeyhole size={14} /> Encrypted checkout. Your details are used only to fulfill this order.</p>
         </aside>
       </div>
