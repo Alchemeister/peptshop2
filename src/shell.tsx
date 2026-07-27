@@ -1,4 +1,5 @@
 import {
+  ArrowRight,
   ArrowUpRight,
   Bitcoin,
   BookOpen,
@@ -97,7 +98,6 @@ export function StorefrontShell({
               </FrontendLink>
             ))}
           </nav>
-
           <div className="ps-header-actions">
             <div
               className="ps-cart-wrapper"
@@ -114,33 +114,71 @@ export function StorefrontShell({
                 {cartCount > 0 ? <span>{cartCount}</span> : null}
               </FrontendLink>
               {cartPreviewOpen && cartCount > 0 ? (
-                <div className="ps-cart-preview" role="tooltip">
-                  <div className="ps-cart-preview-items">
-                    {cartLines.map((line) => (
-                      <div key={line.id} className="ps-cart-preview-item">
-                        <div className="ps-cart-preview-item-info">
-                          <strong>{line.product}</strong>
-                          <small>{line.format} · {line.vendor}</small>
-                        </div>
-                        <span className="ps-cart-preview-item-price">
-                          {line.quantity} × ${line.unitPrice.toFixed(2)}
-                        </span>
+                <>
+                  <div className="ps-cart-overlay" onClick={() => setCartPreviewOpen(false)} />
+                  <aside className="ps-cart-drawer" role="dialog" aria-label="Cart preview">
+                    <header className="ps-cart-drawer-head">
+                      <h2>Your cart</h2>
+                      <button type="button" className="ps-cart-drawer-open" onClick={() => actions.navigate('/cart')}>
+                        Open <ArrowRight size={15} />
+                      </button>
+                    </header>
+                    <div className="ps-cart-drawer-body">
+                      {(() => {
+                        // Group by vendor
+                        const groups: Record<string, CartLine[]> = {}
+                        for (const line of cartLines) {
+                          const v = line.vendor || 'Unassigned'
+                          if (!groups[v]) groups[v] = []
+                          groups[v].push(line)
+                        }
+                        return Object.entries(groups).map(([vendorName, lines]) => {
+                          const groupSubtotal = lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
+                          const freeShipThreshold = 1200
+                          const progress = Math.min(100, (groupSubtotal / freeShipThreshold) * 100)
+                          return (
+                            <div key={vendorName} className="ps-cart-drawer-vendor">
+                              <div className="ps-cart-drawer-vendor-head">
+                                <strong>{vendorName}</strong>
+                                <div className="ps-cart-drawer-vendor-subtotal">
+                                  <small>Subtotal</small>
+                                  <b>${groupSubtotal.toFixed(2)}</b>
+                                </div>
+                              </div>
+                              {lines.map((line) => (
+                                <div key={line.id} className="ps-cart-drawer-item">
+                                  <div className="ps-cart-drawer-item-info">
+                                    <strong>{line.product}</strong>
+                                    <small>{line.format} · qty {line.quantity}</small>
+                                  </div>
+                                  <div className="ps-cart-drawer-item-price">
+                                    <span className="ps-cart-drawer-item-total">${(line.unitPrice * line.quantity).toFixed(2)}</span>
+                                    <small>${line.unitPrice.toFixed(2)} ea</small>
+                                  </div>
+                                </div>
+                              ))}
+                              <div className="ps-cart-drawer-progress">
+                                <div className="ps-cart-drawer-progress-bar">
+                                  <div className="ps-cart-drawer-progress-fill" style={{ width: `${progress}%` }} />
+                                </div>
+                                <small>{groupSubtotal >= freeShipThreshold ? 'Free shipping unlocked!' : `Add $${(freeShipThreshold - groupSubtotal).toFixed(0)} for free shipping`}</small>
+                              </div>
+                            </div>
+                          )
+                        })
+                      })()}
+                    </div>
+                    <footer className="ps-cart-drawer-foot">
+                      <div className="ps-cart-drawer-total-row">
+                        <span>Total</span>
+                        <strong>${cartLines.reduce((s, l) => s + l.unitPrice * l.quantity, 0).toFixed(2)}</strong>
                       </div>
-                    ))}
-                  </div>
-                  <div className="ps-cart-preview-footer">
-                    <span className="ps-cart-preview-total">
-                      ${cartLines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0).toFixed(2)} total
-                    </span>
-                    <button
-                      type="button"
-                      className="ps-primary-action ps-cart-preview-checkout"
-                      onClick={() => actions.navigate('/cart')}
-                    >
-                      Checkout
-                    </button>
-                  </div>
-                </div>
+                      <button type="button" className="ps-primary-action ps-cart-drawer-checkout" onClick={() => actions.navigate('/cart')}>
+                        Checkout <ArrowRight size={16} />
+                      </button>
+                    </footer>
+                  </aside>
+                </>
               ) : null}
             </div>
             <button

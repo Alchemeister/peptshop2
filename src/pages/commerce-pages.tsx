@@ -1,6 +1,7 @@
 import {
   ArrowLeft,
   ArrowRight,
+  Bitcoin,
   Check,
   Copy,
   FileText,
@@ -105,7 +106,10 @@ function CartPage({ actions, models }: PageComponentProps) {
           {/* Payment */}
           <section className="ps-checkout-card">
             <h2 className="ps-checkout-card-title">Payment</h2>
-            <div className="ps-payment-options"><label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>NOWPayments</strong><small>BTC, ETH, USDT, USDC, XMR, 100+ coins</small></span></label></div>
+            <div className="ps-payment-options">
+              <label><input type="radio" name="payment" defaultChecked /><WalletCards size={20} /><span><strong>NOWPayments</strong><small>BTC, ETH, USDT, USDC, XMR, 100+ coins</small></span></label>
+              <label><input type="radio" name="payment" /><Bitcoin size={20} /><span><strong>PeerPay</strong><small>Direct crypto P2P — no intermediary, lower fees</small></span></label>
+            </div>
             <label className="ps-check-row"><input type="checkbox" required /><span>I acknowledge the research-use terms and order policies.</span></label>
           </section>
         </form>
