@@ -256,44 +256,7 @@ const productDetails: Record<string, { cas: string; formula: string; mw: string;
   'PNC-27': { cas: '1159861-00-3', formula: 'C₁₈₈H₂₉₃N₅₃O₄₄S', mw: '4032', description: 'Synthetic peptide. Studied for cancer cell membrane disruption via p53-dependent signaling.' },
   'FOX04': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Forkhead box O4 transcription factor peptide. Studied for cellular stress response and apoptosis signaling.' },}
 
-const previewVendorOffers = [
-  {
-    id: 'sample-vendor-one',
-    name: 'Sample Vendor One',
-    slug: 'sample-vendor-one',
-    location: 'Sample region A',
-    rating: 4.8,
-    reviewCount: 120,
-    fulfillment: '2–3 days',
-    purity: 99.2,
-    batchPrefix: 'QA-A',
-    priceMultiplier: 1,
-  },
-  {
-    id: 'sample-vendor-two',
-    name: 'Sample Vendor Two',
-    slug: 'sample-vendor-two',
-    location: 'Sample region B',
-    rating: 4.7,
-    reviewCount: 80,
-    fulfillment: '3–5 days',
-    purity: 99,
-    batchPrefix: 'QA-B',
-    priceMultiplier: 1.08,
-  },
-  {
-    id: 'sample-vendor-three',
-    name: 'Sample Vendor Three',
-    slug: 'sample-vendor-three',
-    location: 'Sample region C',
-    rating: 4.6,
-    reviewCount: 60,
-    fulfillment: '2–4 days',
-    purity: 99.1,
-    batchPrefix: 'QA-C',
-    priceMultiplier: 0.94,
-  },
-] as const
+const previewVendorOffers_REMOVED = true // Real vendors now come from models.vendors
 
 export function ProductPage({ actions, models, query, theme, pathname }: PageComponentProps) {
   // Parse product name from URL — supports both /catalog/:name and /products/:slug
@@ -309,13 +272,18 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const details = productDetails[source?.name ?? ''] ?? { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Research compound available from vetted suppliers with transparent per-mg pricing and batch-level evidence.' }
   const dosages = source?.formats ?? ['2 mg', '5 mg', '10 mg']
 
+  // Use real vendors from models — same ones on the Vendors page
+  const allVendors = models.vendors
+  const priceMultipliers: Record<string, number> = { 'vendor-northstar': 1, 'vendor-retalux': 1.08, 'vendor-axiom': 0.94 }
+  const vendorPurity: Record<string, number> = { 'vendor-northstar': 99.2, 'vendor-retalux': 99.0, 'vendor-axiom': 99.1 }
+  const vendorBatchPrefix: Record<string, string> = { 'vendor-northstar': 'NS', 'vendor-retalux': 'RX', 'vendor-axiom': 'AX' }
+
   // Deterministic presentation math only. It is not derived from private pricing or marketplace rules.
   const lookupVendorPrice = (dose: string, vendorId: string): number => {
     const doseNum = parseInt(dose) || 5
     const baseDose = parseInt(dosages[0] ?? '') || 5
-    const vendor = previewVendorOffers.find((candidate) => candidate.id === vendorId)
     const base = Math.max(1, source?.startingPrice ?? 20)
-    return Math.round(base * Math.max(1, doseNum / baseDose) * (vendor?.priceMultiplier ?? 1) * 100) / 100
+    return Math.round(base * Math.max(1, doseNum / baseDose) * (priceMultipliers[vendorId] ?? 1) * 100) / 100
   }
 
   // Generate dose-specific batch number
@@ -326,8 +294,8 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   }
 
   const productVendors = useMemo(
-    () => previewVendorOffers.slice(0, Math.max(1, Math.min(source?.vendorCount ?? 1, 3))),
-    [source?.vendorCount],
+    () => allVendors.slice(0, Math.max(1, Math.min(source?.vendorCount ?? 1, allVendors.length))),
+    [source?.vendorCount, allVendors],
   )
 
   const [selectedDose, setSelectedDose] = useState(dosages[1] ?? dosages[0])
@@ -406,8 +374,8 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         </>); })()}
                       </div>
                       <div className="ps-offer-facts">
-                        <span><FileCheck2 size={15} /><small>Purity</small>≥{vendor.purity}%</span>
-                        <span><PackageCheck size={15} /><small>Batch</small>{makeBatch(vendor.batchPrefix, selectedDose)}</span>
+                        <span><FileCheck2 size={15} /><small>Purity</small>≥{vendorPurity[vendor.id] ?? 99}%</span>
+                        <span><PackageCheck size={15} /><small>Batch</small>{makeBatch(vendorBatchPrefix[vendor.id] ?? 'QA', selectedDose)}</span>
                         <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
                         <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/coas?vendor=${encodeURIComponent(vendor.name)}&product=${encodeURIComponent(source?.name ?? 'Product')}`)}>
                           <FileCheck2 size={13} /> COA
@@ -423,7 +391,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                           setSelectedVendorId(vendor.id)
                           const vPrice = lookupVendorPrice(selectedDose, vendor.id)
                           const linePrice = (selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * (selectedVendorId === vendor.id ? quantity : 1)
-                          actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id, vendor.name, linePrice, `${selectedDose} · ${selectedPackSize} vials`)
+                          actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id, vendor.name, linePrice, `${selectedDose} · ${selectedPackSize} vials`, vendor.shippingCost ?? 12)
                         }}>
                           <ShoppingBag size={17} /> Add ${(() => {
                             const vPrice = lookupVendorPrice(selectedDose, vendor.id)

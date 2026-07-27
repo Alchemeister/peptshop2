@@ -34,6 +34,7 @@ export type VendorSummary = {
   regions?: Array<'us' | 'eu'>
   specialties: string[]
   status: 'trusted' | 'verified' | 'new'
+  shippingCost?: number
 }
 
 export type CoaSummary = {
@@ -53,9 +54,11 @@ export type CartLine = {
   product: string
   format: string
   vendor: string
+  vendorId: string
   quantity: number
   unitPrice: number
   imageSrc: string
+  shippingCost: number
 }
 
 export type OrderDisplayStatus =
@@ -107,7 +110,7 @@ export type PeptShopViewModels = {
 export type PeptShopActions = {
   navigate: (href: string) => void
   searchProducts: (query: string) => void
-  addToCart: (productId: string, vendorId?: string, vendorName?: string, unitPrice?: number, format?: string) => void
+  addToCart: (productId: string, vendorId?: string, vendorName?: string, unitPrice?: number, format?: string, shippingCost?: number) => void
   updateCartQuantity: (lineId: string, quantity: number) => void
   removeCartLine: (lineId: string) => void
   clearCart: () => void

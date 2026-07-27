@@ -26,19 +26,18 @@ export function CommercePage(props: PageComponentProps) {
 }
 
 function CartPage({ actions, models }: PageComponentProps) {
-  const shippingPerVendor = 12
   const subtotal = models.cart.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
   // Group cart lines by vendor
   const vendorGroups = useMemo(() => {
-    const groups: Record<string, { vendorName: string; lines: CartLine[] }> = {}
+    const groups: Record<string, { vendorName: string; shippingCost: number; lines: CartLine[] }> = {}
     for (const line of models.cart) {
       const vName = line.vendor || 'Unassigned'
-      if (!groups[vName]) groups[vName] = { vendorName: vName, lines: [] }
+      if (!groups[vName]) groups[vName] = { vendorName: vName, shippingCost: line.shippingCost ?? 12, lines: [] }
       groups[vName].lines.push(line)
     }
     return Object.values(groups)
   }, [models.cart])
-  const totalShipping = vendorGroups.length * shippingPerVendor
+  const totalShipping = vendorGroups.reduce((sum, g) => sum + g.shippingCost, 0)
   const total = subtotal + totalShipping
 
   if (models.cart.length === 0) {
@@ -101,7 +100,7 @@ function CartPage({ actions, models }: PageComponentProps) {
               <label>State or region<input name="region" placeholder="State or region" required /></label>
               <label>Postal code<input name="postal" placeholder="Postal code" required /></label>
             </div>
-            <div className="ps-delivery-choice"><Truck size={19} /><span><strong>Tracked shipping</strong><small>{shippingPerVendor === 12 ? '$12.00' : ''} per vendor · 3 to 5 business days</small></span></div>
+            <div className="ps-delivery-choice"><Truck size={19} /><span><strong>Tracked shipping</strong><small>Per vendor · 3 to 5 business days</small></span></div>
           </section>
 
           {/* Payment */}
@@ -150,7 +149,7 @@ function CartPage({ actions, models }: PageComponentProps) {
             {vendorGroups.map((group) => (
               <div key={`ship-${group.vendorName}`} className="ps-summary-line">
                 <dt>Shipping <small>{group.vendorName}</small></dt>
-                <dd>{money(shippingPerVendor)}</dd>
+                <dd>{money(group.shippingCost)}</dd>
               </div>
             ))}
             <div className="ps-summary-divider" />

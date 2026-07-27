@@ -120,13 +120,15 @@ export function PeptShopFrontend({
   const actions = useMemo<PeptShopActions>(() => ({
     navigate,
     searchProducts: (searchQuery) => navigate(`/products?q=${encodeURIComponent(searchQuery)}`),
-    addToCart: (productId: string, vendorId?: string, vendorName?: string, unitPrice?: number, format?: string) => {
+    addToCart: (productId: string, vendorId?: string, vendorName?: string, unitPrice?: number, format?: string, shippingCost?: number) => {
       const product = models.products.find((p) => p.id === productId)
       if (!product) return
       const fmt = format ?? product.formats?.[0] ?? '2 mg'
       const price = unitPrice ?? product.startingPrice ?? 20
       const vName = vendorName ?? models.vendors.find((v) => v.id === vendorId)?.name ?? vendorId ?? 'Sample Vendor'
-      const lineId = `${productId}-${vendorId ?? 'default'}`
+      const vId = vendorId ?? 'default'
+      const lineId = `${productId}-${vId}`
+      const ship = shippingCost ?? models.vendors.find((v) => v.id === vendorId)?.shippingCost ?? 12
       setCartLines((prev) => {
         const existing = prev.find((l) => l.id === lineId)
         if (existing) {
@@ -137,9 +139,11 @@ export function PeptShopFrontend({
           product: product.name,
           format: fmt,
           vendor: vName,
+          vendorId: vId,
           quantity: 1,
           unitPrice: price,
           imageSrc: '',
+          shippingCost: ship,
         }]
       })
       demo(`${product.name} added to cart`)
