@@ -863,6 +863,22 @@
     width: calc(100vw - 1.2rem);
     max-height: calc(100dvh - 1.2rem);
   }
+
+  /* Cart drawer = full width on mobile */
+  .ps-cart-drawer {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  /* Prevent product names from breaking mid-word in cart */
+  .ps-cart-drawer-item-info strong,
+  .ps-cart-line-copy h2,
+  .ps-order-summary dt,
+  .ps-cart-line-info strong {
+    word-break: keep-all;
+    overflow-wrap: normal;
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 420px) {

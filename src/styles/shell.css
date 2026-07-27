@@ -1,19 +1,24 @@
 .ps-skip-link {
   position: fixed;
-  top: 0.6rem;
-  left: 0.6rem;
-  z-index: 200;
-  transform: translateY(-160%);
+  top: 0;
+  left: 0;
+  z-index: 300;
+  transform: translateY(-200%);
+  opacity: 0;
+  pointer-events: none;
   border-radius: 8px;
   background: var(--ps-accent);
   padding: 0.65rem 0.85rem;
   color: #15181d;
   font-size: 0.78rem;
   font-weight: 750;
+  transition: transform 0.15s, opacity 0.15s;
 }
 
 .ps-skip-link:focus {
   transform: none;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .ps-site-header {
