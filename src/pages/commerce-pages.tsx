@@ -38,7 +38,11 @@ function CartPage({ actions, models }: PageComponentProps) {
     return Object.values(groups)
   }, [models.cart])
   const totalShipping = vendorGroups.reduce((sum, g) => sum + g.shippingCost, 0)
-  const total = subtotal + totalShipping
+
+  // Track selected payment method for fee calculation
+  const [paymentMethod, setPaymentMethod] = useState<'nowpayments' | 'peerpay'>('nowpayments')
+  const peerPayFee = paymentMethod === 'peerpay' ? subtotal * 0.09 : 0
+  const total = subtotal + totalShipping + peerPayFee
 
   // Track form validity for Place Order button state
   const formRef = useRef<HTMLFormElement>(null)
@@ -47,6 +51,10 @@ function CartPage({ actions, models }: PageComponentProps) {
   const checkFormValidity = () => {
     const form = formRef.current
     if (!form) return
+    // Also check which payment radio is selected
+    const checkedRadio = form.querySelector('input[name="payment"]:checked') as HTMLInputElement | null
+    const peerpayLabel = checkedRadio?.closest('label')?.textContent?.includes('PeerPay')
+    setPaymentMethod(peerpayLabel ? 'peerpay' : 'nowpayments')
     setFormValid(form.checkValidity())
   }
 
@@ -130,7 +138,7 @@ function CartPage({ actions, models }: PageComponentProps) {
                 <span>
                   <strong>PeerPay</strong>
                   <small>Venmo, Zelle, Cash App, Revolut & more</small>
-                  <em className="ps-pay-fee">An extra 9% fee is applied by the provider</em>
+                  <em className="ps-pay-fee">9% provider fee</em>
                   <div className="ps-pay-badges">
                     <span className="ps-pay-badge ps-pay-venmo"><i>V</i> Venmo</span>
                     <span className="ps-pay-badge ps-pay-cashapp"><i>$</i> Cash App</span>
@@ -169,7 +177,7 @@ function CartPage({ actions, models }: PageComponentProps) {
               </div>
             ))}
             <div className="ps-summary-divider" />
-            <div className="ps-summary-line ps-summary-total"><dt>Total</dt><dd>{money(total)}</dd></div>
+            <div className="ps-summary-line ps-summary-total"><dt>Total{paymentMethod === 'peerpay' && <small> includes 9% PeerPay fee</small>}</dt><dd>{money(total)}</dd></div>
           </dl>
           <button type="submit" disabled={!formValid} aria-disabled={!formValid} className={`ps-primary-action ps-summary-checkout${!formValid ? ' ps-btn-disabled' : ''}`} onClick={(e) => { e.preventDefault(); const form = document.querySelector('.ps-checkout-form') as HTMLFormElement | null; if (form && formValid) form.requestSubmit(); }}>Place order <ArrowRight size={17} /></button>
           <p className="ps-summary-note"><LockKeyhole size={14} /> Encrypted checkout. Your details are used only to fulfill this order.</p>
