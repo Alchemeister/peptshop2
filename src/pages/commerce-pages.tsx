@@ -117,13 +117,13 @@ function CartPage({ actions, models }: PageComponentProps) {
                   <small>Venmo, Zelle, Cash App, Revolut & more</small>
                   <em className="ps-pay-fee">An extra 9% fee is applied by the provider</em>
                   <div className="ps-pay-badges">
-                    <span className="ps-pay-badge ps-pay-venmo">V</span>
-                    <span className="ps-pay-badge ps-pay-cashapp">$</span>
-                    <span className="ps-pay-badge ps-pay-revolut">R</span>
-                    <span className="ps-pay-badge ps-pay-zelle">Z</span>
-                    <span className="ps-pay-badge ps-pay-wise">W</span>
-                    <span className="ps-pay-badge ps-pay-monzo">M</span>
-                    <span className="ps-pay-badge ps-pay-n26">N</span>
+                    <span className="ps-pay-badge ps-pay-venmo"><i>V</i> Venmo</span>
+                    <span className="ps-pay-badge ps-pay-cashapp"><i>$</i> Cash App</span>
+                    <span className="ps-pay-badge ps-pay-revolut"><i>R</i> Revolut</span>
+                    <span className="ps-pay-badge ps-pay-zelle"><i>Z</i> Zelle</span>
+                    <span className="ps-pay-badge ps-pay-wise"><i>W</i> Wise</span>
+                    <span className="ps-pay-badge ps-pay-monzo"><i>M</i> Monzo</span>
+                    <span className="ps-pay-badge ps-pay-n26"><i>N</i> N26</span>
                   </div>
                 </span>
               </label>
