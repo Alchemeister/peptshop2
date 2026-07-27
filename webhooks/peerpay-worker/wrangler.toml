@@ -1,0 +1,13 @@
+name = "peptshop-peerpay-webhook"
+main = "peerpay-worker.js"
+compatibility_date = "2024-09-01"
+
+# Set these via: npx wrangler secret put BACKEND_WEBHOOK_URL
+# Or use vars for non-secret config:
+[vars]
+# BACKEND_WEBHOOK_URL = "https://peptshop.io/api/webhooks/peerpay"  # the backend owner's backend (set via secret)
+
+# Optional KV namespace for event storage:
+# [[kv_namespaces]]
+# binding = "PEERPAY_EVENTS"
+# id = "your-kv-namespace-id"

@@ -1,0 +1,11 @@
+{
+  "name": "peptshop-peerpay-webhook",
+  "version": "1.0.0",
+  "description": "PeerPay webhook receiver for PeptShop",
+  "main": "peerpay-server.js",
+  "scripts": {
+    "start": "node peerpay-server.js",
+    "dev": "node peerpay-server.js"
+  },
+  "dependencies": {}
+}
