@@ -1713,6 +1713,7 @@
 .ps-review-head strong {
   font-size: 0.82rem;
   font-weight: 600;
+  color: var(--ps-ink);
 }
 
 .ps-review-head span {
@@ -1730,6 +1731,8 @@
 .ps-review-item small {
   color: var(--ps-muted);
   font-size: 0.7rem;
+  font-weight: 500;
+  opacity: 1;
 }
 
 .ps-vendor-reviews-head {

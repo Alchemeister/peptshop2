@@ -380,6 +380,9 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/coas?vendor=${encodeURIComponent(vendor.name)}&product=${encodeURIComponent(source?.name ?? 'Product')}`)}>
                           <FileCheck2 size={13} /> COA
                         </button>
+                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); actions.navigate(`/vendors/${vendor.slug}/reviews`) }}>
+                          <Star size={13} /> Reviews
+                        </button>
                       </div>
                       <div className="ps-offer-action">
                         <div>
