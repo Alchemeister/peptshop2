@@ -351,12 +351,17 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                   {productVendors.map((vendor, index) => (
                     <VendorOfferCardFrame key={vendor.id}>
                       <div className={`ps-offer-heading ${selectedVendorId === vendor.id ? 'is-selected' : ''}`} onClick={() => setSelectedVendorId(vendor.id)} role="button" tabIndex={0}>
-                        <div>
-                          <h3>{vendor.name}</h3>
+                        <div className="ps-offer-vendor-info">
+                          <h3>
+                            <span className="ps-offer-rating" onClick={(e) => { e.stopPropagation(); actions.navigate(`/vendors/${vendor.slug}/reviews`) }}>
+                              <Star size={15} /> {vendor.rating.toFixed(1)}
+                            </span>
+                            {vendor.name}
+                          </h3>
                           <p><MapPin size={14} /> {vendor.location || 'Location pending'} · {vendor.fulfillment}</p>
                         </div>
-                        <button type="button" onClick={(e) => { e.stopPropagation(); actions.navigate(`/vendors/${vendor.slug}`) }}>
-                          <Star size={15} /> {vendor.rating.toFixed(1)} <span>{vendor.reviewCount} reviews</span>
+                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); actions.navigate(`/vendors/${vendor.slug}/reviews`) }}>
+                          Reviews
                         </button>
                       </div>
                       <div className="ps-offer-options">
@@ -379,9 +384,6 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <span><Truck size={15} /><small>Dispatch</small>{vendor.fulfillment}</span>
                         <button type="button" className="ps-offer-coa-link" onClick={() => actions.navigate(`/coas?vendor=${encodeURIComponent(vendor.name)}&product=${encodeURIComponent(source?.name ?? 'Product')}`)}>
                           <FileCheck2 size={13} /> COA
-                        </button>
-                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); actions.navigate(`/vendors/${vendor.slug}/reviews`) }}>
-                          <Star size={13} /> Reviews
                         </button>
                       </div>
                       <div className="ps-offer-action">

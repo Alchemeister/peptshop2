@@ -1147,10 +1147,41 @@
 .ps-offer-heading h3 {
   margin: 0;
   font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-.ps-offer-heading p,
-.ps-offer-heading > button {
+.ps-offer-vendor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ps-offer-vendor-info h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ps-offer-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ps-ink);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ps-offer-rating svg {
+  fill: var(--ps-accent);
+  color: var(--ps-accent);
+  flex-shrink: 0;
+}
+
+.ps-offer-heading p {
   display: flex;
   align-items: center;
   gap: 0.35rem;
@@ -1159,18 +1190,23 @@
   font-size: 0.72rem;
 }
 
-.ps-offer-heading > button {
-  border: 0;
+.ps-offer-heading > button.ps-offer-coa-link {
+  border: 1px solid var(--ps-line-strong);
   background: transparent;
+  color: var(--ps-ink);
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  align-self: center;
+  transition: border-color 150ms ease, background-color 150ms ease;
 }
 
-.ps-offer-heading > button svg {
-  fill: var(--ps-accent);
-  color: var(--ps-accent);
-}
-
-.ps-offer-heading > button span {
-  color: var(--ps-faint);
+.ps-offer-heading > button.ps-offer-coa-link:hover {
+  border-color: var(--ps-accent);
+  background: var(--ps-accent-soft);
 }
 
 .ps-offer-options {
