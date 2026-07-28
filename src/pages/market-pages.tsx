@@ -259,6 +259,18 @@ const productDetails: Record<string, { cas: string; formula: string; mw: string;
 
 const previewVendorOffers_REMOVED = true // Real vendors now come from models.vendors
 
+function VerifiedBadge({ size = 14 }: { size?: number }) {
+  return (
+    <span className="ps-verified-badge" role="img" aria-label="Admin-verified vendor" tabIndex={0}>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L4 5.5V11C4 16.5 7.4 21 12 22C16.6 21 20 16.5 20 11V5.5L12 2Z" fill="#FFA300" stroke="#E08E00" strokeWidth="1" strokeLinejoin="round"/>
+        <path d="M8.5 12L11 14.5L15.5 10" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+      <span className="ps-verified-tooltip">Admin-verified vendor — identity and lab credentials confirmed by PeptShop staff.</span>
+    </span>
+  )
+}
+
 export function ProductPage({ actions, models, query, theme, pathname }: PageComponentProps) {
   // Parse product name from URL — supports both /catalog/:name and /products/:slug
   let productName = ''
@@ -357,14 +369,14 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <div className="ps-offer-vendor-info">
                           <h3>
                             {vendor.name}
-                            {vendor.status === 'trusted' ? <ShieldCheck size={14} className="ps-offer-verified-badge" /> : null}
-                            <span className="ps-offer-rating" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0, verified: vendor.status === 'trusted' }) }}>
+                            {vendor.status === 'trusted' && (vendor as any).verified ? <VerifiedBadge size={14} /> : null}
+                            <span className="ps-offer-rating" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0, verified: vendor.status === 'trusted' && Boolean((vendor as any).verified) }) }}>
                               <Star size={15} /> {vendor.rating.toFixed(1)}
                             </span>
                           </h3>
                           <p><MapPin size={14} /> {vendor.location || 'Location pending'} · {vendor.fulfillment}</p>
                         </div>
-                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0, verified: vendor.status === 'trusted' }) }}>
+                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0, verified: vendor.status === 'trusted' && Boolean((vendor as any).verified) }) }}>
                           Reviews
                         </button>
                       </div>
@@ -475,7 +487,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
             <button type="button" className="ps-modal-close" onClick={() => setReviewVendor(null)} aria-label="Close"><X size={18} /></button>
             <div className="ps-review-modal-header">
               <span className="ps-kicker">Vendor</span>
-              <h2>{reviewVendor.name} {reviewVendor.verified ? <ShieldCheck size={18} className="ps-review-modal-badge" /> : null}</h2>
+              <h2>{reviewVendor.name} {reviewVendor.verified ? <VerifiedBadge size={18} /> : null}</h2>
             </div>
             <div className="ps-review-modal-metrics">
               <div className="ps-review-metric-card">
@@ -599,7 +611,7 @@ function VendorRow({ vendor, index, navigate }: { vendor: VendorSummary; index: 
       <div className="ps-vendor-name"><h2>{vendor.name}</h2><p><MapPin size={14} /> {vendor.location || 'Location pending'}</p></div>
       <div className="ps-vendor-rating"><Star size={16} /><strong>{vendor.rating.toFixed(1)}</strong><span>{vendor.reviewCount} reviews</span></div>
       <div className="ps-vendor-fulfillment"><Clock3 size={15} /><span>Typical dispatch</span><strong>{vendor.fulfillment}</strong></div>
-      <span className={`ps-trust-label ps-trust-${vendor.status}`}><ShieldCheck size={14} /> {vendor.status}</span>
+      {vendor.status === 'trusted' && Boolean((vendor as any).verified) ? <span className={`ps-trust-label ps-trust-${vendor.status}`}><VerifiedBadge size={14} /> Verified vendor</span> : <span className="ps-trust-label ps-trust-pending">{vendor.status}</span>}
       <ArrowRight size={19} />
     </FrontendLink>
   )
@@ -667,7 +679,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
       <header className="ps-vendor-profile-head">
         <div className={`ps-vendor-profile-mark`}>{vendorInitials}</div>
         <div className="ps-vendor-profile-title">
-          <span className="ps-trust-label ps-trust-trusted"><ShieldCheck size={14} /> Trusted vendor</span>
+          {vendor?.status === 'trusted' && Boolean((vendor as any).verified) ? <span className="ps-trust-label ps-trust-trusted"><VerifiedBadge size={14} /> Verified vendor</span> : null}
           <h1>{vendor?.name ?? 'Sample Vendor Zero'}</h1>
           <p><MapPin size={16} /> {vendor?.location ?? 'United States'} warehouse <span /> Active since 2024</p>
         </div>

@@ -1171,6 +1171,53 @@
   vertical-align: middle;
 }
 
+.ps-verified-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  cursor: help;
+  vertical-align: middle;
+}
+
+.ps-verified-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ps-ink, #12161d);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  white-space: nowrap;
+  max-width: 260px;
+  white-space: normal;
+  width: max-content;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.ps-verified-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--ps-ink, #12161d);
+}
+
+.ps-verified-badge:hover .ps-verified-tooltip,
+.ps-verified-badge:focus .ps-verified-tooltip {
+  opacity: 1;
+}
+
 .ps-offer-rating {
   display: inline-flex;
   align-items: center;
