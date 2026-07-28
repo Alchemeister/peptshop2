@@ -16,6 +16,27 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Only override body on customer-facing pages, NOT admin/seller/login which use .seller-page */
+body:not(:has(.seller-page)) {
+  background-color: #14171b !important;
+  color: #f4f6f8 !important;
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+body:not(:has(.seller-page)) {
+  --app-background: #14171b !important;
+  --app-foreground: #f4f6f8 !important;
+  --background: #14171b !important;
+  --foreground: #f4f6f8 !important;
+}
+
+body:has(.seller-page) {
+  /* Let the backend owner's admin/seller pages keep their own theme */
+  background-color: initial;
+  color: initial;
+  font-family: initial;
+}
+
 body {
   min-width: 320px !important;
   min-height: 100dvh !important;
@@ -23,20 +44,6 @@ body {
   padding: 0 !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  /* Kill PeptAura's !important body overrides */
-  background-color: #14171b !important;
-  color: #f4f6f8 !important;
-  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  /* Override PeptAura's CSS variables that leak into our components */
-  --app-background: #14171b !important;
-  --app-foreground: #f4f6f8 !important;
-  --background: #14171b !important;
-  --foreground: #f4f6f8 !important;
-}
-
-body.dark {
-  background-color: #14171b !important;
-  color: #f4f6f8 !important;
 }
 
 button,
