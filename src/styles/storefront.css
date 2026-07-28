@@ -1823,6 +1823,65 @@
   gap: 1rem;
 }
 
+.ps-review-modal {
+  width: min(100%, 34rem);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.ps-review-modal-header {
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--ps-line);
+}
+
+.ps-review-modal-header h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.3rem;
+  font-weight: 650;
+  color: var(--ps-ink);
+}
+
+.ps-review-modal-score {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--ps-muted);
+  font-weight: 500;
+}
+
+.ps-review-modal-score strong {
+  font-size: 1.1rem;
+  font-weight: 650;
+  color: var(--ps-ink);
+}
+
+.ps-review-modal-score svg {
+  fill: var(--ps-accent);
+  color: var(--ps-accent);
+}
+
+.ps-review-modal-all {
+  display: block;
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0.65rem;
+  border: 1px solid var(--ps-line-strong);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ps-ink);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.ps-review-modal-all:hover {
+  border-color: var(--ps-accent);
+  background: var(--ps-accent-soft);
+}
+
 .ps-pagination {
   display: flex;
   align-items: center;

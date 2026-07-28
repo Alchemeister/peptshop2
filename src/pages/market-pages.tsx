@@ -305,6 +305,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const [quantity, setQuantity] = useState(1)
   const [selectedVendorId, setSelectedVendorId] = useState(productVendors[0]?.id ?? '')
   const [selectedPackSize, setSelectedPackSize] = useState<10 | 20>(10)
+  const [reviewVendor, setReviewVendor] = useState<{ name: string; slug: string; rating: number; reviewCount: number } | null>(null)
   const empty = query.get('state') === 'empty' || source?.availability === 'watchlist' || (source?.vendorCount === 0 && source?.availability !== 'available')
   const selectedVendor = productVendors.find((v) => v.id === selectedVendorId) ?? productVendors[0]
 
@@ -353,14 +354,14 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                       <div className={`ps-offer-heading ${selectedVendorId === vendor.id ? 'is-selected' : ''}`} onClick={() => setSelectedVendorId(vendor.id)} role="button" tabIndex={0}>
                         <div className="ps-offer-vendor-info">
                           <h3>
-                            <span className="ps-offer-rating" onClick={(e) => { e.stopPropagation(); actions.navigate(`/vendors/${vendor.slug}/reviews`) }}>
+                            {vendor.name}
+                            <span className="ps-offer-rating" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0 }) }}>
                               <Star size={15} /> {vendor.rating.toFixed(1)}
                             </span>
-                            {vendor.name}
                           </h3>
                           <p><MapPin size={14} /> {vendor.location || 'Location pending'} · {vendor.fulfillment}</p>
                         </div>
-                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); actions.navigate(`/vendors/${vendor.slug}/reviews`) }}>
+                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0 }) }}>
                           Reviews
                         </button>
                       </div>
@@ -461,6 +462,36 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 />
               </>
             )}
+          </section>
+        </div>
+      ) : null}
+
+      {reviewVendor ? (
+        <div className="ps-modal-backdrop" role="presentation" onClick={() => setReviewVendor(null)}>
+          <section className="ps-modal ps-review-modal" role="dialog" aria-modal="true" aria-label={`Reviews for ${reviewVendor.name}`} onClick={(e) => e.stopPropagation()}>
+            <button type="button" className="ps-modal-close" onClick={() => setReviewVendor(null)} aria-label="Close"><X size={18} /></button>
+            <div className="ps-review-modal-header">
+              <h2>{reviewVendor.name}</h2>
+              <div className="ps-review-modal-score">
+                <Star size={18} /> <strong>{reviewVendor.rating.toFixed(1)}</strong>
+                <span> · {reviewVendor.reviewCount} verified reviews</span>
+              </div>
+            </div>
+            <div className="ps-review-list ps-review-list-full">
+              {VENDOR_REVIEWS.slice(0, 5).map((rev, i) => (
+                <div key={i} className="ps-review-item">
+                  <div className="ps-review-head">
+                    <strong>{rev.buyer}</strong>
+                    <span>{'★'.repeat(rev.stars)}{'☆'.repeat(5 - rev.stars)}</span>
+                  </div>
+                  <p>{rev.text}</p>
+                  <small>{rev.date} · Verified purchase</small>
+                </div>
+              ))}
+            </div>
+            <button type="button" className="ps-review-modal-all" onClick={() => { actions.navigate(`/vendors/${reviewVendor.slug}/reviews`); setReviewVendor(null) }}>
+              View all {reviewVendor.reviewCount} reviews
+            </button>
           </section>
         </div>
       ) : null}
