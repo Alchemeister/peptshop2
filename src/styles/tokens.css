@@ -17,9 +17,26 @@ html {
 }
 
 body {
-  min-width: 320px;
-  min-height: 100dvh;
-  margin: 0;
+  min-width: 320px !important;
+  min-height: 100dvh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  /* Kill PeptAura's !important body overrides */
+  background-color: #14171b !important;
+  color: #f4f6f8 !important;
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  /* Override PeptAura's CSS variables that leak into our components */
+  --app-background: #14171b !important;
+  --app-foreground: #f4f6f8 !important;
+  --background: #14171b !important;
+  --foreground: #f4f6f8 !important;
+}
+
+body.dark {
+  background-color: #14171b !important;
+  color: #f4f6f8 !important;
 }
 
 button,
