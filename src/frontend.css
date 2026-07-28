@@ -3,3 +3,6 @@
 @import './styles/storefront.css';
 @import './styles/portal.css';
 @import './styles/responsive.css';
+
+/* Tailwind utilities (preflight disabled — our ps- reset in tokens.css handles base styles) */
+@tailwind utilities;
