@@ -1,6 +1,5 @@
 import {
   ArrowRight,
-  ArrowUpRight,
   Bitcoin,
   BookOpen,
   Coins,
@@ -211,15 +210,6 @@ export function StorefrontShell({
         <ClassicHomeFooter navigate={actions.navigate} />
       ) : (
         <footer className="ps-footer">
-          <div className="ps-footer-lead">
-            <div>
-              <span className="ps-kicker">Research marketplace</span>
-              <h2>Know the product, the batch, and the vendor.</h2>
-            </div>
-            <FrontendLink href="/products" navigate={actions.navigate} className="ps-text-link">
-              Browse the catalog <ArrowUpRight size={17} />
-            </FrontendLink>
-          </div>
           <div className="ps-footer-grid">
             <div className="ps-footer-brand">
               <FrontendLink href="/" navigate={actions.navigate} className="ps-brand">
