@@ -306,7 +306,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   const [quantity, setQuantity] = useState(1)
   const [selectedVendorId, setSelectedVendorId] = useState(productVendors[0]?.id ?? '')
   const [selectedPackSize, setSelectedPackSize] = useState<10 | 20>(10)
-  const [reviewVendor, setReviewVendor] = useState<{ name: string; slug: string; rating: number; reviewCount: number } | null>(null)
+  const [reviewVendor, setReviewVendor] = useState<{ name: string; slug: string; rating: number; reviewCount: number; verified: boolean } | null>(null)
   const [reviewTab, setReviewTab] = useState<'reviews' | 'coas'>('reviews')
   const empty = query.get('state') === 'empty' || source?.availability === 'watchlist' || (source?.vendorCount === 0 && source?.availability !== 'available')
   const selectedVendor = productVendors.find((v) => v.id === selectedVendorId) ?? productVendors[0]
@@ -357,13 +357,14 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <div className="ps-offer-vendor-info">
                           <h3>
                             {vendor.name}
-                            <span className="ps-offer-rating" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0 }) }}>
+                            {vendor.status === 'trusted' ? <ShieldCheck size={14} className="ps-offer-verified-badge" /> : null}
+                            <span className="ps-offer-rating" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0, verified: vendor.status === 'trusted' }) }}>
                               <Star size={15} /> {vendor.rating.toFixed(1)}
                             </span>
                           </h3>
                           <p><MapPin size={14} /> {vendor.location || 'Location pending'} · {vendor.fulfillment}</p>
                         </div>
-                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0 }) }}>
+                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0, verified: vendor.status === 'trusted' }) }}>
                           Reviews
                         </button>
                       </div>
@@ -474,7 +475,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
             <button type="button" className="ps-modal-close" onClick={() => setReviewVendor(null)} aria-label="Close"><X size={18} /></button>
             <div className="ps-review-modal-header">
               <span className="ps-kicker">Vendor</span>
-              <h2>{reviewVendor.name} <ShieldCheck size={18} className="ps-review-modal-badge" /></h2>
+              <h2>{reviewVendor.name} {reviewVendor.verified ? <ShieldCheck size={18} className="ps-review-modal-badge" /> : null}</h2>
             </div>
             <div className="ps-review-modal-metrics">
               <div className="ps-review-metric-card">

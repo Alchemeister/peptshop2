@@ -1164,6 +1164,13 @@
   gap: 0.4rem;
 }
 
+.ps-offer-verified-badge {
+  color: var(--ps-accent);
+  fill: var(--ps-accent);
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
 .ps-offer-rating {
   display: inline-flex;
   align-items: center;
