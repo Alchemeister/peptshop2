@@ -54,11 +54,11 @@ export type CartLine = {
   product: string
   format: string
   vendor: string
-  vendorId: string
+  vendorId?: string
   quantity: number
   unitPrice: number
   imageSrc: string
-  shippingCost: number
+  shippingCost?: number
 }
 
 export type OrderDisplayStatus =
