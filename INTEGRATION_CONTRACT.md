@@ -8,7 +8,9 @@ presentational interaction.
 
 - `PeptShopFrontend`: complete standalone preview and optional embedded presentation router.
 - Route components exported from `src/index.ts` for adapter-driven integration.
-- Product-page frame components exported from `src/product-page.tsx`.
+- `ProductMarketplaceView` and its sanitized product/offer display types, exported from
+  `src/product-marketplace-view.tsx`.
+- Lower-level product-page frame components exported from `src/product-page.tsx`.
 - `AdminPricingSurface` and its display-only types exported from `src/admin-pricing.tsx`.
 - `SellerWorkspaceFrame`, which owns the production seller sidebar, top bar, canvas, spacing, and
   responsive layout while accepting the private operational workspace as children.
@@ -87,7 +89,24 @@ coordinated private adapter update.
 
 ## Stable product exports
 
-The live product adapter currently consumes these names directly:
+The live `/catalog/[name]` route consumes `ProductMarketplaceView` directly. This repository owns
+the product hero, dosage selector, vendor cards, offer grid, order summary, spacing, responsive
+behavior, and their CSS. The private application supplies live catalog values and callback
+implementations through:
+
+- `ProductMarketplaceModel`
+- `ProductMarketplaceDosage`
+- `ProductMarketplaceOffer`
+- `ProductMarketplaceOption`
+- `ProductMarketplaceAction`
+- `ProductMarketplaceSelection`
+
+The model must contain only customer-safe display fields. The private callback decides whether the
+selected option adds a validated catalog item to the cart, opens an approved waitlist flow, or
+remains disabled. Preview offers may be synthetic; the private adapter must never derive live
+prices or availability from preview math.
+
+The BAC Water specialty page and supporting states also consume these lower-level names directly:
 
 - `ProductPageFrame`
 - `ProductPageHero`
@@ -104,8 +123,8 @@ The live product adapter currently consumes these names directly:
 - `VendorOfferCardFrame`
 - `VendorOfferOptionFrame`
 
-Changing their prop signatures requires a coordinated private adapter update. Visual markup and CSS
-may otherwise be changed freely.
+Changing the shared view-model or frame prop signatures requires a coordinated private adapter
+update. Visual markup and CSS may otherwise be changed freely.
 
 ## Admin vendor creation
 
