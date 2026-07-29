@@ -5,7 +5,40 @@
   box-sizing: border-box;
 }
 
-#ps-storefront {
+html {
+  min-width: 320px;
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+/* Only override body on customer-facing pages, NOT admin/seller/login which use .seller-page */
+body:not(:has(.seller-page)) {
+  background-color: #14171b;
+  color: #f4f6f8;
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --background: #14171b;
+  --foreground: #f4f6f8;
+  --app-background: #14171b;
+  --app-foreground: #f4f6f8;
+}
+
+body:not(:has(.seller-page)) {
+  --app-background: #14171b;
+  --app-foreground: #f4f6f8;
+  --background: #14171b;
+  --foreground: #f4f6f8;
+}
+
+body:has(.seller-page) {
+  /* Let the backend owner's admin/seller pages keep their own theme */
+  background-color: initial;
+  color: initial;
+  font-family: initial;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100dvh;
   margin: 0;
   padding: 0;
   font-synthesis: none;
