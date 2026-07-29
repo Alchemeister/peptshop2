@@ -129,6 +129,7 @@ export function ProductMarketplacePage({
       mw: details.mw,
       name: source?.name ?? 'Product',
       overview: details.description,
+      slug: source?.slug,
     }
   }, [details, dosageLabels, models.vendors, query, source])
 
