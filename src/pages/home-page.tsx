@@ -144,11 +144,11 @@ export function HomePage({ actions, models }: PageComponentProps) {
           <span>Vetted suppliers</span>
         </div>
         <div>
-          <strong>100+</strong>
-          <span>Crypto &amp; cards accepted</span>
+          <strong>2</strong>
+          <span>Payment methods</span>
         </div>
         <div>
-          <strong>0</strong>
+          <strong>Never</strong>
           <span>Signup required</span>
         </div>
       </section>

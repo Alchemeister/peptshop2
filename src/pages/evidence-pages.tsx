@@ -3,7 +3,6 @@ import {
   CheckCircle2,
   Download,
   FileCheck2,
-  FileUp,
   Info,
   ScanLine,
   Search,
@@ -14,14 +13,19 @@ import type { PageComponentProps } from '../contracts'
 import { FrontendLink } from '../navigation'
 
 export function EvidencePage({ actions, models, pathname, query }: PageComponentProps) {
+  const [coaSearch, setCoaSearch] = useState('')
   if (pathname === '/verify' || pathname.startsWith('/verify')) return <VerifyPage actions={actions} query={query} />
-  if (pathname.includes('submit-coa')) return <SubmitCoaPage actions={actions} models={models} />
 
   const vendorFilter = query.get('vendor')
   const productFilter = query.get('product')
+  const normalizedSearch = coaSearch.trim().toLowerCase()
   const filteredCoas = models.coas.filter((coa) => {
     if (vendorFilter && coa.vendor.toLowerCase() !== vendorFilter.toLowerCase()) return false
     if (productFilter && coa.product.toLowerCase() !== productFilter.toLowerCase()) return false
+    if (normalizedSearch) {
+      const haystack = `${coa.product} ${coa.vendor} ${coa.lab} ${coa.batch}`.toLowerCase()
+      if (!haystack.includes(normalizedSearch)) return false
+    }
     return true
   }).sort((a, b) => b.testedAt.localeCompare(a.testedAt))
 
@@ -32,16 +36,15 @@ export function EvidencePage({ actions, models, pathname, query }: PageComponent
         <p>{vendorFilter && productFilter ? `Certificates of analysis for ${productFilter} from ${vendorFilter}.` : vendorFilter ? `Certificates of analysis published by ${vendorFilter}.` : 'Browse independent test records by compound, vendor, laboratory, or batch identifier.'}</p>
       </header>
       <div className="ps-evidence-toolbar">
-        <label><Search size={18} /><span className="ps-visually-hidden">Search COAs</span><input placeholder="Search product, vendor, lab, or batch" /></label>
+        <label><Search size={18} /><span className="ps-visually-hidden">Search COAs</span><input value={coaSearch} onChange={(event) => setCoaSearch(event.currentTarget.value)} placeholder="Search product, vendor, lab, or batch" /></label>
         <FrontendLink href="/verify" navigate={actions.navigate}><ScanLine size={17} /> Verify batch</FrontendLink>
-        <FrontendLink href="/coa/submit-coa" navigate={actions.navigate}><FileUp size={17} /> Submit COA</FrontendLink>
       </div>
       <div className="ps-coa-table" role="table" aria-label="Certificate records">
         <div className="ps-coa-table-head" role="row">
           <span>Compound</span><span>Vendor</span><span>Laboratory</span><span>Tested</span><span>Result</span><span />
         </div>
         {filteredCoas.length === 0 ? (
-          <div className="ps-coa-empty-state"><FileCheck2 size={28} /><p>No certificates have been published{vendorFilter ? ` by ${vendorFilter}` : ''} yet.</p><small>COAs from verified labs will appear here once vendors upload batch evidence.</small></div>
+          <div className="ps-coa-empty-state"><FileCheck2 size={28} /><p>No certificates found. Try adjusting your search or check back later.</p><small>COAs from verified labs will appear here once vendors upload batch evidence.</small></div>
         ) : null}
         {filteredCoas.map((coa) => (
           <div className="ps-coa-row" role="row" key={coa.id}>
@@ -105,66 +108,6 @@ function VerifyPage({ actions, query }: Pick<PageComponentProps, 'actions' | 'qu
           <button type="button"><Download size={17} /> View record</button>
         </section>
       ) : null}
-    </div>
-  )
-}
-
-function SubmitCoaPage({ actions, models }: Pick<PageComponentProps, 'actions' | 'models'>) {
-  const [submitted, setSubmitted] = useState(false)
-  const [compoundId, setCompoundId] = useState('')
-  const [dosage, setDosage] = useState('')
-  const selectedProduct = models.products.find((product) => product.id === compoundId)
-  const doses = selectedProduct ? selectedProduct.formats : []
-  useEffect(() => {
-    if (submitted) window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [submitted])
-  if (submitted) {
-    return <div className="ps-flow-success"><CheckCircle2 size={28} /><span className="ps-kicker">Submission received</span><h1>COA ready for review</h1><p>Your submission has been queued for review and will be published in the evidence library once verified.</p><button type="button" onClick={() => setSubmitted(false)}>Submit another</button></div>
-  }
-  return (
-    <div className="ps-form-page ps-section-shell">
-      <header><span className="ps-kicker">Community evidence</span><h1>Submit a COA</h1><p>Share a laboratory report for review and possible publication in the evidence library.</p></header>
-      <form className="ps-long-form" onSubmit={(event) => { event.preventDefault(); actions.submitCoa(event.currentTarget); setSubmitted(true) }}>
-        <section><span className="ps-form-step">01</span><div><h2>Pick the product you ordered</h2><p>Select the exact compound, vendor, and dosage from your order so we can match the submission to a listing.</p></div></section>
-        <div className="ps-form-grid">
-          <label>Compound
-            <select name="compound" value={compoundId} onChange={(event) => { setCompoundId(event.currentTarget.value); setDosage('') }} required>
-              <option value="">Select a compound</option>
-              {models.products.map((product) => <option key={product.id} value={product.id}>{product.name}</option>)}
-            </select>
-          </label>
-          <label>Vendor
-            <select name="vendor" required>
-              <option value="">Select a vendor</option>
-              {models.vendors.map((vendor) => <option key={vendor.id} value={vendor.id}>{vendor.name}</option>)}
-            </select>
-          </label>
-          <label>Dosage
-            <select name="dosage" value={dosage} onChange={(event) => setDosage(event.currentTarget.value)} required disabled={!selectedProduct}>
-              <option value="">{selectedProduct ? 'Select a dosage' : 'Pick a compound first'}</option>
-              {doses.map((d) => <option key={d} value={d}>{d}</option>)}
-            </select>
-          </label>
-        </div>
-
-        <section><span className="ps-form-step">02</span><div><h2>Verify you bought this</h2><p>Confirm the order so we can tie the COA back to a real purchase.</p></div></section>
-        <div className="ps-form-grid">
-          <label>Order ID<input name="orderId" type="text" placeholder="e.g. 12345" required /></label>
-          <label>Email on the order<input name="email" type="email" placeholder="you@example.com" required /></label>
-          <label>Order code<input name="orderCode" type="text" placeholder="Paste the code from your confirmation email" required /></label>
-        </div>
-        <p className="ps-check-row"><Info size={16} /> <span>Orders become eligible 21 days after placement once shipment is recorded, and submissions close 2 months after the order ships.</span></p>
-
-        <section><span className="ps-form-step">03</span><div><h2>Upload the COA</h2><p>Attach the laboratory report and tell us where you shared it publicly.</p></div></section>
-        <div className="ps-form-grid">
-          <label>Batch number<input name="batch" type="text" placeholder="Required only when this product had batch numbers enabled when you ordered" /></label>
-          <label className="ps-file-drop"><FileUp size={28} /><strong>Choose the COA file</strong><span>PDF, PNG, or JPG up to 5MB</span><input name="file" type="file" accept=".pdf,.png,.jpg,.jpeg" /></label>
-          <label>Source link<input name="sourceLink" type="url" placeholder="https://example.com/your-post" required /></label>
-        </div>
-        <p className="ps-form-note"><ShieldCheck size={16} /> Paste a link to where you shared the COA publicly — a forum thread, social post, or public archive.</p>
-
-        <div className="ps-form-submit-row"><p><ShieldCheck size={16} /> Submissions are reviewed before publication.</p><button type="submit">Send for review <ArrowRight size={17} /></button></div>
-      </form>
     </div>
   )
 }
