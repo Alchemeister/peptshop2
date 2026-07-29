@@ -117,6 +117,9 @@ event, delivery state, and provider message ID. Order updates accept only fixed 
 - `src/route-manifest.ts`: every route family owned by this presentation repository.
 - `src/mock-data.ts`: fake content used only by this preview.
 - `src/preview-fixtures.ts`: deliberately synthetic admin and offer fixtures.
+- `public/favicon.ico`, the sized favicon PNGs, `apple-touch-icon.png`,
+  `android-chrome-*.png`, and `site.webmanifest`: the standalone and production browser identity.
+  The private application publishes these reviewed files with a revision-based cache key.
 
 The private application consumes `ProductMarketplaceView` directly, so edits to its product hero,
 offer grid, vendor cards, order summary, and responsive structure appear on live catalog product

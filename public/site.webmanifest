@@ -1,1 +1,1 @@
-{"background_color":"#ffffff","display":"standalone","icons":[{"sizes":"192x192","src":"/android-chrome-192x192.png","type":"image/png"},{"sizes":"512x512","src":"/android-chrome-512x512.png","type":"image/png"}],"name":"PeptShop","short_name":"PeptShop","theme_color":"#FFA300"}
+{"background_color":"#ffffff","display":"standalone","icons":[{"sizes":"192x192","src":"./android-chrome-192x192.png?v=3","type":"image/png"},{"sizes":"512x512","src":"./android-chrome-512x512.png?v=3","type":"image/png"}],"name":"PeptShop","short_name":"PeptShop","theme_color":"#FFA300"}

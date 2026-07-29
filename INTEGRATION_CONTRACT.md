@@ -87,6 +87,14 @@ The stable seller frame inputs are:
 Changing the seller frame's visual markup and CSS is allowed. Changing these inputs requires a
 coordinated private adapter update.
 
+## Browser identity
+
+This repository owns the browser-facing PeptShop icon set in `public/`: `favicon.ico`,
+`favicon-32x32.png`, `favicon-16x16.png`, `apple-touch-icon.png`, the Android Chrome icons, and
+`site.webmanifest`. The private application must publish the synchronized files without replacing
+their artwork and must include the reviewed frontend revision in favicon URLs so immutable browser
+caches refresh when the designer changes an icon.
+
 ## Stable product exports
 
 The live `/catalog/[name]` route consumes `ProductMarketplaceView` directly. This repository owns
