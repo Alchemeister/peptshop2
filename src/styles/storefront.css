@@ -5889,6 +5889,7 @@
   position: sticky;
   top: calc(116px + 1.5rem);
   z-index: 40;
+  align-self: start;
   background: var(--ps-paper);
   border: 1px solid var(--ps-line);
   border-radius: 14px;
