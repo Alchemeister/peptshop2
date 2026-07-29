@@ -405,34 +405,64 @@ function ClassicFooterColumn({
 export function PortalShell({
   actions,
   children,
+  environmentLabel = 'Live preview',
+  onSignOut,
   pathname,
   role,
 }: {
   actions: PeptShopActions
   children: React.ReactNode
+  environmentLabel?: string
+  onSignOut?: () => void
   pathname: string
   role: 'seller' | 'admin' | 'staff' | 'affiliate'
 }) {
+  const [activeSellerHref, setActiveSellerHref] = useState('/seller#dashboard')
   const roleLabels = {
     seller: 'Seller workspace',
     admin: 'Admin console',
     staff: 'Staff workspace',
     affiliate: 'Affiliate workspace',
   }
-  const navLabels =
+  const nav =
     role === 'seller'
-      ? ['Overview', 'Orders', 'Catalog', 'COAs', 'Shipping', 'Messages', 'Settings']
-      : role === 'affiliate'
-        ? ['Overview', 'Links', 'Conversions', 'Payouts']
-        : ['Overview', 'Orders', 'Vendors', 'Evidence', 'Payments', 'Operations']
-  const nav = navLabels.map((label) => ({
-    label,
-    href: role === 'admin' && label === 'Overview' ? '/admin' : undefined,
-  }))
+      ? [
+          { label: 'Overview', href: '/seller#dashboard' },
+          { label: 'Orders', href: '/seller#orders' },
+          { label: 'Catalog', href: '/seller#catalog' },
+          { label: 'COAs', href: '/seller#batches' },
+          { label: 'Shipping', href: '/seller#shipping' },
+          { label: 'Messages', href: '/seller#inbox' },
+          { label: 'Settings', href: '/seller#availability' },
+        ]
+      : (role === 'affiliate'
+          ? ['Overview', 'Links', 'Conversions', 'Payouts']
+          : ['Overview', 'Orders', 'Vendors', 'Evidence', 'Payments', 'Operations']
+        ).map((label) => ({
+          label,
+          href: role === 'admin' && label === 'Overview' ? '/admin' : undefined,
+        }))
 
   if (role === 'admin') {
     nav.splice(1, 0, { label: 'Pricing', href: '/admin/pricing' })
   }
+
+  useEffect(() => {
+    if (role !== 'seller') return
+
+    const syncActiveSellerHref = () => {
+      const hash = window.location.hash || '#dashboard'
+      setActiveSellerHref(`/seller${hash}`)
+    }
+
+    syncActiveSellerHref()
+    window.addEventListener('hashchange', syncActiveSellerHref)
+    window.addEventListener('popstate', syncActiveSellerHref)
+    return () => {
+      window.removeEventListener('hashchange', syncActiveSellerHref)
+      window.removeEventListener('popstate', syncActiveSellerHref)
+    }
+  }, [role])
 
   return (
     <div className="ps-portal-shell">
@@ -448,15 +478,23 @@ export function PortalShell({
               key={item.label}
               type="button"
               aria-current={
-                item.href
-                  ? pathname === item.href || (item.href === '/admin' && pathname === '/admin')
+                role === 'seller' && item.href
+                  ? activeSellerHref === item.href
                     ? 'page'
                     : undefined
-                  : index === 0
+                  : item.href
+                    ? pathname === item.href || (item.href === '/admin' && pathname === '/admin')
                     ? 'page'
                     : undefined
+                    : index === 0
+                      ? 'page'
+                      : undefined
               }
-              onClick={() => item.href && actions.navigate(item.href)}
+              onClick={() => {
+                if (!item.href) return
+                if (role === 'seller') setActiveSellerHref(item.href)
+                actions.navigate(item.href)
+              }}
             >
               <span>{String(index + 1).padStart(2, '0')}</span>
               {item.label}
@@ -464,8 +502,17 @@ export function PortalShell({
           ))}
         </nav>
         <div className="ps-portal-sidebar-footer">
-          <span className="ps-status-dot" /> Live preview
-          <button type="button" onClick={() => actions.navigate('/login')}>
+          <span className="ps-status-dot" /> {environmentLabel}
+          <button
+            type="button"
+            onClick={() => {
+              if (onSignOut) {
+                onSignOut()
+                return
+              }
+              actions.navigate('/login')
+            }}
+          >
             Sign out
           </button>
         </div>

@@ -1309,6 +1309,12 @@
   color: var(--ps-muted);
 }
 
+#ps-storefront .ps-offer-options small{
+  color: var(--ps-faint);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
 #ps-storefront .ps-offer-facts{
   display: flex;
   width: 100%;
@@ -1337,6 +1343,24 @@
   color: var(--ps-faint);
   font-size: 0.62rem;
   font-weight: 550;
+}
+
+#ps-storefront .ps-offer-status{
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--ps-muted);
+  font-size: 0.75rem;
+}
+
+#ps-storefront .ps-offer-inline-link{
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
 }
 
 #ps-storefront .ps-offer-action{
@@ -5623,13 +5647,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ps-classic-hero-logo,
-  .ps-classic-hero-intro,
-  .ps-classic-hero-actions,
-  .ps-classic-secondary-links,
-  .ps-classic-hero-proof,
-  .ps-classic-hero-card,
-  .ps-classic-hero-blob {
+  #ps-storefront .ps-classic-hero-logo,
+  #ps-storefront .ps-classic-hero-intro,
+  #ps-storefront .ps-classic-hero-actions,
+  #ps-storefront .ps-classic-secondary-links,
+  #ps-storefront .ps-classic-hero-proof,
+  #ps-storefront .ps-classic-hero-card,
+  #ps-storefront .ps-classic-hero-blob {
     animation: none;
   }
 }
@@ -5760,7 +5784,7 @@
   min-height: 12rem;
   background: transparent;
 }
-.cs-catalog-card-visual::after {
+#ps-storefront .ps-catalog-card-visual::after {
   display: none;
 }
 
@@ -5850,6 +5874,10 @@
 }
 #ps-storefront .ps-offer-action > button:hover{
   opacity: 0.88;
+}
+#ps-storefront .ps-offer-action button:disabled{
+  cursor: not-allowed;
+  opacity: 0.48;
 }
 #ps-storefront .ps-add-to-cart-btn{
   background: var(--ps-accent);

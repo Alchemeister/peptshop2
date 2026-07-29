@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
+import postcss from 'postcss'
 
 const root = resolve(import.meta.dirname, '..')
 const sourceRoot = join(root, 'src')
@@ -66,6 +67,37 @@ for (const marker of preservedHomepageMarkers) {
 for (const marker of retiredHomepageRedesignMarkers) {
   if (homeSource.includes(marker))
     errors.push(`src/pages/home-page.tsx: retired homepage redesign marker: ${marker}`)
+}
+
+const sharedStylesheet = readFileSync(join(sourceRoot, 'frontend.css'), 'utf8')
+if (sharedStylesheet.includes('@tailwind')) {
+  errors.push('src/frontend.css: preview Tailwind output must not enter the shared host stylesheet')
+}
+
+const mainSource = readFileSync(join(sourceRoot, 'main.tsx'), 'utf8')
+if (!(mainSource.includes("import './frontend.css'") && mainSource.includes("import './preview.css'"))) {
+  errors.push('src/main.tsx: standalone preview must load both shared and preview-only styles')
+}
+
+const stylesRoot = join(sourceRoot, 'styles')
+for (const name of readdirSync(stylesRoot).filter((entry) => entry.endsWith('.css'))) {
+  const path = join(stylesRoot, name)
+  const stylesheet = postcss.parse(readFileSync(path, 'utf8'), { from: path })
+  stylesheet.walkRules((rule) => {
+    let parent = rule.parent
+    while (parent) {
+      if (parent.type === 'atrule' && /keyframes$/i.test(parent.name)) return
+      parent = parent.parent
+    }
+
+    for (const selector of rule.selectors) {
+      if (!selector.trim().startsWith('#ps-storefront')) {
+        errors.push(
+          `${relative(root, path)}: shared selector is not scoped to #ps-storefront: ${selector}`,
+        )
+      }
+    }
+  })
 }
 
 if (errors.length > 0) {

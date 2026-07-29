@@ -65,9 +65,11 @@ export function AuthPage({ actions, pathname }: PageComponentProps) {
 
 export function SellerPage(props: PageComponentProps) {
   return (
-    <PortalShell actions={props.actions} pathname={props.pathname} role="seller">
-      <PortalTopbar eyebrow="Seller overview" title="Sample Vendor Zero" action={<button type="button" onClick={() => props.actions.sellerAction('availability')}><Activity size={16} /> Update availability</button>} />
-      <div className="ps-portal-content">
+    <SellerWorkspaceFrame
+      actions={props.actions}
+      pathname={props.pathname}
+      title="Sample Vendor Zero"
+    >
         <div className="ps-portal-alert"><CircleAlert size={18} /><div><strong>Sample orders need review</strong><span>All queue values in this workspace are illustrative.</span></div><button type="button">Review now <ArrowRight size={15} /></button></div>
         <div className="ps-metric-grid">{props.models.sellerMetrics.map((metric, index) => <article key={metric.label}><div><span>{metric.label}</span>{index % 2 ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}</div><strong>{metric.value}</strong><p>{metric.detail}</p></article>)}</div>
         <div className="ps-portal-two-column">
@@ -75,7 +77,53 @@ export function SellerPage(props: PageComponentProps) {
           <aside className="ps-seller-capacity"><SectionHeader title="Weekly capacity" detail="Illustrative presentation state" /><div className="ps-capacity-gauge"><span style={{ '--progress': '60%' } as React.CSSProperties}><i>Sample</i></span></div><dl><div><dt>Accepted this week</dt><dd>Sample</dd></div><div><dt>Current limit</dt><dd>Sample</dd></div><div><dt>Available</dt><dd>Sample</dd></div></dl><button type="button" onClick={() => props.actions.sellerAction('capacity')}>Review capacity settings</button></aside>
         </div>
         <div className="ps-seller-operations"><section><SectionHeader title="Catalog health" detail="Public listing readiness" /><ul><li><span><CheckCircle2 size={17} /> Active listings</span><strong>42</strong></li><li><span><CircleAlert size={17} /> Missing current COA</span><strong>3</strong></li><li><span><Boxes size={17} /> Low availability</span><strong>7</strong></li></ul></section><section><SectionHeader title="Fulfillment signals" detail="Trailing 30 days" /><ul><li><span><Truck size={17} /> Median dispatch</span><strong>1.4 days</strong></li><li><span><PackageCheck size={17} /> On-time shipping</span><strong>98.6%</strong></li><li><span><MessageSquareText size={17} /> Open tickets</span><strong>2</strong></li></ul></section></div>
-      </div>
+    </SellerWorkspaceFrame>
+  )
+}
+
+export function SellerWorkspaceFrame({
+  actions,
+  children,
+  environmentLabel,
+  onSignOut,
+  pathname,
+  title,
+}: {
+  actions: PageComponentProps['actions']
+  children: React.ReactNode
+  environmentLabel?: string
+  onSignOut?: () => void
+  pathname: string
+  title: string
+}) {
+  const avatarLabel =
+    title
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((part) => part[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() || 'PS'
+
+  return (
+    <PortalShell
+      actions={actions}
+      environmentLabel={environmentLabel}
+      onSignOut={onSignOut}
+      pathname={pathname}
+      role="seller"
+    >
+      <PortalTopbar
+        eyebrow="Seller overview"
+        title={title}
+        avatarLabel={avatarLabel}
+        action={
+          <button type="button" onClick={() => actions.sellerAction('availability')}>
+            <Activity size={16} /> Update availability
+          </button>
+        }
+      />
+      <div className="ps-portal-content ps-seller-workspace-content">{children}</div>
     </PortalShell>
   )
 }
@@ -175,8 +223,8 @@ export function AffiliatePage(props: PageComponentProps) {
   )
 }
 
-function PortalTopbar({ eyebrow, title, action }: { eyebrow: string; title: string; action: React.ReactNode }) {
-  return <header className="ps-portal-topbar"><div><span>{eyebrow}</span><h1>{title}</h1></div><div className="ps-portal-topbar-actions"><button type="button" className="ps-portal-notification" aria-label="Notifications"><CircleAlert size={18} /><i /></button>{action}<button type="button" className="ps-avatar-button">NR <ChevronDown size={14} /></button></div></header>
+function PortalTopbar({ eyebrow, title, action, avatarLabel = 'PS' }: { eyebrow: string; title: string; action: React.ReactNode; avatarLabel?: string }) {
+  return <header className="ps-portal-topbar"><div><span>{eyebrow}</span><h1>{title}</h1></div><div className="ps-portal-topbar-actions"><button type="button" className="ps-portal-notification" aria-label="Notifications"><CircleAlert size={18} /><i /></button>{action}<button type="button" className="ps-avatar-button">{avatarLabel} <ChevronDown size={14} /></button></div></header>
 }
 
 function SectionHeader({ title, detail, action }: { title: string; detail: string; action?: string }) {
