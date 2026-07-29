@@ -1181,11 +1181,31 @@
   flex-direction: column;
   gap: 0.15rem;
 }
-
 #ps-storefront .ps-offer-vendor-info h3{
   display: flex;
   align-items: center;
   gap: 0.4rem;
+}
+#ps-storefront .ps-offer-vendor-info p{
+  margin: 0;
+  color: var(--ps-muted);
+  font-size: 0.72rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+#ps-storefront .ps-offer-vendor-info .ps-offer-status{
+  margin-top: 0;
+  color: var(--ps-muted);
+  font-size: 0.72rem;
+}
+#ps-storefront .ps-offer-vendor-info p:not(:empty) + .ps-offer-status::before{
+  content: " · ";
+  color: var(--ps-line-strong);
+}
+#ps-storefront .ps-offer-vendor-info p:not(:empty) + .ps-offer-status{
+  margin-top: -1.05rem;
+  margin-left: 0;
 }
 
 #ps-storefront .ps-offer-verified-badge{
@@ -1258,15 +1278,6 @@
   fill: var(--ps-accent);
   color: var(--ps-accent);
   flex-shrink: 0;
-}
-
-#ps-storefront .ps-offer-heading p{
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin: 0.25rem 0 0;
-  color: var(--ps-muted);
-  font-size: 0.72rem;
 }
 
 #ps-storefront .ps-offer-heading > button.ps-offer-coa-link{
@@ -1343,13 +1354,6 @@
   color: var(--ps-faint);
   font-size: 0.62rem;
   font-weight: 550;
-}
-
-#ps-storefront .ps-offer-status{
-  display: block;
-  margin-top: 0.25rem;
-  color: var(--ps-muted);
-  font-size: 0.75rem;
 }
 
 #ps-storefront .ps-offer-inline-link{
