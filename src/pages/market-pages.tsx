@@ -24,6 +24,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import type { PageComponentProps, ProductSummary, VendorSummary } from '../contracts'
+import { researchStudies, type ResearchStudy } from '../mock-data'
 import { FrontendLink } from '../navigation'
 import {
   CompoundWaitlistDescription,
@@ -277,6 +278,64 @@ function VerifiedBadge({ size = 14 }: { size?: number }) {
   )
 }
 
+function ResearchLibrary({ slug, productName }: { slug: string; productName: string }) {
+  const studies: ResearchStudy[] = researchStudies[slug] ?? []
+  const [expanded, setExpanded] = useState(false)
+  const visibleCount = expanded ? studies.length : Math.min(studies.length, 5)
+  const visible = studies.slice(0, visibleCount)
+
+  if (studies.length === 0) return null
+
+  return (
+    <section className="ps-research-library" aria-labelledby="ps-research-library-heading">
+      <div className="ps-research-library-header">
+        <span className="ps-kicker">Research Library</span>
+        <h2 id="ps-research-library-heading">Latest Research News</h2>
+        <p className="ps-research-library-subtitle">
+          Peer-reviewed studies and publications referencing {productName}.
+        </p>
+      </div>
+      <div className="ps-research-study-list">
+        {visible.map((study) => (
+          <article key={study.id} className="ps-research-study-card">
+            <div className="ps-research-study-card-main">
+              <h3 className="ps-research-study-title">{study.title}</h3>
+              <div className="ps-research-study-meta">
+                <span className="ps-research-study-date">{study.date}</span>
+                <span className="ps-research-study-authors">{study.authors}</span>
+              </div>
+            </div>
+            <a
+              href={study.url}
+              className="ps-research-study-open"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open
+              <ArrowRight size={14} strokeWidth={1.8} />
+            </a>
+          </article>
+        ))}
+      </div>
+      {studies.length > 5 && (
+        <button
+          type="button"
+          className="ps-research-show-more"
+          onClick={() => setExpanded((prev) => !prev)}
+          aria-expanded={expanded}
+        >
+          {expanded ? 'Show fewer studies' : `Show ${studies.length - 5} more studies`}
+          <ChevronDown
+            size={16}
+            strokeWidth={1.8}
+            style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}
+          />
+        </button>
+      )}
+    </section>
+  )
+}
+
 export function ProductPage({ actions, models, query, theme, pathname }: PageComponentProps) {
   // Parse product name from URL — supports both /catalog/:name and /products/:slug
   let productName = ''
@@ -463,6 +522,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
             </ProductOffersSection>
           </>
         )}
+        <ResearchLibrary slug={source?.slug ?? ''} productName={source?.name ?? 'Product'} />
       </ProductPageFrame>
 
       {dialogOpen ? (
