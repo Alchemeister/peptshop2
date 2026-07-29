@@ -114,8 +114,14 @@
   border: 0;
   outline: 0;
   background: transparent;
+  padding: 1px 2px;
   color: var(--ps-ink);
   font-size: 0.82rem;
+}
+
+#ps-storefront > main#main-content{
+  min-height: 0;
+  background: transparent;
 }
 
 #ps-storefront .ps-desktop-nav{
