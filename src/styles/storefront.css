@@ -6359,3 +6359,66 @@
     align-self: flex-start;
   }
 }
+
+/* ===== CoA library page styling — make Tailwind table match storefront ===== */
+#ps-storefront .ps-private-surface {
+  background: var(--ps-paper);
+  border: 1px solid var(--ps-line);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+#ps-storefront .ps-private-surface table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.88rem;
+}
+#ps-storefront .ps-private-surface thead th {
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ps-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--ps-line);
+  background: var(--ps-surface);
+}
+#ps-storefront .ps-private-surface tbody td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--ps-line);
+  color: var(--ps-ink);
+  vertical-align: middle;
+}
+#ps-storefront .ps-private-surface tbody tr:last-child td {
+  border-bottom: none;
+}
+#ps-storefront .ps-private-surface tbody tr:hover td {
+  background: var(--ps-surface);
+}
+#ps-storefront .ps-private-surface h1,
+#ps-storefront .ps-private-surface h2 {
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: -0.03em;
+  font-weight: 650;
+  color: var(--ps-ink);
+}
+#ps-storefront .ps-private-surface p {
+  color: var(--ps-muted);
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+#ps-storefront .ps-private-surface a {
+  color: var(--ps-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+#ps-storefront .ps-private-surface a:hover {
+  color: var(--ps-accent-hover);
+}
+#ps-storefront .ps-private-surface button {
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  border-radius: 10px;
+}
