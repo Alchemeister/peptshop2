@@ -18,8 +18,8 @@ import {
   ShoppingBag,
   SlidersHorizontal,
   Star,
-  Truck,
   TrendingUp,
+  Truck,
   X,
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
@@ -176,7 +176,10 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
 }
 
 // Product detail lookup: maps product name → extra fields not in ProductSummary
-const productDetails: Record<string, { cas: string; formula: string; mw: string; description: string }> = {
+export const productDetails: Record<
+  string,
+  { cas: string; formula: string; mw: string; description: string }
+> = {
   'BPC-157': { cas: '137525-51-0', formula: 'C₆₂H₉₈N₁₆O₂₂', mw: '1419.5', description: 'Synthetic pentadecapeptide sequence derived from gastric mucosa. Studied for its effects on fibroblast migration and angiogenesis in in-vitro models.' },
   'Tirzepatide': { cas: '2023788-19-2', formula: 'C₂₂₅H₃₄₈N₄₈O₆₈', mw: '4813', description: 'Dual GIP/GLP-1 receptor agonist. Studied for glucose-dependent insulin secretion and metabolic signaling pathways.' },
   'NAD+': { cas: '53-84-9', formula: 'C₂₁H₂₇N₇O₁₄P₂', mw: '663.4', description: 'Essential coenzyme in cellular redox reactions. Studied for its role in electron transport and enzymatic cofactor activity.' },

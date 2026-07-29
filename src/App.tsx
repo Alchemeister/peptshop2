@@ -2,17 +2,18 @@ import { Check, ChevronUp, Copy, Moon, Route, Sun, X } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { CartLine, FrontendTheme, PeptShopActions, PeptShopViewModels } from './contracts'
 import { mockModels } from './mock-data'
-import { ApiDocsPage, ContentPage, LibraryPage } from './pages/content-pages'
 import { CommercePage, OrderFlowPage } from './pages/commerce-pages'
+import { ApiDocsPage, ContentPage, LibraryPage } from './pages/content-pages'
 import { EvidencePage } from './pages/evidence-pages'
 import { HomePage } from './pages/home-page'
-import { CatalogPage, ProductPage, VendorPage, VendorsPage } from './pages/market-pages'
+import { CatalogPage, VendorPage, VendorsPage } from './pages/market-pages'
 import { AdminPage, AffiliatePage, AuthPage, SellerPage, StaffPage } from './pages/portal-pages'
+import { ProductMarketplacePage } from './pages/product-marketplace-page'
 import {
   previewRoutes,
+  type RouteFamily,
   resolveRoute,
   routeManifest,
-  type RouteFamily,
 } from './route-manifest'
 import { StorefrontShell } from './shell'
 
@@ -218,7 +219,7 @@ function renderPage(family: ReturnType<typeof resolveRoute>['family'], props: Pa
   switch (family) {
     case 'home': return <HomePage {...props} />
     case 'catalog': return <CatalogPage {...props} />
-    case 'product': return <ProductPage {...props} />
+    case 'product': return <ProductMarketplacePage {...props} />
     case 'vendors': return <VendorsPage {...props} />
     case 'vendor': return <VendorPage {...props} />
     case 'evidence': return <EvidencePage {...props} />

@@ -97,7 +97,11 @@ event, delivery state, and provider message ID. Order updates accept only fixed 
 ## Where to edit
 
 - `src/pages/home-page.tsx`: homepage.
-- `src/pages/market-pages.tsx`: catalog, product, vendor directory, and vendor profile.
+- `src/pages/market-pages.tsx`: catalog, vendor directory, vendor profile, and legacy preview
+  helpers.
+- `src/pages/product-marketplace-page.tsx`: standalone product-page preview adapter.
+- `src/product-marketplace-view.tsx`: shared product-page structure used by both Vite and the live
+  private application.
 - `src/pages/evidence-pages.tsx`: COA library, verification, and submission.
 - `src/pages/commerce-pages.tsx`: cart, checkout, payment, and private customer actions.
 - `src/pages/content-pages.tsx`: policies, FAQ, contact, articles, and API documentation layout.
@@ -114,9 +118,12 @@ event, delivery state, and provider message ID. Order updates accept only fixed 
 - `src/mock-data.ts`: fake content used only by this preview.
 - `src/preview-fixtures.ts`: deliberately synthetic admin and offer fixtures.
 
-The product page retains smaller exported frame components because the private application already
-consumes them directly. The other route-level components use the same model-and-callback boundary.
-The private application also consumes `AdminPricingSurface` and `SellerWorkspaceFrame` directly.
+The private application consumes `ProductMarketplaceView` directly, so edits to its product hero,
+offer grid, vendor cards, order summary, and responsive structure appear on live catalog product
+pages after the reviewed frontend is synchronized. It supplies live display models and callbacks;
+the standalone page supplies mock models. Lower-level product frames remain available for the BAC
+Water specialty surface. The private application also consumes `AdminPricingSurface` and
+`SellerWorkspaceFrame` directly.
 `SellerWorkspaceFrame` receives a display title, callbacks, and an opaque child slot containing the
 authenticated seller tools. Its props contain no database access or private business rules.
 
