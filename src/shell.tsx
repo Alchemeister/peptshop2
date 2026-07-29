@@ -51,7 +51,7 @@ export function StorefrontShell({
   const isHome = pathname === '/'
 
   return (
-    <div className="ps-app" data-theme={theme}>
+    <div id="ps-storefront" className="ps-app" data-theme={theme}>
       <a className="ps-skip-link" href="#main-content">
         Skip to content
       </a>

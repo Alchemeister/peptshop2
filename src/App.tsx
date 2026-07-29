@@ -190,7 +190,7 @@ export function PeptShopFrontend({
   return (
     <>
       {isPortal || route.family === 'api' ? (
-        <div className="ps-app" data-theme={theme}>{page}</div>
+        <div id="ps-storefront" className="ps-app" data-theme={theme}>{page}</div>
       ) : (
         <StorefrontShell actions={actions} cartCount={cartCount} cartLines={cartLines} pathname={pathname} theme={theme}>
           {page}
