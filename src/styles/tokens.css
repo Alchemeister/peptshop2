@@ -21,6 +21,10 @@ body:not(:has(.seller-page)) {
   background-color: #14171b;
   color: #f4f6f8;
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --background: #14171b;
+  --foreground: #f4f6f8;
+  --app-background: #14171b;
+  --app-foreground: #f4f6f8;
 }
 
 body:not(:has(.seller-page)) {
