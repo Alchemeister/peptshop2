@@ -5623,13 +5623,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ps-classic-hero-logo,
-  .ps-classic-hero-intro,
-  .ps-classic-hero-actions,
-  .ps-classic-secondary-links,
-  .ps-classic-hero-proof,
-  .ps-classic-hero-card,
-  .ps-classic-hero-blob {
+  #ps-storefront .ps-classic-hero-logo,
+  #ps-storefront .ps-classic-hero-intro,
+  #ps-storefront .ps-classic-hero-actions,
+  #ps-storefront .ps-classic-secondary-links,
+  #ps-storefront .ps-classic-hero-proof,
+  #ps-storefront .ps-classic-hero-card,
+  #ps-storefront .ps-classic-hero-blob {
     animation: none;
   }
 }
@@ -5760,7 +5760,7 @@
   min-height: 12rem;
   background: transparent;
 }
-.cs-catalog-card-visual::after {
+#ps-storefront .ps-catalog-card-visual::after {
   display: none;
 }
 

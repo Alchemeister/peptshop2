@@ -101,7 +101,9 @@ event, delivery state, and provider message ID. Order updates accept only fixed 
 - `src/pages/evidence-pages.tsx`: COA library, verification, and submission.
 - `src/pages/commerce-pages.tsx`: cart, checkout, payment, and private customer actions.
 - `src/pages/content-pages.tsx`: policies, FAQ, contact, articles, and API documentation layout.
-- `src/pages/portal-pages.tsx`: login, seller, admin, staff, and affiliate workspaces.
+- `src/pages/portal-pages.tsx`: login, admin, staff, and affiliate previews, plus
+  `SellerWorkspaceFrame`, which owns the production `/seller` sidebar, top bar, canvas, spacing,
+  and responsive layout.
 - `src/admin-pricing.tsx`: editable admin pricing and availability presentation.
 - `src/admin-pricing.module.css`: scoped pricing workspace styles used by preview and production.
 - `src/order-status.module.css`: production order lookup, access gate, timeline, and shipment styles.
@@ -114,8 +116,9 @@ event, delivery state, and provider message ID. Order updates accept only fixed 
 
 The product page retains smaller exported frame components because the private application already
 consumes them directly. The other route-level components use the same model-and-callback boundary.
-The private application also consumes `AdminPricingSurface` directly. Its props contain sanitized
-display records and callbacks only.
+The private application also consumes `AdminPricingSurface` and `SellerWorkspaceFrame` directly.
+`SellerWorkspaceFrame` receives a display title, callbacks, and an opaque child slot containing the
+authenticated seller tools. Its props contain no database access or private business rules.
 
 ## Scope exclusions
 

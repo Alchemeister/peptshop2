@@ -13,4 +13,11 @@ export { CatalogPage, ProductPage, VendorPage, VendorsPage } from './pages/marke
 export { EvidencePage } from './pages/evidence-pages'
 export { CommercePage, OrderFlowPage } from './pages/commerce-pages'
 export { ContentPage, LibraryPage, ApiDocsPage } from './pages/content-pages'
-export { AuthPage, SellerPage, AdminPage, StaffPage, AffiliatePage } from './pages/portal-pages'
+export {
+  AuthPage,
+  SellerPage,
+  SellerWorkspaceFrame,
+  AdminPage,
+  StaffPage,
+  AffiliatePage,
+} from './pages/portal-pages'

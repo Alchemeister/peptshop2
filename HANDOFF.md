@@ -13,8 +13,9 @@ PeptShop is a **B2B research compound marketplace** (like Alibaba/eBay but for p
 ## Architecture
 
 ### Two-App Setup
-- **Our code (Vite + React + TypeScript):** Pure frontend SPA. We own the customer-facing pages — catalog, product pages, vendor pages, checkout, reviews. All CSS uses `ps-` prefixed classes (no Tailwind in our components).
-- **the backend owner's code (Next.js):** Wraps our Vite components. His Next.js app imports our built bundle and renders it. He owns backend (auth, order processing, vendor management, admin console). His Tailwind classes style login/seller/admin/escrow pages.
+- **Our code (Vite + React + TypeScript):** Pure frontend SPA. We own the customer-facing pages and the shared production `/seller` workspace frame: sidebar, top bar, canvas, spacing, and responsive behavior. All shared CSS is scoped below `#ps-storefront`.
+- **Private application code (Next.js):** Imports reviewed source from this repository. It owns backend behavior, authentication, authorization, data loading, order processing, and the operational seller panels rendered inside `SellerWorkspaceFrame`.
+- **Seller ownership boundary:** Edit `SellerWorkspaceFrame`, `PortalShell`, and `src/styles/portal.css` to change the production `/seller` shell. The private application supplies the real supplier title, navigation callbacks, sign-out callback, and authenticated seller content as children. This repository must not import or reproduce that private logic.
 - **Git flow:** We push to `dev` branch → also push `dev:main` → Railway auto-rebuilds at the **17th minute of every hour** → the backend owner's Next.js app picks up our latest build.
 - **Rule:** NEVER push to main unless explicitly told. Always push to dev first, then dev:main when approved.
 
@@ -34,7 +35,7 @@ PeptShop is a **B2B research compound marketplace** (like Alibaba/eBay but for p
 | `src/pages/home-page.tsx` | Homepage with hero + popular products |
 | `src/pages/evidence-pages.tsx` | COA library, batch verification |
 | `src/pages/content-pages.tsx` | FAQ, about, articles, shipping info |
-| `src/pages/portal-pages.tsx` | Vendor portal, seller dashboard |
+| `src/pages/portal-pages.tsx` | Portal previews and the shared production seller workspace frame |
 | `src/product-page.tsx` | ProductPage frame components (Hero, DosageSelector, OfferCard) |
 | `src/mock-data.ts` (1187 lines) | 82 products, 3 vendors, reviews, product details |
 | `src/styles/tokens.css` | CSS variables (light + dark theme), modal base styles |

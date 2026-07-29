@@ -10,6 +10,8 @@ presentational interaction.
 - Route components exported from `src/index.ts` for adapter-driven integration.
 - Product-page frame components exported from `src/product-page.tsx`.
 - `AdminPricingSurface` and its display-only types exported from `src/admin-pricing.tsx`.
+- `SellerWorkspaceFrame`, which owns the production seller sidebar, top bar, canvas, spacing, and
+  responsive layout while accepting the private operational workspace as children.
 - `src/frontend.css`: global design system for the standalone and route-level components.
 - `src/product-page.module.css`: locally scoped product presentation styles.
 - `src/admin-pricing.module.css`: locally scoped admin pricing styles.
@@ -62,6 +64,26 @@ compounds remain discoverable.
 The private application imports the route components directly. It supplies only serialized view
 models and callbacks, so this repository cannot query Supabase or inspect sessions, environment
 variables, wallets, payment credentials, or authorization policy.
+
+## Seller workspace
+
+The live `/seller` route consumes `SellerWorkspaceFrame` directly. This repository owns the frame's
+markup and CSS, including navigation presentation, top-bar presentation, page width, spacing, and
+responsive behavior. The private application owns the authenticated child content, supplier
+lookup, data loading, tabs, mutations, escrow gates, and sign-out operation.
+
+The stable seller frame inputs are:
+
+- `actions`: presentation callbacks, including navigation and the availability intent.
+- `pathname`: the current route used for navigation presentation.
+- `title`: the authorized supplier display title.
+- `environmentLabel`: an optional safe workspace label.
+- `onSignOut`: an optional callback implemented by the private host.
+- `children`: an opaque React node. The frontend must not inspect or transform private data inside
+  this slot.
+
+Changing the seller frame's visual markup and CSS is allowed. Changing these inputs requires a
+coordinated private adapter update.
 
 ## Stable product exports
 
