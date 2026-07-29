@@ -274,7 +274,10 @@
 
 .dosageOptionSelected {
   border-color: var(--ps-accent);
+  border-width: 2px;
   background: var(--ps-accent-soft);
+  box-shadow: 0 0 0 1px var(--ps-accent);
+  font-weight: 750;
 }
 
 .unavailable {

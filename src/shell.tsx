@@ -234,7 +234,6 @@ export function StorefrontShell({
               links={[
                 ['/coas', 'COA library'],
                 ['/verify', 'Verify a batch'],
-                ['/coa/submit-coa', 'Submit a COA'],
                 ['/order/status', 'Track an order'],
               ]}
               navigate={actions.navigate}

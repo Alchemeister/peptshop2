@@ -124,6 +124,9 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
           <input type="checkbox" checked={stockOnly} onChange={(event) => setStockOnly(event.currentTarget.checked)} />
           <span /> Available now
         </label>
+        {stockOnly ? (
+          <small className="ps-stock-hint">Showing {visibleProducts.length} of {models.products.length} — turn off to see all compounds</small>
+        ) : null}
       </div>
 
       {filterOpen ? (
@@ -165,7 +168,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
         <h2>{product.name}</h2>
         <p>{product.formats.join(' · ')}</p>
         <div>
-          <span>{product.vendorCount ? `${product.vendorCount} vendors` : 'Join watchlist'}</span>
+          <span>{product.vendorCount ? `${product.vendorCount} ${product.vendorCount === 1 ? 'vendor' : 'vendors'}` : 'Join watchlist'}</span>
           {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
           <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
         </div>
@@ -294,9 +297,8 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   // Deterministic presentation math only. It is not derived from private pricing or marketplace rules.
   const lookupVendorPrice = (dose: string, vendorId: string): number => {
     const doseNum = parseInt(dose) || 5
-    const baseDose = parseInt(dosages[0] ?? '') || 5
-    const base = Math.max(1, source?.startingPrice ?? 20)
-    return Math.round(base * Math.max(1, doseNum / baseDose) * (priceMultipliers[vendorId] ?? 1) * 100) / 100
+    const perMg = source?.startingPrice ?? 0.70
+    return Math.round(perMg * doseNum * 10 * (priceMultipliers[vendorId] ?? 1) * 100) / 100
   }
 
   // Generate dose-specific batch number
@@ -365,7 +367,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                 <div className="ps-offer-list">
                   {productVendors.map((vendor, index) => (
                     <VendorOfferCardFrame key={vendor.id}>
-                      <div className={`ps-offer-heading ${selectedVendorId === vendor.id ? 'is-selected' : ''}`} onClick={() => setSelectedVendorId(vendor.id)} role="button" tabIndex={0}>
+                      <div className={`ps-offer-heading ${selectedVendorId === vendor.id ? 'is-selected' : ''}`} onClick={() => { setSelectedVendorId(vendor.id); setQuantity(1) }} role="button" tabIndex={0}>
                         <div className="ps-offer-vendor-info">
                           <h3>
                             {vendor.name}
@@ -411,12 +413,14 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <button type="button" className="ps-add-to-cart-btn" onClick={() => {
                           setSelectedVendorId(vendor.id)
                           const vPrice = lookupVendorPrice(selectedDose, vendor.id)
-                          const linePrice = (selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * (selectedVendorId === vendor.id ? quantity : 1)
+                          const activeQty = selectedVendorId === vendor.id ? quantity : 1
+                          const linePrice = (selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * activeQty
                           actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id, vendor.name, linePrice, `${selectedDose} · ${selectedPackSize} vials`, vendor.shippingCost ?? 12)
                         }}>
                           <ShoppingBag size={17} /> Add ${(() => {
                             const vPrice = lookupVendorPrice(selectedDose, vendor.id)
-                            return ((selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * (selectedVendorId === vendor.id ? quantity : 1)).toFixed(2)
+                            const activeQty = selectedVendorId === vendor.id ? quantity : 1
+                            return ((selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * activeQty).toFixed(2)
                           })()}
                         </button>
                       </div>
