@@ -6678,3 +6678,145 @@
 #ps-storefront .ps-private-surface:has(.dark) [class*="border-white\/5"] {
   border-color: var(--admin-border);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   SELLER PORTAL — Escrow gate modal
+   The seller portal is inside #ps-storefront but has no
+   .ps-private-surface wrapper. Target the escrow modal classes
+   directly to fix the low-contrast text and apply our brand.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Modal backdrop — keep dark overlay */
+#ps-storefront .seller-mandatory-escrow-modal {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+/* Dialog card — dark surface, not white */
+#ps-storefront .seller-mandatory-escrow-modal__dialog {
+  background: #0d1117;
+  border: 1px solid #1e2738;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Badge "ACTION REQUIRED" — orange pill */
+#ps-storefront .seller-mandatory-escrow-modal__badge {
+  background: rgba(255, 163, 0, 0.15);
+  color: #ffa300;
+  border: 1px solid rgba(255, 163, 0, 0.3);
+  border-radius: 6px;
+  padding: 4px 10px;
+  letter-spacing: 0.08em;
+}
+
+/* Headline — white, bold */
+#ps-storefront .seller-mandatory-escrow-modal__headline {
+  color: #f4f6f8;
+  font-weight: 700;
+}
+
+/* Lead paragraph — readable light gray */
+#ps-storefront .seller-mandatory-escrow-modal__lead {
+  color: #b8c0cc;
+  line-height: 1.5;
+}
+
+/* Comparison cards — both dark, readable */
+#ps-storefront .seller-mandatory-escrow-modal__current {
+  background: #161d2e;
+  border: 1px solid #2a3548;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Card headers — dark text override is aggressive, so use deep specificity */
+#ps-storefront .seller-mandatory-escrow-modal .seller-mandatory-escrow-modal__dialog
+  .seller-mandatory-escrow-modal__current h2[class*="text-white"] {
+  color: #f4f6f8;
+  font-weight: 600;
+}
+
+#ps-storefront .seller-mandatory-escrow-modal .seller-mandatory-escrow-modal__dialog
+  .seller-mandatory-escrow-modal__current ul[class*="text-white"] li {
+  color: #b8c0cc;
+}
+
+/* After-accept card — fix the invisible indigo text */
+#ps-storefront .seller-mandatory-escrow-modal__after {
+  background: #161d2e;
+  border: 1px solid #ffa300;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* After-accept card — fix the invisible indigo text */
+#ps-storefront .seller-mandatory-escrow-modal .seller-mandatory-escrow-modal__dialog
+  .seller-mandatory-escrow-modal__after h2[class*="text-white"] {
+  color: #ffa300;
+  font-weight: 600;
+}
+
+#ps-storefront .seller-mandatory-escrow-modal .seller-mandatory-escrow-modal__dialog
+  .seller-mandatory-escrow-modal__after ul[class*="text-indigo"] li {
+  color: #d0d8e4;
+}
+
+/* Permanent warning — amber, readable */
+#ps-storefront .seller-mandatory-escrow-modal__permanent {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+/* Acceptance container — dark card with border */
+#ps-storefront .seller-mandatory-escrow-modal__acceptance {
+  background: #161d2e;
+  border: 1px solid #2a3548;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Checkbox label — readable */
+#ps-storefront .seller-mandatory-escrow-modal__ack {
+  color: #d0d8e4;
+}
+
+/* Checkbox — orange accent, bigger */
+#ps-storefront .seller-mandatory-escrow-modal__ack input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #ffa300;
+  cursor: pointer;
+}
+
+/* THE ACCEPT BUTTON — orange, bold, impossible to miss */
+#ps-storefront .seller-mandatory-escrow-modal__confirm {
+  background: #ffa300;
+  color: #12161d;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 24px;
+  border-radius: 10px;
+  opacity: 1;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 0 2px #0d1117, 0 0 0 4px #ffa300;
+}
+
+#ps-storefront .seller-mandatory-escrow-modal__confirm:hover:not(:disabled) {
+  background: #ffb520;
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 2px #0d1117, 0 0 0 4px #ffb520, 0 4px 12px rgba(255, 163, 0, 0.3);
+}
+
+#ps-storefront .seller-mandatory-escrow-modal__confirm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Error text — red, visible */
+#ps-storefront .seller-mandatory-escrow-modal__error {
+  color: #ef4444;
+}
+
+/* Footnote — readable */
+#ps-storefront .seller-mandatory-escrow-modal__footnote {
+  color: #87919d;
+}
