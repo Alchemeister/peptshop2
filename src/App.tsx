@@ -188,6 +188,124 @@ export function PeptShopFrontend({
   const isPortal = ['seller', 'admin', 'staff', 'affiliate'].includes(route.family)
   const page = renderPage(route.family, pageProps)
 
+  // Inject escrow modal styles at runtime — the backend owner's build pipeline strips
+  // these CSS rules from storefront.css because the escrow modal is rendered
+  // client-side (class names not in server HTML → purged by Tailwind).
+  // A <style> tag injected via JS bypasses the CSS build pipeline entirely.
+  useEffect(() => {
+    if (route.family !== 'seller') return
+    const styleId = 'ps-escrow-runtime-styles'
+    if (document.getElementById(styleId)) return
+    const style = document.createElement('style')
+    style.id = styleId
+    style.textContent = `
+#ps-storefront .seller-mandatory-escrow-modal {
+  background: rgba(0, 0, 0, 0.75);
+}
+#ps-storefront .seller-mandatory-escrow-modal__dialog {
+  background: #0d1117;
+  border: 1px solid #1e2738;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  color: #e6edf3;
+}
+#ps-storefront .seller-mandatory-escrow-modal__badge {
+  background: rgba(255, 163, 0, 0.15);
+  color: #ffa300;
+  border: 1px solid rgba(255, 163, 0, 0.3);
+  border-radius: 6px;
+  padding: 4px 10px;
+  letter-spacing: 0.08em;
+}
+#ps-storefront .seller-mandatory-escrow-modal__headline {
+  color: #0f172a;
+  font-weight: 700;
+}
+#ps-storefront .seller-mandatory-escrow-modal__lead {
+  color: #475569;
+  line-height: 1.5;
+}
+#ps-storefront .seller-mandatory-escrow-modal__current {
+  background: #161d2e;
+  border: 1px solid #2a3548;
+  border-radius: 12px;
+  padding: 16px;
+}
+#ps-storefront .seller-mandatory-escrow-modal .seller-mandatory-escrow-modal__dialog
+  .seller-mandatory-escrow-modal__current h2[class*="text-white"] {
+  color: #f4f6f8;
+  font-weight: 600;
+}
+#ps-storefront .seller-mandatory-escrow-modal .seller-mandatory-escrow-modal__dialog
+  .seller-mandatory-escrow-modal__current ul[class*="text-white"] li {
+  color: #b8c0cc;
+}
+#ps-storefront .seller-mandatory-escrow-modal__after {
+  background: #161d2e;
+  border: 1px solid #ffa300;
+  border-radius: 12px;
+  padding: 16px;
+}
+#ps-storefront .seller-mandatory-escrow-modal .seller-mandatory-escrow-modal__dialog
+  .seller-mandatory-escrow-modal__after h2[class*="text-white"] {
+  color: #ffa300;
+  font-weight: 600;
+}
+#ps-storefront .seller-mandatory-escrow-modal .seller-mandatory-escrow-modal__dialog
+  .seller-mandatory-escrow-modal__after ul[class*="text-indigo"] li {
+  color: #d0d8e4;
+}
+#ps-storefront .seller-mandatory-escrow-modal__permanent {
+  color: #f59e0b;
+  font-weight: 600;
+}
+#ps-storefront .seller-mandatory-escrow-modal__acceptance {
+  background: #161d2e;
+  border: 1px solid #2a3548;
+  border-radius: 12px;
+  padding: 16px;
+}
+#ps-storefront .seller-mandatory-escrow-modal__ack {
+  color: #d0d8e4;
+}
+#ps-storefront .seller-mandatory-escrow-modal__ack input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #ffa300;
+  cursor: pointer;
+}
+#ps-storefront .seller-mandatory-escrow-modal__confirm {
+  background: #ffa300;
+  color: #12161d;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 24px;
+  border-radius: 10px;
+  opacity: 1;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 0 2px #0d1117, 0 0 0 4px #ffa300;
+}
+#ps-storefront .seller-mandatory-escrow-modal__confirm:hover:not(:disabled) {
+  background: #ffb520;
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 2px #0d1117, 0 0 0 4px #ffb520, 0 4px 12px rgba(255, 163, 0, 0.3);
+}
+#ps-storefront .seller-mandatory-escrow-modal__confirm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+#ps-storefront .seller-mandatory-escrow-modal__error {
+  color: #ef4444;
+}
+#ps-storefront .seller-mandatory-escrow-modal__footnote {
+  color: #87919d;
+}
+`
+    document.head.appendChild(style)
+    return () => {
+      // Keep the style — it's cheap and survives route changes within seller
+    }
+  }, [route.family])
+
   return (
     <>
       {isPortal || route.family === 'api' ? (
