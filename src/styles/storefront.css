@@ -1398,7 +1398,7 @@
   align-items: center;
   gap: 0.5rem;
   border: 1px solid var(--ps-accent);
-  border-radius: 9px;
+  border-radius: 10px;
   background: var(--ps-accent);
   padding: 0 1rem;
   color: #15181d;
@@ -2284,11 +2284,11 @@
   min-height: 2.7rem;
   align-items: center;
   gap: 0.45rem;
-  border: 1px solid var(--ps-line-strong);
-  border-radius: 9px;
-  background: var(--ps-paper);
+  border: 1px solid var(--ps-accent);
+  border-radius: 10px;
+  background: var(--ps-accent);
   padding: 0 0.8rem;
-  color: var(--ps-ink);
+  color: var(--ps-ink, #12161d);
   font-size: 0.72rem;
   font-weight: 700;
   text-decoration: none;
@@ -5869,9 +5869,9 @@
   font-weight: 700;
   font-size: 0.875rem;
   background: var(--ps-accent);
-  color: white;
+  color: var(--ps-ink, #12161d);
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 0.65rem 1.1rem;
   cursor: pointer;
   transition: opacity 0.15s ease;
@@ -5885,7 +5885,8 @@
 }
 #ps-storefront .ps-add-to-cart-btn{
   background: var(--ps-accent);
-  color: white;
+  color: var(--ps-ink, #12161d);
+  border-radius: 10px;
 }
 
 /* Cart summary card */

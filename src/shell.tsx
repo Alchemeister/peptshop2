@@ -1,13 +1,9 @@
 import {
   ArrowRight,
-  Bitcoin,
   BookOpen,
-  Coins,
-  DollarSign,
   FileCheck2,
   Menu,
   Search,
-  ShieldAlert,
   ShoppingBag,
   Store,
   X,
@@ -207,7 +203,62 @@ export function StorefrontShell({
       <main id="main-content">{children}</main>
 
       {isHome ? (
-        <ClassicHomeFooter navigate={actions.navigate} />
+        <footer className="ps-footer">
+          <div className="ps-footer-grid">
+            <div className="ps-footer-brand">
+              <FrontendLink href="/" navigate={actions.navigate} className="ps-brand">
+                <img src="/peptshop-logo.svg" alt="" />
+                <span>peptshop</span>
+              </FrontendLink>
+              <p>Independent comparison, transparent pricing, and batch-level evidence.</p>
+            </div>
+            <FooterColumn
+              title="Marketplace"
+              icon={<Store size={15} />}
+              links={[
+                ['/products', 'Catalog'],
+                ['/vendors', 'Vendors'],
+                ['/shipping', 'Shipping'],
+              ]}
+              navigate={actions.navigate}
+            />
+            <FooterColumn
+              title="Evidence"
+              icon={<FileCheck2 size={15} />}
+              links={[
+                ['/coas', 'COA library'],
+                ['/verify', 'Verify a batch'],
+                ['/order/status', 'Track an order'],
+              ]}
+              navigate={actions.navigate}
+            />
+            <FooterColumn
+              title="Learn"
+              icon={<BookOpen size={15} />}
+              links={[
+                ['/articles', 'Articles'],
+                ['/faq', 'FAQ'],
+                ['/about', 'About'],
+                ['/contact', 'Contact'],
+              ]}
+              navigate={actions.navigate}
+            />
+          </div>
+          <div className="ps-footer-bottom">
+            <p>For laboratory research use only. Not for human consumption.</p>
+            <div>
+              <FrontendLink href="/privacy" navigate={actions.navigate}>
+                Privacy
+              </FrontendLink>
+              <FrontendLink href="/terms" navigate={actions.navigate}>
+                Terms
+              </FrontendLink>
+              <FrontendLink href="/disclaimers" navigate={actions.navigate}>
+                Disclaimers
+              </FrontendLink>
+            </div>
+          </div>
+        </footer>
       ) : (
         <footer className="ps-footer">
           <div className="ps-footer-grid">
@@ -292,112 +343,6 @@ function FooterColumn({
           {label}
         </FrontendLink>
       ))}
-    </div>
-  )
-}
-
-const classicCryptoBadges = [
-  { label: 'BTC', icon: Bitcoin, color: 'is-bitcoin' },
-  { label: 'ETH', icon: Coins, color: 'is-ethereum' },
-  { label: 'USDC', icon: DollarSign, color: 'is-usdc' },
-  { label: 'USDT', icon: DollarSign, color: 'is-usdt' },
-  { label: 'XMR', icon: Coins, color: 'is-monero' },
-]
-
-function ClassicHomeFooter({ navigate }: { navigate: (href: string) => void }) {
-  return (
-    <footer className="ps-classic-footer">
-      <div className="ps-classic-footer-container">
-        <div className="ps-classic-footer-grid">
-          <div className="ps-classic-footer-brand">
-            <FrontendLink href="/" navigate={navigate} aria-label="PeptShop home">
-              <img src="/peptshop-logo.svg" alt="PeptShop" />
-            </FrontendLink>
-            <p>
-              Research compound marketplace. Upfront per-mg pricing, public CoAs, and crypto
-              checkout.
-            </p>
-          </div>
-          <ClassicFooterColumn
-            title="Shop"
-            links={[
-              ['/products', 'All Products'],
-              ['/vendors', 'Vendors'],
-              ['/coas', 'CoA Labs'],
-            ]}
-            navigate={navigate}
-          />
-          <ClassicFooterColumn
-            title="Support"
-            links={[
-              ['/order/status', 'Find My Order'],
-              ['/coas', 'COA library'],
-              ['/verify', 'Verify a batch'],
-              ['/contact', 'Contact'],
-            ]}
-            navigate={navigate}
-          />
-          <ClassicFooterColumn
-            title="Legal"
-            links={[
-              ['/disclaimers', 'Disclaimers'],
-              ['/privacy', 'Privacy'],
-              ['/terms', 'Terms'],
-            ]}
-            navigate={navigate}
-          />
-        </div>
-
-        <div className="ps-classic-payment-row">
-          <span>We accept</span>
-          <div>
-            {classicCryptoBadges.map(({ color, icon: Icon, label }) => (
-              <span key={label}>
-                <Icon className={color} size={12} />
-                {label}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="ps-classic-footer-disclaimer">
-          <ShieldAlert size={18} />
-          <p>
-            <strong>Research use only.</strong> Products are for in-vitro and laboratory use, not
-            for human consumption, diagnosis, or treatment. Suppliers are responsible for listing
-            accuracy. PeptShop processes crypto payments and never holds inventory.
-          </p>
-        </div>
-
-        <div className="ps-classic-footer-bottom">
-          <p>© {new Date().getFullYear()} PeptShop. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
-  )
-}
-
-function ClassicFooterColumn({
-  links,
-  navigate,
-  title,
-}: {
-  links: Array<[string, string]>
-  navigate: (href: string) => void
-  title: string
-}) {
-  return (
-    <div className="ps-classic-footer-column">
-      <h2>{title}</h2>
-      <ul>
-        {links.map(([href, label]) => (
-          <li key={href}>
-            <FrontendLink href={href} navigate={navigate}>
-              {label}
-            </FrontendLink>
-          </li>
-        ))}
-      </ul>
     </div>
   )
 }
