@@ -6386,8 +6386,9 @@
 /* Override the backend owner's hardcoded Tailwind light-theme colors inside CoA page.
    NOTE: the backend owner's build strips !important and purges span/div selectors.
    Unlayered CSS beats Tailwind's @layer utilities, so no !important needed.
-   We avoid span/div selectors (purged) and use element + attribute selectors. */
-#ps-storefront .ps-private-surface {
+   We avoid span/div selectors (purged) and use element + attribute selectors.
+   Scoped with :not(:has(.dark)) to exclude admin/seller dark-theme pages. */
+#ps-storefront .ps-private-surface:not(:has(.dark)) {
   background: var(--ps-paper);
   border: 1px solid var(--ps-line);
   border-radius: 16px;
@@ -6395,68 +6396,68 @@
   color: var(--ps-ink);
 }
 /* Force the the backend owner wrapper div to use our dark theme */
-#ps-storefront .ps-private-surface [class*="bg-[#F8FAFC]"],
-#ps-storefront .ps-private-surface [class*="min-h-screen"] {
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="bg-[#F8FAFC]"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="min-h-screen"] {
   background: var(--ps-paper);
   color: var(--ps-ink);
 }
 /* White card containers with light borders → dark cards */
-#ps-storefront .ps-private-surface [class*="bg-white"],
-#ps-storefront .ps-private-surface [class*="bg-[#FFFFFF]"],
-#ps-storefront .ps-private-surface [class*="rounded-xl"],
-#ps-storefront .ps-private-surface [class*="overflow-hidden"] {
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="bg-white"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="bg-[#FFFFFF]"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="rounded-xl"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="overflow-hidden"] {
   background: var(--ps-surface);
   border-color: var(--ps-line);
   box-shadow: none;
   color: var(--ps-ink);
 }
 /* Slate-900 backgrounds on buttons → our accent or surface */
-#ps-storefront .ps-private-surface button[class*="bg-[#0F172A]"] {
+#ps-storefront .ps-private-surface:not(:has(.dark)) button[class*="bg-[#0F172A]"] {
   background: var(--ps-accent);
   border-color: var(--ps-accent);
   color: var(--ps-ink);
 }
 /* Form with light theme */
-#ps-storefront .ps-private-surface form {
+#ps-storefront .ps-private-surface:not(:has(.dark)) form {
   background: var(--ps-surface);
   border-color: var(--ps-line);
   color: var(--ps-ink);
   border-radius: 12px;
 }
 /* Filter form inputs */
-#ps-storefront .ps-private-surface form button,
-#ps-storefront .ps-private-surface form [role="combobox"],
-#ps-storefront .ps-private-surface form [class*="date-picker"] {
+#ps-storefront .ps-private-surface:not(:has(.dark)) form button,
+#ps-storefront .ps-private-surface:not(:has(.dark)) form [role="combobox"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) form [class*="date-picker"] {
   background: var(--ps-paper);
   border: 1px solid var(--ps-line);
   color: var(--ps-ink);
 }
 /* Slate-500/600/400 label text → our muted color */
-#ps-storefront .ps-private-surface [class*="text-[#64748B]"],
-#ps-storefront .ps-private-surface [class*="text-[#475569]"],
-#ps-storefront .ps-private-surface [class*="text-slate-500"],
-#ps-storefront .ps-private-surface [class*="text-slate-600"],
-#ps-storefront .ps-private-surface [class*="text-slate-400"] {
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="text-[#64748B]"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="text-[#475569]"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="text-slate-500"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="text-slate-600"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="text-slate-400"] {
   color: var(--ps-muted);
 }
 /* Slate-900 text → our ink color */
-#ps-storefront .ps-private-surface [class*="text-[#0F172A]"],
-#ps-storefront .ps-private-surface [class*="text-slate-900"] {
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="text-[#0F172A]"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="text-slate-900"] {
   color: var(--ps-ink);
 }
 /* Slate-900/55 muted text */
-#ps-storefront .ps-private-surface [class*="text-[#0F172A]\/55"],
-#ps-storefront .ps-private-surface [class*="text-[#0F172A]\/50"] {
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="text-[#0F172A]\/55"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="text-[#0F172A]\/50"] {
   color: var(--ps-muted);
 }
 /* Light borders → our line color */
-#ps-storefront .ps-private-surface [class*="border-[#CBD5E1]"],
-#ps-storefront .ps-private-surface [class*="border-slate-300"],
-#ps-storefront .ps-private-surface [class*="border-slate-200"] {
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="border-[#CBD5E1]"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="border-slate-300"],
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="border-slate-200"] {
   border-color: var(--ps-line);
 }
 /* Table container */
-#ps-storefront .ps-private-surface table {
+#ps-storefront .ps-private-surface:not(:has(.dark)) table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -6464,12 +6465,12 @@
   font-size: 0.88rem;
   background: var(--ps-paper);
 }
-#ps-storefront .ps-private-surface thead,
-#ps-storefront .ps-private-surface thead tr {
+#ps-storefront .ps-private-surface:not(:has(.dark)) thead,
+#ps-storefront .ps-private-surface:not(:has(.dark)) thead tr {
   background: var(--ps-surface);
   border-color: var(--ps-line);
 }
-#ps-storefront .ps-private-surface thead th {
+#ps-storefront .ps-private-surface:not(:has(.dark)) thead th {
   text-align: left;
   font-weight: 700;
   font-size: 0.72rem;
@@ -6480,65 +6481,65 @@
   border-bottom: 1px solid var(--ps-line);
   background: var(--ps-surface);
 }
-#ps-storefront .ps-private-surface tbody td {
+#ps-storefront .ps-private-surface:not(:has(.dark)) tbody td {
   padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--ps-line);
   color: var(--ps-ink);
   vertical-align: middle;
   background: var(--ps-paper);
 }
-#ps-storefront .ps-private-surface tbody tr {
+#ps-storefront .ps-private-surface:not(:has(.dark)) tbody tr {
   border-color: var(--ps-line);
 }
-#ps-storefront .ps-private-surface tbody tr:last-child td {
+#ps-storefront .ps-private-surface:not(:has(.dark)) tbody tr:last-child td {
   border-bottom: none;
 }
-#ps-storefront .ps-private-surface tbody tr:hover td {
+#ps-storefront .ps-private-surface:not(:has(.dark)) tbody tr:hover td {
   background: var(--ps-surface);
 }
-#ps-storefront .ps-private-surface h1,
-#ps-storefront .ps-private-surface h2,
-#ps-storefront .ps-private-surface h3 {
+#ps-storefront .ps-private-surface:not(:has(.dark)) h1,
+#ps-storefront .ps-private-surface:not(:has(.dark)) h2,
+#ps-storefront .ps-private-surface:not(:has(.dark)) h3 {
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   letter-spacing: -0.03em;
   font-weight: 650;
   color: var(--ps-ink);
 }
-#ps-storefront .ps-private-surface p {
+#ps-storefront .ps-private-surface:not(:has(.dark)) p {
   color: var(--ps-muted);
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 1.6;
 }
-#ps-storefront .ps-private-surface a {
+#ps-storefront .ps-private-surface:not(:has(.dark)) a {
   color: var(--ps-accent);
   font-weight: 600;
   text-decoration: none;
 }
-#ps-storefront .ps-private-surface a:hover {
+#ps-storefront .ps-private-surface:not(:has(.dark)) a:hover {
   color: var(--ps-accent-hover);
 }
-#ps-storefront .ps-private-surface button {
+#ps-storefront .ps-private-surface:not(:has(.dark)) button {
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 700;
   border-radius: 10px;
 }
 /* Filter inputs and buttons */
-#ps-storefront .ps-private-surface input,
-#ps-storefront .ps-private-surface select {
+#ps-storefront .ps-private-surface:not(:has(.dark)) input,
+#ps-storefront .ps-private-surface:not(:has(.dark)) select {
   background: var(--ps-paper);
   border: 1px solid var(--ps-line);
   color: var(--ps-ink);
   border-radius: 8px;
 }
-#ps-storefront .ps-private-surface input::placeholder {
+#ps-storefront .ps-private-surface:not(:has(.dark)) input::placeholder {
   color: var(--ps-muted);
 }
 /* Badges */
-#ps-storefront .ps-private-surface [class*="rounded-full"] {
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="rounded-full"] {
   border-color: var(--ps-line);
 }
 /* "PeptShop Submitted" badge: black bg → our accent */
-#ps-storefront .ps-private-surface [class*="bg-black"] {
+#ps-storefront .ps-private-surface:not(:has(.dark)) [class*="bg-black"] {
   background: var(--ps-accent);
   color: var(--ps-ink);
 }
