@@ -6543,3 +6543,138 @@
   background: var(--ps-accent);
   color: var(--ps-ink);
 }
+
+/* ──────────────────────────────────────────────────────────────
+   Admin / seller dark-theme pages (.ps-private-surface:has(.dark))
+   the backend owner's admin uses bg-[#070D18] + text-white. We inject our
+   design system: Avenir Next fonts, orange accent, card styling,
+   table formatting — matching PeptShop's dark theme.
+   NOTE: the backend owner strips !important and purges span/div selectors.
+   Use element + attribute selectors only. Unlayered beats @layer.
+   ────────────────────────────────────────────────────────────── */
+
+/* Define dark-theme CSS vars on the admin wrapper */
+#ps-storefront .ps-private-surface:has(.dark) {
+  --admin-accent: #ffa300;
+  --admin-accent-hover: #eb9600;
+  --admin-bg: #070d18;
+  --admin-surface: #111726;
+  --admin-card: #161d2e;
+  --admin-border: #1e2738;
+  --admin-text: #f4f6f8;
+  --admin-muted: #87919d;
+  --admin-faint: #5d6673;
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Force the backend owner's wrapper to inherit our vars */
+#ps-storefront .ps-private-surface:has(.dark) [class*="bg-[#070D18]"],
+#ps-storefront .ps-private-surface:has(.dark) [class*="min-h-dvh"] {
+  background: var(--admin-bg);
+  color: var(--admin-text);
+}
+
+/* Headings — ensure white text, our font */
+#ps-storefront .ps-private-surface:has(.dark) h1,
+#ps-storefront .ps-private-surface:has(.dark) h2,
+#ps-storefront .ps-private-surface:has(.dark) h3 {
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: -0.03em;
+  font-weight: 650;
+  color: var(--admin-text);
+}
+
+/* Body text */
+#ps-storefront .ps-private-surface:has(.dark) p {
+  color: var(--admin-muted);
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+/* Links — orange accent */
+#ps-storefront .ps-private-surface:has(.dark) a {
+  color: var(--admin-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+#ps-storefront .ps-private-surface:has(.dark) a:hover {
+  color: var(--admin-accent-hover);
+}
+
+/* Buttons — our font + radius */
+#ps-storefront .ps-private-surface:has(.dark) button {
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+/* Cards — dark surface with subtle border */
+#ps-storefront .ps-private-surface:has(.dark) [class*="rounded-xl"],
+#ps-storefront .ps-private-surface:has(.dark) [class*="rounded-lg"] {
+  background: var(--admin-card);
+  border-color: var(--admin-border);
+  box-shadow: none;
+}
+
+/* Tables — dark theme */
+#ps-storefront .ps-private-surface:has(.dark) table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.88rem;
+}
+#ps-storefront .ps-private-surface:has(.dark) thead,
+#ps-storefront .ps-private-surface:has(.dark) thead tr {
+  background: var(--admin-surface);
+  border-color: var(--admin-border);
+}
+#ps-storefront .ps-private-surface:has(.dark) thead th {
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--admin-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-surface);
+}
+#ps-storefront .ps-private-surface:has(.dark) tbody td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--admin-border);
+  color: var(--admin-text);
+  vertical-align: middle;
+}
+#ps-storefront .ps-private-surface:has(.dark) tbody tr:last-child td {
+  border-bottom: none;
+}
+#ps-storefront .ps-private-surface:has(.dark) tbody tr:hover td {
+  background: var(--admin-surface);
+}
+
+/* Inputs — dark theme */
+#ps-storefront .ps-private-surface:has(.dark) input,
+#ps-storefront .ps-private-surface:has(.dark) select {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text);
+  border-radius: 8px;
+}
+#ps-storefront .ps-private-surface:has(.dark) input::placeholder {
+  color: var(--admin-faint);
+}
+
+/* Metric card stat numbers — accent orange (not headings) */
+#ps-storefront .ps-private-surface:has(.dark) [class*="text-xl"]:not(h1):not(h2):not(h3),
+#ps-storefront .ps-private-surface:has(.dark) [class*="text-2xl"]:not(h1):not(h2):not(h3),
+#ps-storefront .ps-private-surface:has(.dark) [class*="text-3xl"]:not(h1):not(h2):not(h3) {
+  color: var(--admin-accent);
+}
+
+/* Borders — use our dark border color */
+#ps-storefront .ps-private-surface:has(.dark) [class*="border-white\/10"],
+#ps-storefront .ps-private-surface:has(.dark) [class*="border-white\/5"] {
+  border-color: var(--admin-border);
+}
