@@ -6361,8 +6361,8 @@
 }
 
 .ps-research-dot-active {
-  background: var(--ps-ink, #fff);
-  border-color: var(--ps-ink, #fff);
+  background: #FFA300;
+  border-color: #FFA300;
 }
 
 @media (max-width: 640px) {
