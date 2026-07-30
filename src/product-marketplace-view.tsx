@@ -550,7 +550,7 @@ function ResearchLibrarySection({ slug, productName }: { slug: string; productNa
               target="_blank"
               rel="noopener noreferrer"
             >
-              Open
+              {study.url.startsWith('https://pubmed') ? 'PubMed' : 'Open'}
               <ArrowRight size={14} strokeWidth={1.8} />
             </a>
           </article>
