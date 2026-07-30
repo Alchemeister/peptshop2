@@ -6372,12 +6372,37 @@
   border-radius: 16px;
   padding: 1.5rem;
 }
+/* Override the backend owner's hardcoded Tailwind light-theme colors inside CoA page */
+#ps-storefront .ps-private-surface > div {
+  background: var(--ps-paper) !important;
+  color: var(--ps-ink) !important;
+  border-color: var(--ps-line) !important;
+}
+#ps-storefront .ps-private-surface > div > div {
+  background: transparent !important;
+  color: var(--ps-ink) !important;
+  border-color: var(--ps-line) !important;
+}
+/* Card containers with white bg + light borders */
+#ps-storefront .ps-private-surface .rounded-xl,
+#ps-storefront .ps-private-surface .overflow-hidden {
+  background: var(--ps-paper) !important;
+  border-color: var(--ps-line) !important;
+  box-shadow: none !important;
+}
+/* Table container */
 #ps-storefront .ps-private-surface table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.88rem;
+  background: var(--ps-paper) !important;
+}
+#ps-storefront .ps-private-surface thead,
+#ps-storefront .ps-private-surface thead tr {
+  background: var(--ps-surface) !important;
+  border-color: var(--ps-line) !important;
 }
 #ps-storefront .ps-private-surface thead th {
   text-align: left;
@@ -6385,29 +6410,39 @@
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--ps-muted);
+  color: var(--ps-muted) !important;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--ps-line);
-  background: var(--ps-surface);
+  border-bottom: 1px solid var(--ps-line) !important;
+  background: var(--ps-surface) !important;
 }
 #ps-storefront .ps-private-surface tbody td {
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid var(--ps-line);
-  color: var(--ps-ink);
+  border-bottom: 1px solid var(--ps-line) !important;
+  color: var(--ps-ink) !important;
   vertical-align: middle;
+  background: var(--ps-paper) !important;
+}
+#ps-storefront .ps-private-surface tbody tr {
+  border-color: var(--ps-line) !important;
 }
 #ps-storefront .ps-private-surface tbody tr:last-child td {
-  border-bottom: none;
+  border-bottom: none !important;
 }
 #ps-storefront .ps-private-surface tbody tr:hover td {
-  background: var(--ps-surface);
+  background: var(--ps-surface) !important;
+}
+/* All text inside should use our ink color, not Tailwind's slate */
+#ps-storefront .ps-private-surface span,
+#ps-storefront .ps-private-surface div:not(.animate-pulse *):not(.animate-pulse) {
+  color: var(--ps-ink);
 }
 #ps-storefront .ps-private-surface h1,
-#ps-storefront .ps-private-surface h2 {
+#ps-storefront .ps-private-surface h2,
+#ps-storefront .ps-private-surface h3 {
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   letter-spacing: -0.03em;
   font-weight: 650;
-  color: var(--ps-ink);
+  color: var(--ps-ink) !important;
 }
 #ps-storefront .ps-private-surface p {
   color: var(--ps-muted);
@@ -6415,15 +6450,30 @@
   line-height: 1.6;
 }
 #ps-storefront .ps-private-surface a {
-  color: var(--ps-accent);
+  color: var(--ps-accent) !important;
   font-weight: 600;
   text-decoration: none;
 }
 #ps-storefront .ps-private-surface a:hover {
-  color: var(--ps-accent-hover);
+  color: var(--ps-accent-hover) !important;
 }
 #ps-storefront .ps-private-surface button {
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 700;
   border-radius: 10px;
+}
+/* Filter inputs and buttons */
+#ps-storefront .ps-private-surface input,
+#ps-storefront .ps-private-surface select {
+  background: var(--ps-paper) !important;
+  border: 1px solid var(--ps-line) !important;
+  color: var(--ps-ink) !important;
+  border-radius: 8px;
+}
+#ps-storefront .ps-private-surface input::placeholder {
+  color: var(--ps-muted);
+}
+/* Badges */
+#ps-storefront .ps-private-surface .rounded-full {
+  border-color: var(--ps-line) !important;
 }

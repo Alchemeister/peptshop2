@@ -1,5 +1,6 @@
 import {
   ArrowLeft,
+  ArrowRight,
   Bell,
   FileCheck2,
   MapPin,
@@ -12,6 +13,7 @@ import {
   Truck,
 } from 'lucide-react'
 import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useState } from 'react'
+import { researchStudies, type ResearchStudy } from './mock-data'
 import {
   ProductBackControlFrame,
   ProductDosageOptionFrame,
@@ -505,8 +507,64 @@ export function ProductMarketplaceView({
           </ProductOffersSection>
         ) : null}
 
+        {model.slug ? (
+          <ResearchLibrarySection slug={model.slug} productName={model.name} />
+        ) : null}
+
         {children}
       </ProductPageFrame>
     </div>
+  )
+}
+
+function ResearchLibrarySection({ slug, productName }: { slug: string; productName: string }) {
+  const studies: ResearchStudy[] = researchStudies[slug] ?? []
+  const [expanded, setExpanded] = useState(false)
+  const visibleCount = expanded ? studies.length : Math.min(studies.length, 5)
+  const visible = studies.slice(0, visibleCount)
+
+  if (studies.length === 0) return null
+
+  return (
+    <section className="ps-research-library" aria-labelledby="ps-research-library-heading">
+      <div className="ps-research-library-header">
+        <span className="ps-kicker">Research Library</span>
+        <h2 id="ps-research-library-heading">Latest Research News</h2>
+        <p className="ps-research-library-subtitle">
+          Peer-reviewed studies and publications referencing {productName}.
+        </p>
+      </div>
+      <div className="ps-research-study-list">
+        {visible.map((study) => (
+          <article key={study.id} className="ps-research-study-card">
+            <div className="ps-research-study-card-main">
+              <h3 className="ps-research-study-title">{study.title}</h3>
+              <div className="ps-research-study-meta">
+                <span className="ps-research-study-date">{study.date}</span>
+                <span className="ps-research-study-authors">{study.authors}</span>
+              </div>
+            </div>
+            <a
+              href={study.url}
+              className="ps-research-study-open"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open
+              <ArrowRight size={14} strokeWidth={1.8} />
+            </a>
+          </article>
+        ))}
+      </div>
+      {studies.length > 5 && (
+        <button
+          type="button"
+          className="ps-research-show-more"
+          onClick={() => setExpanded(!expanded)}
+        >
+          {expanded ? 'Show less' : `Show ${studies.length - 5} more`}
+        </button>
+      )}
+    </section>
   )
 }
