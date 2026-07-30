@@ -6383,29 +6383,77 @@
 }
 
 /* ===== CoA library page styling — make Tailwind table match storefront ===== */
+/* Override the backend owner's hardcoded Tailwind light-theme colors inside CoA page.
+   NOTE: the backend owner's build strips !important and purges span/div selectors.
+   Unlayered CSS beats Tailwind's @layer utilities, so no !important needed.
+   We avoid span/div selectors (purged) and use element + attribute selectors. */
 #ps-storefront .ps-private-surface {
   background: var(--ps-paper);
   border: 1px solid var(--ps-line);
   border-radius: 16px;
   padding: 1.5rem;
+  color: var(--ps-ink);
 }
-/* Override the backend owner's hardcoded Tailwind light-theme colors inside CoA page */
-#ps-storefront .ps-private-surface > div {
-  background: var(--ps-paper) !important;
-  color: var(--ps-ink) !important;
-  border-color: var(--ps-line) !important;
+/* Force the the backend owner wrapper div to use our dark theme */
+#ps-storefront .ps-private-surface [class*="bg-[#F8FAFC]"],
+#ps-storefront .ps-private-surface [class*="min-h-screen"] {
+  background: var(--ps-paper);
+  color: var(--ps-ink);
 }
-#ps-storefront .ps-private-surface > div > div {
-  background: transparent !important;
-  color: var(--ps-ink) !important;
-  border-color: var(--ps-line) !important;
+/* White card containers with light borders → dark cards */
+#ps-storefront .ps-private-surface [class*="bg-white"],
+#ps-storefront .ps-private-surface [class*="bg-[#FFFFFF]"],
+#ps-storefront .ps-private-surface [class*="rounded-xl"],
+#ps-storefront .ps-private-surface [class*="overflow-hidden"] {
+  background: var(--ps-surface);
+  border-color: var(--ps-line);
+  box-shadow: none;
+  color: var(--ps-ink);
 }
-/* Card containers with white bg + light borders */
-#ps-storefront .ps-private-surface .rounded-xl,
-#ps-storefront .ps-private-surface .overflow-hidden {
-  background: var(--ps-paper) !important;
-  border-color: var(--ps-line) !important;
-  box-shadow: none !important;
+/* Slate-900 backgrounds on buttons → our accent or surface */
+#ps-storefront .ps-private-surface button[class*="bg-[#0F172A]"] {
+  background: var(--ps-accent);
+  border-color: var(--ps-accent);
+  color: var(--ps-ink);
+}
+/* Form with light theme */
+#ps-storefront .ps-private-surface form {
+  background: var(--ps-surface);
+  border-color: var(--ps-line);
+  color: var(--ps-ink);
+  border-radius: 12px;
+}
+/* Filter form inputs */
+#ps-storefront .ps-private-surface form button,
+#ps-storefront .ps-private-surface form [role="combobox"],
+#ps-storefront .ps-private-surface form [class*="date-picker"] {
+  background: var(--ps-paper);
+  border: 1px solid var(--ps-line);
+  color: var(--ps-ink);
+}
+/* Slate-500/600/400 label text → our muted color */
+#ps-storefront .ps-private-surface [class*="text-[#64748B]"],
+#ps-storefront .ps-private-surface [class*="text-[#475569]"],
+#ps-storefront .ps-private-surface [class*="text-slate-500"],
+#ps-storefront .ps-private-surface [class*="text-slate-600"],
+#ps-storefront .ps-private-surface [class*="text-slate-400"] {
+  color: var(--ps-muted);
+}
+/* Slate-900 text → our ink color */
+#ps-storefront .ps-private-surface [class*="text-[#0F172A]"],
+#ps-storefront .ps-private-surface [class*="text-slate-900"] {
+  color: var(--ps-ink);
+}
+/* Slate-900/55 muted text */
+#ps-storefront .ps-private-surface [class*="text-[#0F172A]\/55"],
+#ps-storefront .ps-private-surface [class*="text-[#0F172A]\/50"] {
+  color: var(--ps-muted);
+}
+/* Light borders → our line color */
+#ps-storefront .ps-private-surface [class*="border-[#CBD5E1]"],
+#ps-storefront .ps-private-surface [class*="border-slate-300"],
+#ps-storefront .ps-private-surface [class*="border-slate-200"] {
+  border-color: var(--ps-line);
 }
 /* Table container */
 #ps-storefront .ps-private-surface table {
@@ -6414,12 +6462,12 @@
   border-spacing: 0;
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.88rem;
-  background: var(--ps-paper) !important;
+  background: var(--ps-paper);
 }
 #ps-storefront .ps-private-surface thead,
 #ps-storefront .ps-private-surface thead tr {
-  background: var(--ps-surface) !important;
-  border-color: var(--ps-line) !important;
+  background: var(--ps-surface);
+  border-color: var(--ps-line);
 }
 #ps-storefront .ps-private-surface thead th {
   text-align: left;
@@ -6427,31 +6475,26 @@
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--ps-muted) !important;
+  color: var(--ps-muted);
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--ps-line) !important;
-  background: var(--ps-surface) !important;
+  border-bottom: 1px solid var(--ps-line);
+  background: var(--ps-surface);
 }
 #ps-storefront .ps-private-surface tbody td {
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid var(--ps-line) !important;
-  color: var(--ps-ink) !important;
+  border-bottom: 1px solid var(--ps-line);
+  color: var(--ps-ink);
   vertical-align: middle;
-  background: var(--ps-paper) !important;
+  background: var(--ps-paper);
 }
 #ps-storefront .ps-private-surface tbody tr {
-  border-color: var(--ps-line) !important;
+  border-color: var(--ps-line);
 }
 #ps-storefront .ps-private-surface tbody tr:last-child td {
-  border-bottom: none !important;
+  border-bottom: none;
 }
 #ps-storefront .ps-private-surface tbody tr:hover td {
-  background: var(--ps-surface) !important;
-}
-/* All text inside should use our ink color, not Tailwind's slate */
-#ps-storefront .ps-private-surface span,
-#ps-storefront .ps-private-surface div:not(.animate-pulse *):not(.animate-pulse) {
-  color: var(--ps-ink);
+  background: var(--ps-surface);
 }
 #ps-storefront .ps-private-surface h1,
 #ps-storefront .ps-private-surface h2,
@@ -6459,7 +6502,7 @@
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   letter-spacing: -0.03em;
   font-weight: 650;
-  color: var(--ps-ink) !important;
+  color: var(--ps-ink);
 }
 #ps-storefront .ps-private-surface p {
   color: var(--ps-muted);
@@ -6467,12 +6510,12 @@
   line-height: 1.6;
 }
 #ps-storefront .ps-private-surface a {
-  color: var(--ps-accent) !important;
+  color: var(--ps-accent);
   font-weight: 600;
   text-decoration: none;
 }
 #ps-storefront .ps-private-surface a:hover {
-  color: var(--ps-accent-hover) !important;
+  color: var(--ps-accent-hover);
 }
 #ps-storefront .ps-private-surface button {
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -6482,15 +6525,20 @@
 /* Filter inputs and buttons */
 #ps-storefront .ps-private-surface input,
 #ps-storefront .ps-private-surface select {
-  background: var(--ps-paper) !important;
-  border: 1px solid var(--ps-line) !important;
-  color: var(--ps-ink) !important;
+  background: var(--ps-paper);
+  border: 1px solid var(--ps-line);
+  color: var(--ps-ink);
   border-radius: 8px;
 }
 #ps-storefront .ps-private-surface input::placeholder {
   color: var(--ps-muted);
 }
 /* Badges */
-#ps-storefront .ps-private-surface .rounded-full {
-  border-color: var(--ps-line) !important;
+#ps-storefront .ps-private-surface [class*="rounded-full"] {
+  border-color: var(--ps-line);
+}
+/* "PeptShop Submitted" badge: black bg → our accent */
+#ps-storefront .ps-private-surface [class*="bg-black"] {
+  background: var(--ps-accent);
+  color: var(--ps-ink);
 }
