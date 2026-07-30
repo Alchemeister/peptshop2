@@ -6219,14 +6219,14 @@
    ──────────────────────────────────────────────────────────── */
 #ps-storefront .ps-research-library,
 .ps-research-library {
-  margin-top: 2rem;
+  margin-top: 1rem;
   border-top: 1px solid var(--ps-line-strong, #c6cdd5);
-  padding-top: clamp(1.5rem, 3vw, 2.5rem);
-  padding-bottom: clamp(2rem, 4vw, 4.5rem);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .ps-research-library-header {
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .ps-research-library-header h2 {
@@ -6251,7 +6251,7 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 0.5rem 2rem 3rem 0;
+  padding: 0.25rem 2rem 1.5rem 0;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -6262,11 +6262,11 @@
 .ps-research-card {
   flex: 0 0 320px;
   max-width: 320px;
-  min-height: 320px;
+  min-height: 280px;
   display: flex;
   flex-direction: column;
   scroll-snap-align: start;
-  padding: 1.25rem;
+  padding: 1rem;
   border: 1px solid var(--ps-line, rgba(255,255,255,0.12));
   border-radius: 28px;
   background: var(--ps-surface-raised, #08111F);
@@ -6317,7 +6317,7 @@
 }
 
 .ps-research-card-open {
-  margin-top: 1.25rem;
+  margin-top: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
