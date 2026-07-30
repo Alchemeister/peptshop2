@@ -6708,15 +6708,15 @@
   letter-spacing: 0.08em;
 }
 
-/* Headline — white, bold */
+/* Headline — dark on white dialog (the backend owner forces dialog bg white with !important) */
 #ps-storefront .seller-mandatory-escrow-modal__headline {
-  color: #f4f6f8;
+  color: #0f172a;
   font-weight: 700;
 }
 
-/* Lead paragraph — readable light gray */
+/* Lead paragraph — dark gray on white */
 #ps-storefront .seller-mandatory-escrow-modal__lead {
-  color: #b8c0cc;
+  color: #475569;
   line-height: 1.5;
 }
 
