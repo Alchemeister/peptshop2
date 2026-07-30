@@ -6222,146 +6222,162 @@
   margin-top: 2rem;
   border-top: 1px solid var(--ps-line-strong, #c6cdd5);
   padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: clamp(2rem, 4vw, 4.5rem);
 }
 
 .ps-research-library-header {
-  margin-bottom: 1.5rem;
-}
-
-.ps-research-library-header .ps-kicker {
-  display: inline-block;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--ps-accent, #ffa300);
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .ps-research-library-header h2 {
   margin: 0;
-  font-size: clamp(1.55rem, 2.8vw, 2.35rem);
-  font-weight: 650;
-  letter-spacing: -0.045em;
-  line-height: 1.08;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
   color: var(--ps-ink, #12161d);
 }
 
-.ps-research-library-subtitle {
-  max-width: 37rem;
-  margin: 0.7rem 0 0;
-  color: var(--ps-muted, #5c6573);
-  font-size: 0.94rem;
-  line-height: 1.55;
+/* Horizontal snap-scroll carousel */
+.ps-research-carousel-wrapper {
+  margin-right: -2rem;
+  overflow: hidden;
 }
 
-.ps-research-study-list {
+.ps-research-carousel {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0.5rem 2rem 3rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ps-research-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.ps-research-card {
+  flex: 0 0 320px;
+  max-width: 320px;
+  min-height: 320px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-}
-
-.ps-research-study-card {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  background: var(--ps-surface-raised, #ffffff);
-  border: 1px solid var(--ps-line, #dfe3e8);
-  border-radius: 12px;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-
-.ps-research-study-card:hover {
-  border-color: var(--ps-line-strong, #c6cdd5);
-  box-shadow: 0 2px 12px rgba(55, 66, 82, 0.06);
-}
-
-.ps-research-study-card-main {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.ps-research-study-title {
-  margin: 0 0 0.4rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--ps-ink, #12161d);
-}
-
-.ps-research-study-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 0.75rem;
-  font-size: 0.82rem;
-  color: var(--ps-muted, #5c6573);
-}
-
-.ps-research-study-date {
-  font-weight: 600;
-  color: var(--ps-faint, #8a94a3);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-size: 0.76rem;
-}
-
-.ps-research-study-authors {
-  font-style: italic;
-}
-
-.ps-research-study-open {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  white-space: nowrap;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--ps-ink, #12161d);
+  scroll-snap-align: start;
+  padding: 1.25rem;
+  border: 1px solid var(--ps-line, rgba(255,255,255,0.12));
+  border-radius: 28px;
+  background: var(--ps-surface-raised, #08111F);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
   text-decoration: none;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--ps-line-strong, #c6cdd5);
-  border-radius: 8px;
-  background: transparent;
-  transition: background 0.15s, border-color 0.15s;
+  color: inherit;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
-.ps-research-study-open:hover {
-  background: var(--ps-accent-soft, #fff4dc);
-  border-color: var(--ps-accent, #ffa300);
+.ps-research-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.25);
 }
 
-.ps-research-show-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 1.25rem;
-  padding: 0.55rem 1.1rem;
-  font-size: 0.88rem;
+.ps-research-card-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--ps-ink, #fff);
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ps-research-card-date {
+  margin-top: 0.5rem;
+  font-size: 0.6875rem;
   font-weight: 600;
-  color: var(--ps-ink, #12161d);
-  background: var(--ps-surface-raised, #ffffff);
-  border: 1px solid var(--ps-line-strong, #c6cdd5);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ps-muted, rgba(255,255,255,0.45));
 }
 
-.ps-research-show-more:hover {
-  background: var(--ps-accent-soft, #fff4dc);
-  border-color: var(--ps-accent, #ffa300);
+.ps-research-card-authors {
+  margin-top: 0.75rem;
+  flex: 1 1 auto;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ps-muted, rgba(255,255,255,0.7));
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ps-research-card-open {
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ps-ink, #fff);
+  transition: color 0.3s;
+}
+
+.ps-research-card:hover .ps-research-card-open {
+  color: #FBB1B7;
+}
+
+.ps-research-card-arrow {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* Dot pagination */
+.ps-research-dots {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.ps-research-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--ps-line-strong, rgba(255,255,255,0.25));
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s;
+}
+
+.ps-research-dot:hover {
+  border-color: rgba(255,255,255,0.45);
+}
+
+.ps-research-dot-active {
+  background: var(--ps-ink, #fff);
+  border-color: var(--ps-ink, #fff);
 }
 
 @media (max-width: 640px) {
-  .ps-research-study-card {
-    flex-direction: column;
-    gap: 0.75rem;
+  .ps-research-carousel-wrapper {
+    margin-right: -1rem;
   }
 
-  .ps-research-study-open {
-    align-self: flex-start;
+  .ps-research-carousel {
+    padding-right: 1rem;
+  }
+
+  .ps-research-card {
+    flex: 0 0 280px;
+    max-width: 280px;
+    min-height: 300px;
   }
 }
 

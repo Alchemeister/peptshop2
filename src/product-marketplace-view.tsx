@@ -1,6 +1,5 @@
 import {
   ArrowLeft,
-  ArrowRight,
   Bell,
   FileCheck2,
   MapPin,
@@ -12,7 +11,7 @@ import {
   Star,
   Truck,
 } from 'lucide-react'
-import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useState } from 'react'
+import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import { researchStudies, type ResearchStudy } from './mock-data'
 import {
   ProductBackControlFrame,
@@ -519,52 +518,60 @@ export function ProductMarketplaceView({
 
 function ResearchLibrarySection({ slug, productName }: { slug: string; productName: string }) {
   const studies: ResearchStudy[] = researchStudies[slug] ?? []
-  const [expanded, setExpanded] = useState(false)
-  const visibleCount = expanded ? studies.length : Math.min(studies.length, 5)
-  const visible = studies.slice(0, visibleCount)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   if (studies.length === 0) return null
+
+  const scrollToStudy = (index: number) => {
+    const container = scrollRef.current
+    if (!container) return
+    const card = container.children[index] as HTMLElement
+    if (card) {
+      container.scrollTo({ left: card.offsetLeft - 16, behavior: 'smooth' })
+      setActiveIndex(index)
+    }
+  }
 
   return (
     <section className="ps-research-library" aria-labelledby="ps-research-library-heading">
       <div className="ps-research-library-header">
-        <span className="ps-kicker">Research Library</span>
         <h2 id="ps-research-library-heading">Latest Research News</h2>
-        <p className="ps-research-library-subtitle">
-          Peer-reviewed studies and publications referencing {productName}.
-        </p>
       </div>
-      <div className="ps-research-study-list">
-        {visible.map((study) => (
-          <article key={study.id} className="ps-research-study-card">
-            <div className="ps-research-study-card-main">
-              <h3 className="ps-research-study-title">{study.title}</h3>
-              <div className="ps-research-study-meta">
-                <span className="ps-research-study-date">{study.date}</span>
-                <span className="ps-research-study-authors">{study.authors}</span>
-              </div>
-            </div>
+      <div className="ps-research-carousel-wrapper">
+        <div className="ps-research-carousel" ref={scrollRef}>
+          {studies.map((study, i) => (
             <a
+              key={study.id}
               href={study.url}
-              className="ps-research-study-open"
+              className="ps-research-card"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noreferrer"
             >
-              {study.url.startsWith('https://pubmed') ? 'PubMed' : 'Open'}
-              <ArrowRight size={14} strokeWidth={1.8} />
+              <h3 className="ps-research-card-title">{study.title}</h3>
+              <div className="ps-research-card-date">{study.date}</div>
+              <p className="ps-research-card-authors">{study.authors}</p>
+              <div className="ps-research-card-open">
+                <span>Open</span>
+                <svg className="ps-research-card-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 17L17 7M9 7h8v8" />
+                </svg>
+              </div>
             </a>
-          </article>
+          ))}
+        </div>
+      </div>
+      <div className="ps-research-dots">
+        {studies.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            className={`ps-research-dot${i === activeIndex ? ' ps-research-dot-active' : ''}`}
+            aria-label={`Show study ${i + 1}`}
+            onClick={() => scrollToStudy(i)}
+          />
         ))}
       </div>
-      {studies.length > 5 && (
-        <button
-          type="button"
-          className="ps-research-show-more"
-          onClick={() => setExpanded(!expanded)}
-        >
-          {expanded ? 'Show less' : `Show ${studies.length - 5} more`}
-        </button>
-      )}
     </section>
   )
 }
