@@ -185,7 +185,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
                   <p>{product.formats.slice(0, 3).join(' · ')}</p>
                   <div>
                     <span>{product.vendorCount ? `${product.vendorCount} ${product.vendorCount === 1 ? 'vendor' : 'vendors'}` : 'Join watchlist'}</span>
-                    {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
+                    {product.regions?.length ? <small className="ps-region-badge">{product.regions.map(r => r.toUpperCase()).join(' · ')}</small> : null}
                     <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
                   </div>
                 </div>

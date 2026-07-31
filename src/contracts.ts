@@ -8,7 +8,7 @@ export type ProductSummary = {
   slug: string
   category: string
   formats: string[]
-  regions?: Array<'us' | 'eu'>
+  regions?: Array<'us' | 'eu' | 'cn'>
   startingPrice: number | null
   priceUnit?: string
   packSize?: number
@@ -31,7 +31,7 @@ export type VendorSummary = {
   coaCount?: number
   recommendationScore?: number
   acceptsOrders?: boolean
-  regions?: Array<'us' | 'eu'>
+  regions?: Array<'us' | 'eu' | 'cn'>
   specialties: string[]
   status: 'trusted' | 'verified' | 'new'
   shippingCost?: number

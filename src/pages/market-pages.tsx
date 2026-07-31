@@ -45,7 +45,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
   const [query, setQuery] = useState('')
   const [filterOpen, setFilterOpen] = useState(false)
   const [stockOnly, setStockOnly] = useState(false)
-  const [regionFilter, setRegionFilter] = useState<'all' | 'us' | 'eu'>('all')
+  const [regionFilter, setRegionFilter] = useState<'all' | 'us' | 'eu' | 'cn'>('all')
   const [regionOpen, setRegionOpen] = useState(false)
   const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name')
   const [showTop, setShowTop] = useState(false)
@@ -53,7 +53,9 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
     const normalized = query.trim().toLowerCase()
     const filtered = models.products.filter((product) => {
       if (stockOnly && (product.availability !== 'available' || product.vendorCount === 0)) return false
-      if (regionFilter === 'eu' && product.vendorCount < 3) return false // EU = third sample vendor
+      if (regionFilter === 'eu' && !(product.regions?.includes('eu'))) return false
+      if (regionFilter === 'cn' && !(product.regions?.includes('cn'))) return false
+      if (regionFilter === 'us' && !(product.regions?.includes('us'))) return false
       return !normalized || `${product.name}`.toLowerCase().includes(normalized)
     })
     return filtered.sort((left, right) => {
@@ -97,7 +99,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
             aria-expanded={regionOpen}
           >
             <MapPin size={15} />
-            {regionFilter === 'all' ? 'All regions' : regionFilter === 'us' ? 'US warehouse' : 'EU warehouse'}
+            {regionFilter === 'all' ? 'All regions' : regionFilter === 'us' ? 'US warehouse' : regionFilter === 'eu' ? 'EU warehouse' : 'China warehouse'}
             <ChevronDown size={15} />
           </button>
           {regionOpen ? (
@@ -112,6 +114,9 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
                 </button>
                 <button type="button" className={regionFilter === 'eu' ? 'is-selected' : ''} onClick={() => { setRegionFilter('eu'); setRegionOpen(false) }}>
                   <Check size={15} /> EU warehouse
+                </button>
+                <button type="button" className={regionFilter === 'cn' ? 'is-selected' : ''} onClick={() => { setRegionFilter('cn'); setRegionOpen(false) }}>
+                  <Check size={15} /> China warehouse
                 </button>
               </div>
             </>
@@ -169,7 +174,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
         <p>{product.formats.join(' · ')}</p>
         <div>
           <span>{product.vendorCount ? `${product.vendorCount} ${product.vendorCount === 1 ? 'vendor' : 'vendors'}` : 'Join watchlist'}</span>
-          {product.vendorCount >= 3 ? <small className="ps-region-badge">US · EU</small> : product.vendorCount >= 1 ? <small className="ps-region-badge">US</small> : null}
+          {product.regions?.length ? <small className="ps-region-badge">{product.regions.map(r => r.toUpperCase()).join(' · ')}</small> : null}
           <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
         </div>
         <i className="ps-catalog-coa-badge">{product.coaCount} COA{product.coaCount === 1 ? '' : 's'}</i>
