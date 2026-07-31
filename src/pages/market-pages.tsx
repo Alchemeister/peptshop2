@@ -53,9 +53,12 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
     const normalized = query.trim().toLowerCase()
     const filtered = models.products.filter((product) => {
       if (stockOnly && (product.availability !== 'available' || product.vendorCount === 0)) return false
-      if (regionFilter === 'eu' && !(product.regions?.includes('eu'))) return false
-      if (regionFilter === 'cn' && !(product.regions?.includes('cn'))) return false
-      if (regionFilter === 'us' && !(product.regions?.includes('us'))) return false
+      // Derive regions from vendorCount when product.regions is not set:
+      // 3 vendors = US + EU (Northstar, Retalux, Axiom), 1-2 = US only
+      const productRegions = product.regions ?? (product.vendorCount >= 3 ? ['us', 'eu'] : product.vendorCount >= 1 ? ['us'] : [])
+      if (regionFilter === 'eu' && !productRegions.includes('eu')) return false
+      if (regionFilter === 'cn' && !productRegions.includes('cn')) return false
+      if (regionFilter === 'us' && !productRegions.includes('us')) return false
       return !normalized || `${product.name}`.toLowerCase().includes(normalized)
     })
     return filtered.sort((left, right) => {
@@ -174,7 +177,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
         <p>{product.formats.join(' · ')}</p>
         <div>
           <span>{product.vendorCount ? `${product.vendorCount} ${product.vendorCount === 1 ? 'vendor' : 'vendors'}` : 'Join watchlist'}</span>
-          {product.regions?.length ? <small className="ps-region-badge">{product.regions.map(r => r.toUpperCase()).join(' · ')}</small> : null}
+          {(() => { const r = product.regions ?? (product.vendorCount >= 3 ? ['us', 'eu'] : product.vendorCount >= 1 ? ['us'] : []); return r.length ? <small className="ps-region-badge">{r.map(x => x.toUpperCase()).join(' · ')}</small> : null; })()}
           <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
         </div>
         <i className="ps-catalog-coa-badge">{product.coaCount} COA{product.coaCount === 1 ? '' : 's'}</i>
