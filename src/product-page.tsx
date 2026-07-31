@@ -189,7 +189,7 @@ export function ProductUnavailableState({ onNotify, productName }: ProductUnavai
       </div>
       <button type="button" onClick={onNotify} className={styles.primaryAction}>
         <Bell size={17} strokeWidth={1.8} aria-hidden="true" />
-        Watch this product
+        Notify me
       </button>
     </section>
   )

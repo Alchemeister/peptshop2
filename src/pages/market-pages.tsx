@@ -180,7 +180,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
           {(() => { const r = product.regions ?? (product.vendorCount >= 3 ? ['us', 'eu'] : product.vendorCount >= 1 ? ['us'] : []); return r.length ? <small className="ps-region-badge">{r.map(x => x.toUpperCase()).join(' · ')}</small> : null; })()}
           <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
         </div>
-        <i className="ps-catalog-coa-badge">{product.coaCount} COA{product.coaCount === 1 ? '' : 's'}</i>
+        <i className="ps-catalog-coa-badge">{product.coaCount === 0 ? 'No COAs yet' : `${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}`}</i>
       </div>
     </FrontendLink>
   )
@@ -474,11 +474,16 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         </button>
                       </div>
                       <div className="ps-offer-action">
-                        <div>
-                          <button type="button" onClick={() => { setSelectedVendorId(vendor.id); setQuantity((value) => Math.max(1, value - 1)) }} aria-label="Decrease quantity"><Minus size={15} /></button>
+                        <div className={vendor.status === 'new' ? 'is-disabled' : ''}>
+                          <button type="button" disabled={vendor.status === 'new'} onClick={() => { setSelectedVendorId(vendor.id); setQuantity((value) => Math.max(1, value - 1)) }} aria-label="Decrease quantity"><Minus size={15} /></button>
                           <span>{selectedVendorId === vendor.id ? quantity : 1}</span>
-                          <button type="button" onClick={() => { setSelectedVendorId(vendor.id); setQuantity((value) => value + 1) }} aria-label="Increase quantity"><Plus size={15} /></button>
+                          <button type="button" disabled={vendor.status === 'new'} onClick={() => { setSelectedVendorId(vendor.id); setQuantity((value) => value + 1) }} aria-label="Increase quantity"><Plus size={15} /></button>
                         </div>
+                        {vendor.status === 'new' ? (
+                          <button type="button" className="ps-add-to-cart-btn ps-btn-disabled" disabled>
+                            <Bell size={17} /> Notify me
+                          </button>
+                        ) : (
                         <button type="button" className="ps-add-to-cart-btn" onClick={() => {
                           setSelectedVendorId(vendor.id)
                           const vPrice = lookupVendorPrice(selectedDose, vendor.id)
@@ -492,6 +497,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                             return ((selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * activeQty).toFixed(2)
                           })()}
                         </button>
+                        )}
                       </div>
                     </VendorOfferCardFrame>
                   ))}
@@ -771,7 +777,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
           <div className="ps-compact-product-list">
             {models.products.filter((product) => product.availability === 'available').slice(0, 5).map((product) => (
               <FrontendLink key={product.id} href={`/products/${product.slug}`} navigate={actions.navigate}>
-                <strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount} COA{product.coaCount === 1 ? '' : 's'}</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
+                <strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount === 0 ? 'No COAs yet' : `${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}`}</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
               </FrontendLink>
             ))}
           </div>

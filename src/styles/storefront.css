@@ -2944,6 +2944,14 @@
   pointer-events: none;
 }
 
+#ps-storefront .ps-offer-action .is-disabled{
+  opacity: 0.4;
+  pointer-events: none;
+}
+#ps-storefront .ps-offer-action .is-disabled button{
+  cursor: not-allowed;
+}
+
 #ps-storefront .ps-summary-note{
   display: flex;
   align-items: center;

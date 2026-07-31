@@ -366,4 +366,6 @@ export const PURGED_CSS = `#ps-storefront .ps-coa-table{margin-top: 1.5rem;
 /* Error text — red, visible */
 #ps-storefront .seller-mandatory-escrow-modal__error{color: #ef4444;}
 /* Footnote — readable */
-#ps-storefront .seller-mandatory-escrow-modal__footnote{color: #87919d;}`
+#ps-storefront .seller-mandatory-escrow-modal__footnote{color: #87919d;}
+/* Vendor monogram/avatar — dark bg + orange text */
+#ps-storefront .ps-vendor-monogram,#ps-storefront .ps-vendor-profile-mark{display: grid; width: 3.35rem; height: 3.35rem; place-items: center; border-radius: 12px; background: #111419; color: #ffa300; font-size: 0.82rem; font-weight: 780; letter-spacing: -0.03em;}`
