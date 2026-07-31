@@ -1,3 +1,23 @@
+/* Global scrollbar — prevent dark Edge scrollbar clashing with light pages */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+:root {
+  scrollbar-color: #d1d5db transparent;
+  scrollbar-width: thin;
+}
+
 #ps-storefront,
 #ps-storefront *,
 #ps-storefront *::before,
