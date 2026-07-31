@@ -44,7 +44,7 @@ import {
 export function CatalogPage({ actions, models }: PageComponentProps) {
   const [query, setQuery] = useState('')
   const [filterOpen, setFilterOpen] = useState(false)
-  const [stockOnly, setStockOnly] = useState(true)
+  const [stockOnly, setStockOnly] = useState(false)
   const [regionFilter, setRegionFilter] = useState<'all' | 'us' | 'eu'>('all')
   const [regionOpen, setRegionOpen] = useState(false)
   const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name')
@@ -75,7 +75,6 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
         <span className="ps-kicker">Marketplace index</span>
         <div className="ps-page-title-row">
           <h1>All compounds</h1>
-          <p>{visibleProducts.length} of {models.products.length} research products {stockOnly ? 'in stock' : 'listed'}.</p>
         </div>
       </header>
 
