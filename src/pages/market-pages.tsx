@@ -722,7 +722,7 @@ const REVIEW_TEMPLATES: { stars: number; text: string }[] = [
 
 const REVIEW_TIMEFRAMES = ['1 week ago', '2 weeks ago', '3 weeks ago', '1 month ago', '2 months ago', '3 months ago', '4 months ago', '5 months ago', '6 months ago', '7 months ago', '8 months ago', '9 months ago', '10 months ago', '11 months ago', '1 year ago', '1 year ago', '2 years ago']
 
-function generateReviews(count: number) {
+export function generateReviews(count: number) {
   const reviews: { buyer: string; stars: number; text: string; date: string }[] = []
   for (let i = 0; i < count; i++) {
     const template = REVIEW_TEMPLATES[i % REVIEW_TEMPLATES.length]
