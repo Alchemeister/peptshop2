@@ -333,7 +333,7 @@ export function ProductMarketplaceView({
                             onClick={() => chooseOption(offer, option)}
                           >
                             <strong>{option.label}</strong>
-                            <span>{formatCurrency(option.price)}</span>
+                            <span>{formatCurrency(option.price)} total</span>
                             {option.pricePerUnitLabel ? (
                               <small>{option.pricePerUnitLabel}</small>
                             ) : null}

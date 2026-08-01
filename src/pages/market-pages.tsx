@@ -178,7 +178,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
         <div>
           <span>{product.vendorCount ? `${product.vendorCount} ${product.vendorCount === 1 ? 'vendor' : 'vendors'}` : 'Join watchlist'}</span>
           {(() => { const r = product.regions ?? (product.vendorCount >= 3 ? ['us', 'eu'] : product.vendorCount >= 1 ? ['us'] : []); return r.length ? <small className="ps-region-badge">{r.map(x => x.toUpperCase()).join(' · ')}</small> : null; })()}
-          <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
+          <strong>{product.startingPrice === null ? 'No live offers' : `$${(product.startingPrice / (Number.parseInt(product.formats[0] ?? '5', 10) * 10)).toFixed(2)}/mg`}</strong>
         </div>
         <i className="ps-catalog-coa-badge">{product.coaCount === 0 ? 'No COAs yet' : `${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}`}</i>
       </div>
@@ -359,15 +359,16 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
 
   // Use real vendors from models — same ones on the Vendors page
   const allVendors = models.vendors
-  const priceMultipliers: Record<string, number> = { 'vendor-northstar': 1, 'vendor-retalux': 1.08, 'vendor-axiom': 0.94 }
-  const vendorPurity: Record<string, number> = { 'vendor-northstar': 99.2, 'vendor-retalux': 99.0, 'vendor-axiom': 99.1 }
-  const vendorBatchPrefix: Record<string, string> = { 'vendor-northstar': 'NS', 'vendor-retalux': 'RX', 'vendor-axiom': 'AX' }
+  const priceMultipliers: Record<string, number> = { 'vendor-northstar': 1, 'vendor-retalux': 1.08, 'vendor-axiom': 0.94, 'vendor-sample-zero': 0.85 }
+  const vendorPurity: Record<string, number> = { 'vendor-northstar': 99.2, 'vendor-retalux': 99.0, 'vendor-axiom': 99.1, 'vendor-sample-zero': 98.8 }
+  const vendorBatchPrefix: Record<string, string> = { 'vendor-northstar': 'NS', 'vendor-retalux': 'RX', 'vendor-axiom': 'AX', 'vendor-sample-zero': 'SZ' }
 
   // Deterministic presentation math only. It is not derived from private pricing or marketplace rules.
   const lookupVendorPrice = (dose: string, vendorId: string): number => {
     const doseNum = parseInt(dose) || 5
-    const perMg = source?.startingPrice ?? 0.70
-    return Math.round(perMg * doseNum * 10 * (priceMultipliers[vendorId] ?? 1) * 100) / 100
+    const baseDose = parseInt(source?.formats[0] ?? '5') || 5
+    const basePrice = Math.max(1, source?.startingPrice ?? 20)
+    return Math.round(basePrice * Math.max(1, doseNum / baseDose) * (priceMultipliers[vendorId] ?? 1) * 100) / 100
   }
 
   // Generate dose-specific batch number
@@ -457,11 +458,11 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                           return (<>
                         <VendorOfferOptionFrame selected={selectedVendorId === vendor.id && selectedPackSize === 10} onClick={() => { setSelectedVendorId(vendor.id); setSelectedPackSize(10) }}>
                           <strong>10 vials</strong>
-                          <span>${vPrice.toFixed(2)}</span>
+                          <span>${vPrice.toFixed(2)} total</span>
                         </VendorOfferOptionFrame>
                         <VendorOfferOptionFrame selected={selectedVendorId === vendor.id && selectedPackSize === 20} onClick={() => { setSelectedVendorId(vendor.id); setSelectedPackSize(20) }}>
                           <strong>20 vials</strong>
-                          <span>${(vPrice * 1.9).toFixed(2)}</span>
+                          <span>${(vPrice * 1.9).toFixed(2)} total</span>
                         </VendorOfferOptionFrame>
                         </>); })()}
                       </div>
@@ -777,7 +778,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
           <div className="ps-compact-product-list">
             {models.products.filter((product) => product.availability === 'available').slice(0, 5).map((product) => (
               <FrontendLink key={product.id} href={`/products/${product.slug}`} navigate={actions.navigate}>
-                <strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount === 0 ? 'No COAs yet' : `${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}`}</span><b>${product.startingPrice?.toFixed(2)}/mg</b><ArrowRight size={17} />
+                <strong>{product.name}</strong><span>{product.formats[0]}</span><span>{product.coaCount === 0 ? 'No COAs yet' : `${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}`}</span><b>${product.startingPrice != null ? `$${(product.startingPrice / (Number.parseInt(product.formats[0] ?? '5', 10) * 10)).toFixed(2)}/mg` : '—'}</b><ArrowRight size={17} />
               </FrontendLink>
             ))}
           </div>
