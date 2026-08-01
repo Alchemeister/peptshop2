@@ -5720,7 +5720,7 @@
 
 /* ============================================
    Product page: selected vendor state
-   =========================================== */
+   ============================================ */
 #ps-storefront .ps-offer-heading.is-selected{
   border-left: 3px solid var(--ps-accent);
   padding-left: 0.75rem;
@@ -5736,6 +5736,127 @@
 }
 #ps-storefront .ps-offer-heading:hover{
   background: rgba(0, 0, 0, 0.02);
+}
+
+/* Selected vendor card outline */
+#ps-storefront .ps-offer-list article.is-selected{
+  border: 2px solid var(--ps-accent);
+  box-shadow: 0 4px 16px rgba(255, 163, 0, 0.12);
+}
+
+/* Bold $/mg in vial option labels */
+#ps-storefront .ps-offer-options .ps-offer-price-per-mg{
+  color: var(--ps-ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Selected vial option — stronger outline like dose buttons */
+#ps-storefront .ps-offer-options button[aria-pressed="true"]{
+  border: 2px solid var(--ps-accent);
+  background: var(--ps-accent-soft, rgba(255, 163, 0, 0.08));
+  box-shadow: 0 2px 8px rgba(255, 163, 0, 0.1);
+}
+
+/* Compact vendor cards */
+#ps-storefront .ps-offer-list article{
+  padding: 0.75rem;
+  gap: 0.5rem 0.75rem;
+}
+#ps-storefront .ps-offer-heading{
+  padding: 0.25rem 0.5rem;
+}
+#ps-storefront .ps-offer-heading h3{
+  font-size: 0.9375rem;
+}
+#ps-storefront .ps-offer-heading p{
+  font-size: 0.75rem;
+}
+#ps-storefront .ps-offer-options{
+  gap: 0.375rem;
+}
+#ps-storefront .ps-offer-options button{
+  min-width: 7.5rem;
+  padding: 0.4rem 0.6rem;
+  min-height: 2.75rem;
+}
+#ps-storefront .ps-offer-options strong{
+  font-size: 0.75rem;
+}
+#ps-storefront .ps-offer-options span{
+  font-size: 0.7rem;
+}
+#ps-storefront .ps-offer-facts{
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+#ps-storefront .ps-offer-facts small{
+  font-size: 0.65rem;
+}
+#ps-storefront .ps-offer-facts > span{
+  font-size: 0.75rem;
+}
+
+/* Order summary qty + add button */
+#ps-storefront .ps-cart-summary-action{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--ps-line);
+}
+#ps-storefront .ps-cart-summary-qty{
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--ps-line);
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+}
+#ps-storefront .ps-cart-summary-qty button,
+#ps-storefront .ps-cart-summary-qty span{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border: none;
+  background: var(--ps-paper);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+#ps-storefront .ps-cart-summary-qty span{
+  border-left: 1px solid var(--ps-line);
+  border-right: 1px solid var(--ps-line);
+  width: 2.25rem;
+}
+#ps-storefront .ps-cart-summary-action > button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  background: var(--ps-accent);
+  color: var(--ps-ink, #12161d);
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+#ps-storefront .ps-cart-summary-action > button:hover{
+  opacity: 0.88;
+}
+
+/* Empty order summary state */
+#ps-storefront .ps-cart-summary-empty p{
+  color: var(--ps-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
 
 /* ============================================
@@ -5867,84 +5988,6 @@
   flex-direction: column;
   gap: 1rem;
 }
-#ps-storefront .ps-offer-heading.is-selected{
-  border-left: 3px solid var(--ps-accent);
-  padding-left: 0.75rem;
-  background: rgba(255, 200, 100, 0.04);
-  border-radius: 6px;
-  cursor: pointer;
-}
-#ps-storefront .ps-offer-heading{
-  cursor: pointer;
-  transition: background 0.15s ease;
-  border-radius: 6px;
-  padding-left: 0.5rem;
-}
-#ps-storefront .ps-offer-heading:hover{
-  background: rgba(0, 0, 0, 0.02);
-}
-#ps-storefront .ps-offer-action{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--ps-line);
-}
-#ps-storefront .ps-offer-action > div{
-  display: flex;
-  align-items: center;
-  gap: 0;
-  border: 1px solid var(--ps-line);
-  border-radius: 8px;
-  overflow: hidden;
-}
-#ps-storefront .ps-offer-action > div button,
-
-#ps-storefront .ps-offer-action > div span{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border: none;
-  background: var(--ps-paper);
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.875rem;
-}
-#ps-storefront .ps-offer-action > div span{
-  border-left: 1px solid var(--ps-line);
-  border-right: 1px solid var(--ps-line);
-  width: 2.5rem;
-}
-#ps-storefront .ps-offer-action > button{
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 700;
-  font-size: 0.875rem;
-  background: var(--ps-accent);
-  color: var(--ps-ink, #12161d);
-  border: none;
-  border-radius: 10px;
-  padding: 0.65rem 1.1rem;
-  cursor: pointer;
-  transition: opacity 0.15s ease;
-}
-#ps-storefront .ps-offer-action > button:hover{
-  opacity: 0.88;
-}
-#ps-storefront .ps-offer-action button:disabled{
-  cursor: not-allowed;
-  opacity: 0.48;
-}
-#ps-storefront .ps-add-to-cart-btn{
-  background: var(--ps-accent);
-  color: var(--ps-ink, #12161d);
-  border-radius: 10px;
-}
-
 /* Cart summary card */
 #ps-storefront .ps-cart-summary-card{
   position: sticky;
@@ -5953,8 +5996,8 @@
   align-self: start;
   background: var(--ps-paper);
   border: 1px solid var(--ps-line);
-  border-radius: 14px;
-  padding: 1.5rem;
+  border-radius: 12px;
+  padding: 0.875rem;
   box-shadow: 0 2px 12px rgba(0,0,0,0.04);
   max-height: calc(100dvh - 140px);
   overflow-y: auto;
@@ -5966,61 +6009,70 @@
   }
 }
 #ps-storefront .ps-cart-summary-card h3{
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
   font-weight: 700;
-  margin: 0 0 1rem;
+  margin: 0 0 0.5rem;
   color: var(--ps-ink);
 }
 #ps-storefront .ps-cart-summary-product{
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1.25rem;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--ps-line);
 }
 #ps-storefront .ps-cart-summary-product img{
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 6px;
   flex-shrink: 0;
 }
 #ps-storefront .ps-cart-summary-product > div{
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.1rem;
 }
 #ps-storefront .ps-cart-summary-product strong{
-  font-size: 0.9375rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   color: var(--ps-ink);
   display: block;
 }
 #ps-storefront .ps-cart-summary-product span{
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--ps-muted);
   display: block;
 }
+#ps-storefront .ps-cart-summary-product span b{
+  color: var(--ps-ink);
+  font-weight: 700;
+}
 #ps-storefront .ps-cart-summary-product small{
-  font-size: 0.75rem;
-  color: var(--ps-accent);
-  font-weight: 600;
+  font-size: 0.6875rem;
+  color: var(--ps-muted);
+  font-weight: 500;
   display: block;
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
+}
+#ps-storefront .ps-cart-summary-product small b{
+  color: var(--ps-accent);
+  font-weight: 700;
+  font-size: 0.75rem;
 }
 #ps-storefront .ps-cart-summary-row{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.4rem 0;
+  padding: 0.2rem 0;
 }
 #ps-storefront .ps-cart-summary-row span{
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--ps-muted);
 }
 #ps-storefront .ps-cart-summary-row strong{
-  font-size: 0.875rem;
+  font-size: 0.78125rem;
   font-weight: 700;
   font-family: var(--ps-mono);
   color: var(--ps-ink);
@@ -6028,7 +6080,7 @@
 #ps-storefront .ps-cart-summary-divider{
   height: 1px;
   background: var(--ps-line);
-  margin: 0.75rem 0;
+  margin: 0.4rem 0;
 }
 #ps-storefront .ps-cart-summary-total{
   display: flex;
@@ -6041,7 +6093,7 @@
   color: var(--ps-ink);
 }
 #ps-storefront .ps-cart-summary-total strong{
-  font-size: 1.25rem;
+  font-size: 1.0625rem;
   font-weight: 800;
   font-family: var(--ps-mono);
   color: var(--ps-ink);
@@ -6069,16 +6121,16 @@
 #ps-storefront .ps-cart-summary-badges{
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
   border-top: 1px solid var(--ps-line);
 }
 #ps-storefront .ps-cart-summary-badges span{
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.75rem;
+  gap: 0.35rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--ps-muted);
 }

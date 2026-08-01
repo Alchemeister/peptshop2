@@ -1,6 +1,5 @@
 import {
   ArrowLeft,
-  Bell,
   FileCheck2,
   MapPin,
   Minus,
@@ -137,9 +136,7 @@ export function ProductMarketplaceView({
   const [quantity, setQuantity] = useState(1)
 
   const selectedOffer =
-    activeDosage?.offers.find((offer) => offer.id === selectedOfferId) ??
-    activeDosage?.offers[0] ??
-    null
+    activeDosage?.offers.find((offer) => offer.id === selectedOfferId) ?? null
   const selectedOption =
     selectedOffer?.options.find((option) => option.id === selectedOptionId) ??
     selectedOffer?.options[0] ??
@@ -150,12 +147,7 @@ export function ProductMarketplaceView({
     if (selectedDosageId === undefined && activeDosage.id !== internalDosageId) {
       setInternalDosageId(activeDosage.id)
     }
-    if (!activeDosage.offers.some((offer) => offer.id === selectedOfferId)) {
-      setSelectedOfferId(activeDosage.offers[0]?.id ?? '')
-      setSelectedOptionId(activeDosage.offers[0]?.options[0]?.id ?? '')
-      setQuantity(1)
-    }
-  }, [activeDosage, internalDosageId, selectedDosageId, selectedOfferId])
+  }, [activeDosage, internalDosageId, selectedDosageId])
 
   useEffect(() => {
     if (!selectedOffer) return
@@ -275,7 +267,7 @@ export function ProductMarketplaceView({
                   const offerQuantity = offerSelected ? quantity : 1
 
                   return (
-                    <VendorOfferCardFrame key={offer.id} data-product-offer-id={offer.id}>
+                    <VendorOfferCardFrame key={offer.id} data-product-offer-id={offer.id} className={offerSelected ? 'is-selected' : undefined}>
                       <div
                         className={`ps-offer-heading ${offerSelected ? 'is-selected' : ''}`}
                         role="button"
@@ -335,7 +327,7 @@ export function ProductMarketplaceView({
                             <strong>{option.label}</strong>
                             <span>{formatCurrency(option.price)} total</span>
                             {option.pricePerUnitLabel ? (
-                              <small>{option.pricePerUnitLabel}</small>
+                              <strong className="ps-offer-price-per-mg">{option.pricePerUnitLabel}</strong>
                             ) : null}
                           </VendorOfferOptionFrame>
                         ))}
@@ -407,53 +399,6 @@ export function ProductMarketplaceView({
                         </div>
                       ) : null}
 
-                      {activeOption ? (
-                        <div className="ps-offer-action">
-                          <div>
-                            <button
-                              type="button"
-                              aria-label="Decrease quantity"
-                              disabled={activeOption.action.kind !== 'cart' || offerQuantity <= 1}
-                              onClick={() => {
-                                chooseOffer(offer)
-                                setQuantity((value) => clampQuantity(value - 1))
-                              }}
-                            >
-                              <Minus size={15} />
-                            </button>
-                            <span>{offerQuantity}</span>
-                            <button
-                              type="button"
-                              aria-label="Increase quantity"
-                              disabled={activeOption.action.kind !== 'cart' || offerQuantity >= 99}
-                              onClick={() => {
-                                chooseOffer(offer)
-                                setQuantity((value) => clampQuantity(value + 1))
-                              }}
-                            >
-                              <Plus size={15} />
-                            </button>
-                          </div>
-                          <button
-                            type="button"
-                            className="ps-add-to-cart-btn"
-                            disabled={activeOption.action.kind === 'disabled'}
-                            onClick={() => triggerPrimaryAction(offer, activeOption)}
-                          >
-                            {activeOption.action.kind === 'cart' ? (
-                              <>
-                                <ShoppingBag size={17} />{' '}
-                                {activeOption.action.label ||
-                                  `Add ${formatCurrency(activeOption.price * offerQuantity)}`}
-                              </>
-                            ) : (
-                              <>
-                                <Bell size={17} /> {activeOption.action.label}
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      ) : null}
                     </VendorOfferCardFrame>
                   )
                 })}
@@ -466,9 +411,9 @@ export function ProductMarketplaceView({
                     <div>
                       <strong>{model.name}</strong>
                       <span>
-                        {selection.dosage.label} · {selection.option.label}
+                        <b>{selection.dosage.label}</b> · {selection.option.label}
                       </span>
-                      <small>From {selection.offer.vendorName}</small>
+                      <small>From <b>{selection.offer.vendorName}</b></small>
                     </div>
                   </div>
                   <div className="ps-cart-summary-row">
@@ -500,8 +445,45 @@ export function ProductMarketplaceView({
                       ) : null}
                     </div>
                   ) : null}
+                  {selection.option.action.kind === 'cart' ? (
+                    <div className="ps-cart-summary-action">
+                      <div className="ps-cart-summary-qty">
+                        <button
+                          type="button"
+                          aria-label="Decrease quantity"
+                          disabled={selection.quantity <= 1}
+                          onClick={() => setQuantity((v) => clampQuantity(v - 1))}
+                        >
+                          <Minus size={15} />
+                        </button>
+                        <span>{selection.quantity}</span>
+                        <button
+                          type="button"
+                          aria-label="Increase quantity"
+                          disabled={selection.quantity >= 99}
+                          onClick={() => setQuantity((v) => clampQuantity(v + 1))}
+                        >
+                          <Plus size={15} />
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        className="ps-add-to-cart-btn"
+                        onClick={() => triggerPrimaryAction(selection.offer, selection.option)}
+                      >
+                        <ShoppingBag size={17} />{' '}
+                        {selection.option.action.label ||
+                          `Add ${formatCurrency(selection.option.price * selection.quantity)}`}
+                      </button>
+                    </div>
+                  ) : null}
                 </aside>
-              ) : null}
+              ) : (
+                <aside className="ps-cart-summary-card ps-cart-summary-empty">
+                  <h3>Order summary</h3>
+                  <p>Select a vendor and pack size to see pricing and add to cart.</p>
+                </aside>
+              )}
             </div>
           </ProductOffersSection>
         ) : null}
