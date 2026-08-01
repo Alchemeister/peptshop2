@@ -58,18 +58,9 @@ export function PeptShopFrontend({
     }
     return readLocation(navigationMode)
   })
-  // the backend owner's wrapper passes theme="light" for all pages. Per AGENTS.md,
-  // customer-facing pages must be dark. Override to dark for customer routes.
-  const isCustomerRoute = (path: string) => {
-    const r = resolveRoute(path)
-    return ['home', 'catalog', 'product', 'vendors', 'vendor', 'evidence', 'commerce', 'content', 'library'].includes(r.family)
-  }
-  const effectiveTheme: FrontendTheme = isCustomerRoute(pathname) ? 'dark' : (providedTheme ?? 'light')
-  const [theme, setTheme] = useState<FrontendTheme>(effectiveTheme)
+  const [theme, setTheme] = useState<FrontendTheme>(providedTheme ?? 'light')
   const [previewOpen, setPreviewOpen] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
-  // Keep theme in sync with route — the backend owner may navigate between customer and portal pages.
-  useEffect(() => { setTheme(effectiveTheme) }, [effectiveTheme])
   const [cartLines, setCartLines] = useState<CartLine[]>(() => {
     try {
       const saved = localStorage.getItem('peptshop-cart')
