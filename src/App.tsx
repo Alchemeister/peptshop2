@@ -102,6 +102,7 @@ export function PeptShopFrontend({
     }
     if (navigationMode === 'browser') {
       window.history.pushState({}, '', `${target.pathname}${target.search}${target.hash}`)
+      if (target.hash) window.dispatchEvent(new HashChangeEvent('hashchange'))
     }
     setLocation({ pathname: target.pathname, query: target.searchParams })
     window.scrollTo({ top: 0, behavior: 'instant' })

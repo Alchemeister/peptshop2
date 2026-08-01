@@ -2849,8 +2849,7 @@
 }
 
 #ps-storefront .ps-quantity-control button,
-
-#ps-storefront .ps-quantity-control span{
+#ps-storefront .ps-quantity-control .ps-qty-input{
   display: grid;
   width: 2.25rem;
   height: 2.5rem;
@@ -2858,6 +2857,19 @@
   border: 0;
   background: transparent;
   font-size: 0.75rem;
+}
+
+#ps-storefront .ps-qty-input{
+  -moz-appearance: textfield;
+  text-align: center;
+  font-weight: 600;
+  color: var(--ps-text);
+}
+
+#ps-storefront .ps-qty-input::-webkit-outer-spin-button,
+#ps-storefront .ps-qty-input::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 #ps-storefront .ps-cart-line-total{
@@ -2929,6 +2941,42 @@
   font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+#ps-storefront .ps-summary-shipping-block{
+  margin-bottom: 0.25rem;
+}
+
+#ps-storefront .ps-summary-free-ship-progress{
+  margin: 0.25rem 0 0.5rem 0;
+}
+
+#ps-storefront .ps-summary-free-ship-progress > small{
+  display: block;
+  margin-top: 0.25rem;
+  color: #FFA300;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+#ps-storefront .ps-cart-drawer-grand-total{
+  border-top: 1px solid var(--ps-line);
+  padding-top: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+#ps-storefront .ps-cart-vendor-progress{
+  margin: 0.5rem 0 0.75rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--ps-line);
+}
+
+#ps-storefront .ps-cart-vendor-progress > small{
+  display: block;
+  margin-top: 0.3rem;
+  color: #FFA300;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 #ps-storefront .ps-summary-checkout{

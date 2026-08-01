@@ -27,7 +27,7 @@ import {
   UserRoundPlus,
   Users,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AdminPricingSurface } from '../admin-pricing'
 import type { OrderSummary, PageComponentProps } from '../contracts'
 import { mockAdminPricingItems, mockAdminPricingVendors } from '../mock-data'
@@ -66,6 +66,20 @@ export function AuthPage({ actions, pathname }: PageComponentProps) {
 }
 
 export function SellerPage(props: PageComponentProps) {
+  const [hash, setHash] = useState(() => window.location.hash || '#dashboard')
+
+  useEffect(() => {
+    const sync = () => setHash(window.location.hash || '#dashboard')
+    window.addEventListener('hashchange', sync)
+    window.addEventListener('popstate', sync)
+    return () => {
+      window.removeEventListener('hashchange', sync)
+      window.removeEventListener('popstate', sync)
+    }
+  }, [])
+
+  const section = hash.replace('#', '')
+
   if (props.pathname === '/seller/escrow-gate') {
     return (
       <SellerWorkspaceFrame
@@ -84,12 +98,134 @@ export function SellerPage(props: PageComponentProps) {
     )
   }
 
-  return (
-    <SellerWorkspaceFrame
-      actions={props.actions}
-      pathname={props.pathname}
-      title="Sample Vendor Zero"
-    >
+  let content: React.ReactNode
+
+  if (section === 'orders' || section === 'dashboard') {
+    content = (
+      <>
+        {section === 'dashboard' && (
+          <>
+            <div className="ps-portal-alert"><CircleAlert size={18} /><div><strong>Sample orders need review</strong><span>All queue values in this workspace are illustrative.</span></div><button type="button">Review now <ArrowRight size={15} /></button></div>
+            <div className="ps-metric-grid">{props.models.sellerMetrics.map((metric, index) => <article key={metric.label}><div><span>{metric.label}</span>{index % 2 ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}</div><strong>{metric.value}</strong><p>{metric.detail}</p></article>)}</div>
+          </>
+        )}
+        <div className="ps-portal-two-column">
+          <section className="ps-portal-table-section"><SectionHeader title="Orders requiring action" detail="Live marketplace queue" action="View all" /><OrderTable orders={props.models.orders} mode="seller" /></section>
+          {section === 'dashboard' && (
+            <aside className="ps-seller-capacity"><SectionHeader title="Weekly capacity" detail="Illustrative presentation state" /><div className="ps-capacity-gauge"><span style={{ '--progress': '60%' } as React.CSSProperties}><i>Sample</i></span></div><dl><div><dt>Accepted this week</dt><dd>Sample</dd></div><div><dt>Current limit</dt><dd>Sample</dd></div><div><dt>Available</dt><dd>Sample</dd></div></dl><button type="button" onClick={() => props.actions.sellerAction('capacity')}>Review capacity settings</button></aside>
+          )}
+        </div>
+        {section === 'dashboard' && (
+          <div className="ps-seller-operations"><section><SectionHeader title="Catalog health" detail="Public listing readiness" /><ul><li><span><CheckCircle2 size={17} /> Active listings</span><strong>42</strong></li><li><span><CircleAlert size={17} /> Missing current COA</span><strong>3</strong></li><li><span><Boxes size={17} /> Low availability</span><strong>7</strong></li></ul></section><section><SectionHeader title="Fulfillment signals" detail="Trailing 30 days" /><ul><li><span><Truck size={17} /> Median dispatch</span><strong>1.4 days</strong></li><li><span><PackageCheck size={17} /> On-time shipping</span><strong>98.6%</strong></li><li><span><MessageSquareText size={17} /> Open tickets</span><strong>2</strong></li></ul></section></div>
+        )}
+      </>
+    )
+  } else if (section === 'catalog') {
+    content = (
+      <div className="ps-portal-two-column">
+        <section className="ps-portal-table-section">
+          <SectionHeader title="Product catalog" detail="Manage your live listings" action="Add product" />
+          <table className="ps-portal-table">
+            <thead><tr><th>Product</th><th>Format</th><th>Price</th><th>Status</th></tr></thead>
+            <tbody>
+              {props.models.products.slice(0, 8).map((p) => (
+                <tr key={p.id}><td><strong>{p.name}</strong></td><td>{p.formats?.join(', ') || '—'}</td><td>{p.startingPrice != null ? `$${p.startingPrice.toFixed(2)}` : '—'}</td><td><span className="ps-status-dot" /> Active</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+        <aside>
+          <SectionHeader title="Add a product" detail="Create a new listing" />
+          <div className="ps-portal-card">
+            <label className="ps-field-wide">Product name<input placeholder="e.g., BPC-157" /></label>
+            <label className="ps-field-wide">Format<input placeholder="e.g., 5 mg" /></label>
+            <label className="ps-field-wide">Price per mg<input type="number" placeholder="2.50" /></label>
+            <button type="button" className="ps-primary-action" onClick={() => props.actions.sellerAction('add-product')}>Add product</button>
+          </div>
+        </aside>
+      </div>
+    )
+  } else if (section === 'batches') {
+    content = (
+      <section className="ps-portal-table-section">
+        <SectionHeader title="COA batches" detail="Certificate of Analysis uploads" action="Upload COA" />
+        <table className="ps-portal-table">
+          <thead><tr><th>Product</th><th>Batch</th><th>Lab</th><th>Uploaded</th><th>Status</th></tr></thead>
+          <tbody>
+            {props.models.coas.slice(0, 10).map((c) => (
+              <tr key={c.id}><td>{c.product}</td><td>{c.batch}</td><td>{c.lab}</td><td>{c.testedAt}</td><td><span className="ps-status-dot" /> Verified</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+    )
+  } else if (section === 'shipping') {
+    content = (
+      <div className="ps-portal-two-column">
+        <section>
+          <SectionHeader title="Shipping options" detail="Configure your shipping tiers" />
+          <div className="ps-portal-card">
+            <div className="ps-shipping-tier">
+              <strong>Tier 1: $0 – $400</strong>
+              <p>$50 flat-rate shipping · 3–5 business days · Worldwide</p>
+            </div>
+            <div className="ps-shipping-tier">
+              <strong>Tier 2: $400+</strong>
+              <p>FREE priority shipping · 3–5 business days · Worldwide</p>
+            </div>
+            <button type="button" className="ps-primary-action" onClick={() => props.actions.sellerAction('shipping')}>Edit tiers</button>
+          </div>
+        </section>
+        <aside>
+          <SectionHeader title="Shipping metrics" detail="Trailing 30 days" />
+          <div className="ps-portal-card">
+            <dl>
+              <div><dt>Median dispatch time</dt><dd>1.4 days</dd></div>
+              <div><dt>On-time shipping rate</dt><dd>98.6%</dd></div>
+              <div><dt>Average shipping cost</dt><dd>$50.00</dd></div>
+              <div><dt>Free shipping orders</dt><dd>62%</dd></div>
+            </dl>
+          </div>
+        </aside>
+      </div>
+    )
+  } else if (section === 'inbox') {
+    content = (
+      <section className="ps-portal-table-section">
+        <SectionHeader title="Messages" detail="Customer and admin communications" />
+        <div className="ps-portal-card">
+          <p style={{ color: 'var(--ps-text-muted)', textAlign: 'center', padding: '2rem' }}>No new messages.</p>
+        </div>
+      </section>
+    )
+  } else if (section === 'availability') {
+    content = (
+      <div className="ps-portal-two-column">
+        <section>
+          <SectionHeader title="Settings" detail="Vendor configuration" />
+          <div className="ps-portal-card">
+            <label className="ps-field-wide">Vendor name<input defaultValue="Sample Vendor Zero" /></label>
+            <label className="ps-field-wide">Email<input defaultValue="vendor@peptshop.io" /></label>
+            <label className="ps-field-wide">Wallet address<input defaultValue="<vendor wallet address>" readOnly /></label>
+            <button type="button" className="ps-primary-action" onClick={() => props.actions.sellerAction('settings')}>Save settings</button>
+          </div>
+        </section>
+        <aside>
+          <SectionHeader title="Availability" detail="Weekly capacity settings" />
+          <div className="ps-portal-card">
+            <dl>
+              <div><dt>Accepted this week</dt><dd>Sample</dd></div>
+              <div><dt>Current limit</dt><dd>Sample</dd></div>
+              <div><dt>Available slots</dt><dd>Sample</dd></div>
+            </dl>
+            <button type="button" onClick={() => props.actions.sellerAction('capacity')}>Update capacity</button>
+          </div>
+        </aside>
+      </div>
+    )
+  } else {
+    content = (
+      <>
         <div className="ps-portal-alert"><CircleAlert size={18} /><div><strong>Sample orders need review</strong><span>All queue values in this workspace are illustrative.</span></div><button type="button">Review now <ArrowRight size={15} /></button></div>
         <div className="ps-metric-grid">{props.models.sellerMetrics.map((metric, index) => <article key={metric.label}><div><span>{metric.label}</span>{index % 2 ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}</div><strong>{metric.value}</strong><p>{metric.detail}</p></article>)}</div>
         <div className="ps-portal-two-column">
@@ -97,6 +233,17 @@ export function SellerPage(props: PageComponentProps) {
           <aside className="ps-seller-capacity"><SectionHeader title="Weekly capacity" detail="Illustrative presentation state" /><div className="ps-capacity-gauge"><span style={{ '--progress': '60%' } as React.CSSProperties}><i>Sample</i></span></div><dl><div><dt>Accepted this week</dt><dd>Sample</dd></div><div><dt>Current limit</dt><dd>Sample</dd></div><div><dt>Available</dt><dd>Sample</dd></div></dl><button type="button" onClick={() => props.actions.sellerAction('capacity')}>Review capacity settings</button></aside>
         </div>
         <div className="ps-seller-operations"><section><SectionHeader title="Catalog health" detail="Public listing readiness" /><ul><li><span><CheckCircle2 size={17} /> Active listings</span><strong>42</strong></li><li><span><CircleAlert size={17} /> Missing current COA</span><strong>3</strong></li><li><span><Boxes size={17} /> Low availability</span><strong>7</strong></li></ul></section><section><SectionHeader title="Fulfillment signals" detail="Trailing 30 days" /><ul><li><span><Truck size={17} /> Median dispatch</span><strong>1.4 days</strong></li><li><span><PackageCheck size={17} /> On-time shipping</span><strong>98.6%</strong></li><li><span><MessageSquareText size={17} /> Open tickets</span><strong>2</strong></li></ul></section></div>
+      </>
+    )
+  }
+
+  return (
+    <SellerWorkspaceFrame
+      actions={props.actions}
+      pathname={props.pathname}
+      title="Sample Vendor Zero"
+    >
+      {content}
     </SellerWorkspaceFrame>
   )
 }

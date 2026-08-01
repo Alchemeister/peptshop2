@@ -129,7 +129,7 @@ export function StorefrontShell({
                         }
                         return Object.entries(groups).map(([vendorName, lines]) => {
                           const groupSubtotal = lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
-                          const freeShipThreshold = 1200
+                          const freeShipThreshold = 400
                           const progress = Math.min(100, (groupSubtotal / freeShipThreshold) * 100)
                           return (
                             <div key={vendorName} className="ps-cart-drawer-vendor">
@@ -164,10 +164,36 @@ export function StorefrontShell({
                       })()}
                     </div>
                     <footer className="ps-cart-drawer-foot">
-                      <div className="ps-cart-drawer-total-row">
-                        <span>Total</span>
-                        <strong>${cartLines.reduce((s, l) => s + l.unitPrice * l.quantity, 0).toFixed(2)}</strong>
-                      </div>
+                      {(() => {
+                        const subtotal = cartLines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
+                        const groups: Record<string, CartLine[]> = {}
+                        for (const line of cartLines) {
+                          const v = line.vendor || 'Unassigned'
+                          if (!groups[v]) groups[v] = []
+                          groups[v].push(line)
+                        }
+                        const totalShipping = Object.values(groups).reduce((sum, lines) => {
+                          const vs = lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
+                          const shipCost = lines[0]?.shippingCost ?? 50
+                          return sum + (vs >= 400 ? 0 : shipCost)
+                        }, 0)
+                        return (
+                          <>
+                            <div className="ps-cart-drawer-total-row">
+                              <span>Subtotal</span>
+                              <strong>${subtotal.toFixed(2)}</strong>
+                            </div>
+                            <div className="ps-cart-drawer-total-row">
+                              <span>Shipping</span>
+                              <strong>{totalShipping === 0 ? 'FREE' : `$${totalShipping.toFixed(2)}`}</strong>
+                            </div>
+                            <div className="ps-cart-drawer-total-row ps-cart-drawer-grand-total">
+                              <span>Total</span>
+                              <strong>${(subtotal + totalShipping).toFixed(2)}</strong>
+                            </div>
+                          </>
+                        )
+                      })()}
                     </footer>
                   </aside>
                 </>

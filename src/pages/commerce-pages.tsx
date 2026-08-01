@@ -37,7 +37,12 @@ function CartPage({ actions, models }: PageComponentProps) {
     }
     return Object.values(groups)
   }, [models.cart])
-  const totalShipping = vendorGroups.reduce((sum, g) => sum + g.shippingCost, 0)
+  // Dynamic shipping: uses vendor's configured shippingCost, free at $400+ per vendor
+  const FREE_SHIP_THRESHOLD = 400
+  const totalShipping = vendorGroups.reduce((sum, g) => {
+    const vendorSubtotal = g.lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
+    return sum + (vendorSubtotal >= FREE_SHIP_THRESHOLD ? 0 : g.shippingCost)
+  }, 0)
 
   // Track selected payment method for fee calculation
   const [paymentMethod, setPaymentMethod] = useState<'nowpayments' | 'peerpay'>('nowpayments')
@@ -90,12 +95,24 @@ function CartPage({ actions, models }: PageComponentProps) {
           <section className="ps-checkout-card">
             <h2 className="ps-checkout-card-title">Your items</h2>
             <div className="ps-cart-lines">
-              {vendorGroups.map((group) => (
+              {vendorGroups.map((group) => {
+                const vendorSubtotal = group.lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
+                const remaining = Math.max(0, FREE_SHIP_THRESHOLD - vendorSubtotal)
+                const progress = Math.min(100, (vendorSubtotal / FREE_SHIP_THRESHOLD) * 100)
+                const isFree = vendorSubtotal >= FREE_SHIP_THRESHOLD
+                return (
                 <div key={group.vendorName} className="ps-cart-vendor-group">
                   <div className="ps-cart-vendor-head"><span className="ps-status-dot" /><strong>{group.vendorName}</strong></div>
                   {group.lines.map((line) => <CartLineItem key={line.id} line={line} actions={actions} />)}
+                  <div className="ps-cart-vendor-progress">
+                    <div className="ps-cart-drawer-progress-bar">
+                      <div className="ps-cart-drawer-progress-fill" style={{ width: `${progress}%` }} />
+                    </div>
+                    <small>{isFree ? '✓ Free shipping unlocked!' : `Add ${money(remaining)} for free shipping`}</small>
+                  </div>
                 </div>
-              ))}
+                )
+              })}
             </div>
             <div className="ps-cart-secondary-actions">
               <FrontendLink href="/products" navigate={actions.navigate} className="ps-back-link"><ArrowLeft size={16} /> Continue browsing</FrontendLink>
@@ -170,12 +187,16 @@ function CartPage({ actions, models }: PageComponentProps) {
             ))}
             <div className="ps-summary-divider" />
             <div className="ps-summary-line"><dt>Subtotal</dt><dd>{money(subtotal)}</dd></div>
-            {vendorGroups.map((group) => (
-              <div key={`ship-${group.vendorName}`} className="ps-summary-line">
-                <dt>Shipping <small>{group.vendorName}</small></dt>
-                <dd>{money(group.shippingCost)}</dd>
-              </div>
-            ))}
+            {vendorGroups.map((group) => {
+              const vendorSubtotal = group.lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
+              const shipCost = vendorSubtotal >= FREE_SHIP_THRESHOLD ? 0 : group.shippingCost
+              return (
+                <div key={`ship-${group.vendorName}`} className="ps-summary-line">
+                  <dt>Shipping <small>{group.vendorName}</small></dt>
+                  <dd>{shipCost === 0 ? 'FREE' : money(shipCost)}</dd>
+                </div>
+              )
+            })}
             <div className="ps-summary-divider" />
             <div className="ps-summary-line ps-summary-total"><dt>Total{paymentMethod === 'peerpay' && <small> includes 9% PeerPay fee</small>}</dt><dd>{money(total)}</dd></div>
           </dl>
@@ -195,7 +216,7 @@ function CartLineItem({ line, actions }: { line: CartLine; actions: PageComponen
         <p>{line.format} · {line.vendor}</p>
         <button type="button" onClick={() => actions.removeCartLine(line.id)} className="ps-cart-line-remove">Remove</button>
       </div>
-      <div className="ps-quantity-control"><button type="button" aria-label="Decrease quantity" onClick={() => actions.updateCartQuantity(line.id, Math.max(1, line.quantity - 1))}><Minus size={14} /></button><span>{line.quantity}</span><button type="button" aria-label="Increase quantity" onClick={() => actions.updateCartQuantity(line.id, line.quantity + 1)}><Plus size={14} /></button></div>
+      <div className="ps-quantity-control"><button type="button" aria-label="Decrease quantity" onClick={() => actions.updateCartQuantity(line.id, Math.max(1, line.quantity - 1))}><Minus size={14} /></button><input type="number" min={1} value={line.quantity} aria-label="Quantity" className="ps-qty-input" onChange={(e) => { const v = parseInt(e.target.value, 10); if (!Number.isNaN(v)) actions.updateCartQuantity(line.id, Math.max(1, v)); }} /><button type="button" aria-label="Increase quantity" onClick={() => actions.updateCartQuantity(line.id, line.quantity + 1)}><Plus size={14} /></button></div>
       <strong className="ps-cart-line-total">{money(line.unitPrice * line.quantity)}</strong>
     </article>
   )
