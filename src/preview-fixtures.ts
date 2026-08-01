@@ -1,4 +1,5 @@
 import type { AdminPricingItem, AdminPricingVendor } from './admin-pricing'
+import type { SellerEscrowGateModel } from './seller-escrow-gate'
 
 /**
  * Presentation-only fixtures.
@@ -49,3 +50,64 @@ export const mockAdminPricingItems: Array<AdminPricingItem & { vendorId: string 
     tiers: [{ minQty: 1, price: 16 }],
   },
 ]
+
+export const mockSellerEscrowGateModel: SellerEscrowGateModel = {
+  badge: 'Sample account paused',
+  headline: 'Choose an escrow level to continue',
+  lead: 'This is an illustrative presentation state. The private application supplies localized terms and decides whether a vendor can continue.',
+  options: [
+    {
+      tier: 'EXEMPT',
+      percentage: 0,
+      title: 'No escrow',
+      bullets: [
+        'No vendor proceeds are held in escrow.',
+        'Normal settlement timing still applies.',
+        'Unavailable stores stop accepting new orders.',
+      ],
+      ctaLabel: 'Choose 0% escrow',
+      pendingLabel: 'Selecting…',
+    },
+    {
+      tier: 'STANDARD',
+      percentage: 15,
+      title: 'Standard escrow',
+      bullets: [
+        'A portion of each order is held temporarily.',
+        'Held funds release after the fulfillment window.',
+        'The configured weekly volume cap applies.',
+      ],
+      detail: {
+        label: 'Sample weekly volume cap',
+        value: '$5,000',
+        caption: '$1,800 used in the sample period · $3,200 remaining',
+      },
+      ctaLabel: 'Choose 15% escrow',
+      pendingLabel: 'Selecting…',
+    },
+    {
+      tier: 'EXTENDED',
+      percentage: 50,
+      title: 'Extended escrow',
+      description: 'Higher escrow in exchange for unlimited weekly volume.',
+      bullets: [
+        'Half of the vendor cost is held per order.',
+        'The weekly volume cap is removed.',
+        'Held funds release after the fulfillment window.',
+      ],
+      notice: 'This sample selection is shown as permanent.',
+      ctaLabel: 'Choose 50% escrow',
+      pendingLabel: 'Selecting…',
+      requiresConfirmation: true,
+    },
+  ],
+  confirmation: {
+    prompt: 'The live host treats the 50% selection as permanent. Confirm the sample interaction?',
+    confirmLabel: 'Confirm 50%',
+    pendingLabel: 'Confirming…',
+    cancelLabel: 'Cancel',
+  },
+  failureLabel: 'The sample action could not be completed.',
+  offboardNote:
+    'In production, vendors who do not select an option can contact operations to begin offboarding.',
+}

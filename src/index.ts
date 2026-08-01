@@ -26,3 +26,4 @@ export {
 export * from './product-marketplace-view'
 export * from './product-page'
 export * from './route-manifest'
+export * from './seller-escrow-gate'

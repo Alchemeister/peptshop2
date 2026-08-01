@@ -16,7 +16,7 @@ Dynamic segments are represented with `:name`.
 | Company and support | `/about`, `/contact`, `/faq`, `/shipping`, `/privacy`, `/privacy-policy`, `/terms`, `/disclaimers` |
 | Library | `/articles`, `/articles/:slug`, `/khavinson` |
 | Authentication | `/login`, `/login/check-email`, `/auth/reset-password`, `/auth/update-password` |
-| Seller | `/seller` |
+| Seller | `/seller`, `/seller/escrow-gate` |
 | Admin | `/admin`, `/admin/pricing`, `/panel`, and `/local/admin/*` |
 | Staff | `/staff` and `/staff/*` |
 | Affiliate | `/affiliate`, `/local/affiliates` |

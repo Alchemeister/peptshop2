@@ -338,6 +338,18 @@
   #ps-storefront .ps-portal-two-column{
     grid-template-columns: 1fr;
   }
+
+  #ps-storefront .ps-seller-escrow-gate__options{
+    grid-template-columns: 1fr;
+  }
+
+  #ps-storefront .ps-seller-escrow-gate__option{
+    min-height: auto;
+  }
+
+  #ps-storefront .ps-seller-escrow-gate__option > button{
+    margin-top: 1.25rem;
+  }
 }
 
 @media (max-width: 680px) {
@@ -836,6 +848,27 @@
   #ps-storefront .ps-portal-topbar-actions{
     width: 100%;
     overflow-x: auto;
+  }
+
+  #ps-storefront .ps-seller-escrow-gate__header{
+    grid-template-columns: 1fr;
+  }
+
+  #ps-storefront .ps-seller-escrow-gate__badge{
+    width: fit-content;
+  }
+
+  #ps-storefront .ps-seller-escrow-gate__confirmation{
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #ps-storefront .ps-seller-escrow-gate__confirmation-actions{
+    width: 100%;
+  }
+
+  #ps-storefront .ps-seller-escrow-gate__confirmation button{
+    flex: 1;
   }
 
   #ps-storefront .ps-metric-grid{

@@ -71,8 +71,10 @@ variables, wallets, payment credentials, or authorization policy.
 
 The live `/seller` route consumes `SellerWorkspaceFrame` directly. This repository owns the frame's
 markup and CSS, including navigation presentation, top-bar presentation, page width, spacing, and
-responsive behavior. The private application owns the authenticated child content, supplier
-lookup, data loading, tabs, mutations, escrow gates, and sign-out operation.
+responsive behavior. It also owns `SellerEscrowGate`, including the active escrow gate's markup,
+option layout, action states, confirmation presentation, CSS, spacing, and responsive behavior.
+The private application owns the authenticated child content, supplier lookup, data loading, tabs,
+escrow eligibility, allowed choices, mutations, persistence, authorization, and sign-out operation.
 
 The stable seller frame inputs are:
 
@@ -86,6 +88,20 @@ The stable seller frame inputs are:
 
 Changing the seller frame's visual markup and CSS is allowed. Changing these inputs requires a
 coordinated private adapter update.
+
+The stable seller escrow gate inputs are:
+
+- `model`: localized, sanitized display copy for the heading, options, confirmation, failure, and
+  offboarding states. The private host supplies only the choices it currently authorizes.
+- `onChooseTier`: a callback receiving the selected tier intent and returning a success or failure
+  result. The private host validates the intent, authenticates the vendor, writes the choice, and
+  refreshes the protected route.
+
+The standalone `/seller/escrow-gate` preview uses synthetic fixtures and a no-op callback so the
+gate can be designed without authentication or private marketplace access. The shared component
+must not infer eligibility, add a tier, persist a choice, or bypass a host failure. Changing the
+gate's visual markup and CSS is allowed. Changing the model or callback shape requires a coordinated
+private adapter update.
 
 ## Browser identity
 

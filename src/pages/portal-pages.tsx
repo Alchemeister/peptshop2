@@ -32,6 +32,8 @@ import { AdminPricingSurface } from '../admin-pricing'
 import type { OrderSummary, PageComponentProps } from '../contracts'
 import { mockAdminPricingItems, mockAdminPricingVendors } from '../mock-data'
 import { FrontendLink } from '../navigation'
+import { mockSellerEscrowGateModel } from '../preview-fixtures'
+import { SellerEscrowGate } from '../seller-escrow-gate'
 import { PortalShell } from '../shell'
 
 export function AuthPage({ actions, pathname }: PageComponentProps) {
@@ -64,6 +66,24 @@ export function AuthPage({ actions, pathname }: PageComponentProps) {
 }
 
 export function SellerPage(props: PageComponentProps) {
+  if (props.pathname === '/seller/escrow-gate') {
+    return (
+      <SellerWorkspaceFrame
+        actions={props.actions}
+        pathname={props.pathname}
+        title="Sample Vendor Zero"
+      >
+        <SellerEscrowGate
+          model={mockSellerEscrowGateModel}
+          onChooseTier={(tier) => {
+            props.actions.sellerAction('escrow-tier', tier)
+            return Promise.resolve({ success: true })
+          }}
+        />
+      </SellerWorkspaceFrame>
+    )
+  }
+
   return (
     <SellerWorkspaceFrame
       actions={props.actions}

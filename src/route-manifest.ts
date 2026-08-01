@@ -121,6 +121,12 @@ export const routeManifest: RouteDefinition[] = [
   },
   { family: 'seller', access: 'seller', label: 'Seller portal', paths: ['/seller'] },
   {
+    family: 'seller',
+    access: 'seller',
+    label: 'Seller escrow gate',
+    paths: ['/seller/escrow-gate'],
+  },
+  {
     family: 'admin',
     access: 'admin',
     label: 'Admin console',
@@ -244,6 +250,7 @@ export const previewRoutes = [
   '/about',
   '/login',
   '/seller',
+  '/seller/escrow-gate',
   '/admin',
   '/admin/pricing',
   '/staff',

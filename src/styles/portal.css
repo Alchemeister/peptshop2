@@ -504,6 +504,320 @@
   color: #ad770d;
 }
 
+#ps-storefront .ps-seller-escrow-gate{
+  overflow: hidden;
+  border: 1px solid #ccd2d9;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+#ps-storefront .ps-seller-escrow-gate__header{
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: start;
+  border-bottom: 1px solid #2d333b;
+  background: #171b20;
+  padding: clamp(1.25rem, 3vw, 2.2rem);
+  color: #ffffff;
+}
+
+#ps-storefront .ps-seller-escrow-gate__badge{
+  display: inline-flex;
+  min-height: 2rem;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid rgba(255, 163, 0, 0.5);
+  border-radius: 999px;
+  background: rgba(255, 163, 0, 0.1);
+  padding: 0.35rem 0.65rem;
+  color: #ffc557;
+  font-size: 0.62rem;
+  font-weight: 760;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+#ps-storefront .ps-seller-escrow-gate__header h1{
+  max-width: 25ch;
+  margin: 0;
+  font-size: clamp(1.65rem, 3vw, 2.7rem);
+  font-weight: 680;
+  letter-spacing: -0.05em;
+  line-height: 1.03;
+}
+
+#ps-storefront .ps-seller-escrow-gate__header > div > span{
+  display: block;
+  max-width: 62rem;
+  margin-top: 0.75rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.78rem;
+  line-height: 1.65;
+}
+
+#ps-storefront .ps-seller-escrow-gate__options{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  padding: clamp(1rem, 2.5vw, 1.6rem);
+}
+
+#ps-storefront .ps-seller-escrow-gate__option{
+  display: flex;
+  min-width: 0;
+  min-height: 30rem;
+  flex-direction: column;
+  border: 1px solid #d8dde2;
+  border-top: 3px solid #9099a3;
+  border-radius: 11px;
+  background: #ffffff;
+  padding: clamp(1rem, 2vw, 1.35rem);
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option[data-tier='exempt']{
+  border-top-color: #3c8b68;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option[data-tier='standard']{
+  border-top-color: #db8d00;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option[data-tier='extended']{
+  border-top-color: #596d9d;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option[data-confirming='true']{
+  border-color: #596d9d;
+  transform: translateY(-2px);
+}
+
+#ps-storefront .ps-seller-escrow-gate__rate{
+  min-height: 4.7rem;
+  border-bottom: 1px solid #e6e9ec;
+}
+
+#ps-storefront .ps-seller-escrow-gate__rate strong{
+  color: #1f252c;
+  font-size: clamp(2.5rem, 4.5vw, 4.1rem);
+  font-weight: 640;
+  letter-spacing: -0.075em;
+  line-height: 0.95;
+}
+
+#ps-storefront .ps-seller-escrow-gate__copy{
+  padding-top: 1rem;
+}
+
+#ps-storefront .ps-seller-escrow-gate__copy h2{
+  margin: 0;
+  color: #252b32;
+  font-size: 0.9rem;
+  font-weight: 720;
+  letter-spacing: -0.02em;
+}
+
+#ps-storefront .ps-seller-escrow-gate__copy p{
+  margin: 0.45rem 0 0;
+  color: #6f7984;
+  font-size: 0.68rem;
+  line-height: 1.55;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option > ul{
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option > ul li{
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  gap: 0.45rem;
+  align-items: start;
+  color: #5e6873;
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option > ul svg{
+  margin-top: 0.08rem;
+  color: #3c8b68;
+}
+
+#ps-storefront .ps-seller-escrow-gate__detail{
+  margin: 1rem 0 0;
+  border: 1px solid #e1d0aa;
+  border-radius: 8px;
+  background: #fffaf0;
+  padding: 0.75rem;
+}
+
+#ps-storefront .ps-seller-escrow-gate__detail > div{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+#ps-storefront .ps-seller-escrow-gate__detail > div > span{
+  color: #7c6b48;
+  font-size: 0.56rem;
+  font-weight: 720;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+#ps-storefront .ps-seller-escrow-gate__detail > div > strong{
+  color: #4c4028;
+  font-size: 1rem;
+  font-weight: 720;
+}
+
+#ps-storefront .ps-seller-escrow-gate__detail p{
+  margin: 0.45rem 0 0;
+  color: #8a7956;
+  font-size: 0.58rem;
+  line-height: 1.45;
+}
+
+#ps-storefront .ps-seller-escrow-gate__notice{
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: 1rem 0 0;
+  color: #75514c;
+  font-size: 0.62rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+#ps-storefront .ps-seller-escrow-gate__notice svg{
+  flex: 0 0 auto;
+  margin-top: 0.05rem;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option > button{
+  display: flex;
+  width: 100%;
+  min-height: 2.8rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  margin-top: auto;
+  border: 1px solid #cdd3d9;
+  border-radius: 8px;
+  background: #f7f8f9;
+  padding: 0.65rem 0.75rem;
+  color: #2b323a;
+  font-size: 0.66rem;
+  font-weight: 740;
+  text-align: left;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option[data-tier='standard'] > button{
+  border-color: #ffa300;
+  background: #ffa300;
+  color: #181b1f;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option[data-tier='extended'] > button{
+  border-color: #35466f;
+  background: #35466f;
+  color: #ffffff;
+}
+
+#ps-storefront .ps-seller-escrow-gate__option > button:hover:not(:disabled){
+  filter: brightness(0.96);
+}
+
+#ps-storefront .ps-seller-escrow-gate__option > button:disabled,
+
+#ps-storefront .ps-seller-escrow-gate__confirmation button:disabled{
+  cursor: wait;
+  opacity: 0.55;
+}
+
+#ps-storefront .ps-seller-escrow-gate__confirmation{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 clamp(1rem, 2.5vw, 1.6rem) 1rem;
+  border: 1px solid #aab4cc;
+  border-radius: 10px;
+  background: #f1f3f8;
+  padding: 1rem;
+}
+
+#ps-storefront .ps-seller-escrow-gate__confirmation p{
+  max-width: 48rem;
+  margin: 0;
+  color: #384157;
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+#ps-storefront .ps-seller-escrow-gate__confirmation-actions{
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.5rem;
+}
+
+#ps-storefront .ps-seller-escrow-gate__confirmation button{
+  min-height: 2.55rem;
+  border: 1px solid #35466f;
+  border-radius: 8px;
+  background: #35466f;
+  padding: 0 0.85rem;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 720;
+}
+
+#ps-storefront .ps-seller-escrow-gate__confirmation button:last-child{
+  border-color: #c8ced7;
+  background: #ffffff;
+  color: #4b5563;
+}
+
+#ps-storefront .ps-seller-escrow-gate__error{
+  margin: 0 clamp(1rem, 2.5vw, 1.6rem) 1rem;
+  border: 1px solid #e4b5af;
+  border-radius: 8px;
+  background: #fff1ef;
+  padding: 0.75rem;
+  color: #943f36;
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+
+#ps-storefront .ps-seller-escrow-gate > footer{
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  border-top: 1px solid #e1e5e9;
+  background: #f7f8f9;
+  padding: 0.85rem clamp(1rem, 2.5vw, 1.6rem);
+  color: #727c87;
+}
+
+#ps-storefront .ps-seller-escrow-gate > footer svg{
+  flex: 0 0 auto;
+  margin-top: 0.08rem;
+}
+
+#ps-storefront .ps-seller-escrow-gate > footer p{
+  margin: 0;
+  font-size: 0.62rem;
+  line-height: 1.5;
+}
+
 #ps-storefront .ps-admin-command-row{
   display: flex;
   justify-content: space-between;

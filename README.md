@@ -108,6 +108,8 @@ event, delivery state, and provider message ID. Order updates accept only fixed 
 - `src/pages/portal-pages.tsx`: login, admin, staff, and affiliate previews, plus
   `SellerWorkspaceFrame`, which owns the production `/seller` sidebar, top bar, canvas, spacing,
   and responsive layout.
+- `src/seller-escrow-gate.tsx`: shared vendor escrow-gate markup and interaction states used by the
+  standalone `/seller/escrow-gate` preview and the production seller route.
 - `src/admin-pricing.tsx`: editable admin pricing and availability presentation.
 - `src/admin-pricing.module.css`: scoped pricing workspace styles used by preview and production.
 - `src/order-status.module.css`: production order lookup, access gate, timeline, and shipment styles.
@@ -125,8 +127,10 @@ The private application consumes `ProductMarketplaceView` directly, so edits to 
 offer grid, vendor cards, order summary, and responsive structure appear on live catalog product
 pages after the reviewed frontend is synchronized. It supplies live display models and callbacks;
 the standalone page supplies mock models. Lower-level product frames remain available for the BAC
-Water specialty surface. The private application also consumes `AdminPricingSurface` and
-`SellerWorkspaceFrame` directly.
+Water specialty surface. The private application also consumes `AdminPricingSurface`,
+`SellerWorkspaceFrame`, and `SellerEscrowGate` directly. The gate receives localized display copy
+and a callback; eligibility, allowed choices, authorization, and persistence remain in the private
+application.
 `SellerWorkspaceFrame` receives a display title, callbacks, and an opaque child slot containing the
 authenticated seller tools. Its props contain no database access or private business rules.
 
