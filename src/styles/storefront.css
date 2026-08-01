@@ -6226,19 +6226,18 @@
 /* ────────────────────────────────────────────────────────────
    Product page – Research Library section
    ──────────────────────────────────────────────────────────── */
-#ps-storefront .ps-research-library,
-.ps-research-library {
+#ps-storefront .ps-research-library {
   margin-top: 1rem;
   border-top: 1px solid var(--ps-line-strong, #c6cdd5);
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
 
-.ps-research-library-header {
+#ps-storefront .ps-research-library-header {
   margin-bottom: 0.5rem;
 }
 
-.ps-research-library-header h2 {
+#ps-storefront .ps-research-library-header h2 {
   margin: 0;
   font-size: clamp(1.25rem, 2.5vw, 1.75rem);
   font-weight: 800;
@@ -6248,12 +6247,12 @@
 }
 
 /* Horizontal snap-scroll carousel */
-.ps-research-carousel-wrapper {
+#ps-storefront .ps-research-carousel-wrapper {
   margin-right: -2rem;
   overflow: hidden;
 }
 
-.ps-research-carousel {
+#ps-storefront .ps-research-carousel {
   display: flex;
   gap: 1rem;
   overflow-x: auto;
@@ -6264,11 +6263,11 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.ps-research-carousel::-webkit-scrollbar {
+#ps-storefront .ps-research-carousel::-webkit-scrollbar {
   display: none;
 }
 
-.ps-research-card {
+#ps-storefront .ps-research-card {
   flex: 0 0 320px;
   max-width: 320px;
   min-height: 280px;
@@ -6287,12 +6286,12 @@
   will-change: transform;
 }
 
-.ps-research-card:hover {
+#ps-storefront .ps-research-card:hover {
   transform: translateY(-4px);
   border-color: rgba(255,255,255,0.25);
 }
 
-.ps-research-card-title {
+#ps-storefront .ps-research-card-title {
   margin: 0;
   font-size: 1.125rem;
   font-weight: 800;
@@ -6304,7 +6303,7 @@
   overflow: hidden;
 }
 
-.ps-research-card-date {
+#ps-storefront .ps-research-card-date {
   margin-top: 0.5rem;
   font-size: 0.6875rem;
   font-weight: 600;
@@ -6313,7 +6312,7 @@
   color: var(--ps-muted, rgba(255,255,255,0.45));
 }
 
-.ps-research-card-authors {
+#ps-storefront .ps-research-card-authors {
   margin-top: 0.75rem;
   flex: 1 1 auto;
   font-size: 0.875rem;
@@ -6325,7 +6324,7 @@
   overflow: hidden;
 }
 
-.ps-research-card-open {
+#ps-storefront .ps-research-card-open {
   margin-top: 0.75rem;
   display: flex;
   align-items: center;
@@ -6337,24 +6336,24 @@
   transition: color 0.3s;
 }
 
-.ps-research-card:hover .ps-research-card-open {
+#ps-storefront .ps-research-card:hover .ps-research-card-open {
   color: #FBB1B7;
 }
 
-.ps-research-card-arrow {
+#ps-storefront .ps-research-card-arrow {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
 }
 
 /* Dot pagination */
-.ps-research-dots {
+#ps-storefront .ps-research-dots {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
-.ps-research-dot {
+#ps-storefront .ps-research-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -6365,25 +6364,25 @@
   transition: all 0.3s;
 }
 
-.ps-research-dot:hover {
+#ps-storefront .ps-research-dot:hover {
   border-color: rgba(255,255,255,0.45);
 }
 
-.ps-research-dot-active {
+#ps-storefront .ps-research-dot-active {
   background: #FFA300;
   border-color: #FFA300;
 }
 
 @media (max-width: 640px) {
-  .ps-research-carousel-wrapper {
+  #ps-storefront .ps-research-carousel-wrapper {
     margin-right: -1rem;
   }
 
-  .ps-research-carousel {
+  #ps-storefront .ps-research-carousel {
     padding-right: 1rem;
   }
 
-  .ps-research-card {
+  #ps-storefront .ps-research-card {
     flex: 0 0 280px;
     max-width: 280px;
     min-height: 300px;

@@ -1,19 +1,23 @@
-/* Global scrollbar — prevent dark Edge scrollbar clashing with light pages */
-::-webkit-scrollbar {
+/* Frontend-owned scrollbars stay inside the isolated presentation boundary. */
+#ps-storefront::-webkit-scrollbar,
+#ps-storefront ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
-::-webkit-scrollbar-track {
+#ps-storefront::-webkit-scrollbar-track,
+#ps-storefront ::-webkit-scrollbar-track {
   background: transparent;
 }
-::-webkit-scrollbar-thumb {
+#ps-storefront::-webkit-scrollbar-thumb,
+#ps-storefront ::-webkit-scrollbar-thumb {
   background: #d1d5db;
   border-radius: 5px;
 }
-::-webkit-scrollbar-thumb:hover {
+#ps-storefront::-webkit-scrollbar-thumb:hover,
+#ps-storefront ::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
-:root {
+#ps-storefront {
   scrollbar-color: #d1d5db transparent;
   scrollbar-width: thin;
 }
@@ -56,8 +60,8 @@
   max-width: none;
 }
 
-/* Seller portal readability — not scoped under #ps-storefront since seller pages use .seller-page */
-.seller-page {
+/* Seller portal readability remains inside the shared frontend boundary. */
+#ps-storefront .seller-page {
   --ps-accent: #ffa300;
   --ps-accent-hover: #eb9600;
   --ps-accent-soft: #fff4dc;
@@ -71,22 +75,22 @@
   --ps-danger: #a43737;
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-.seller-page h1,
-.seller-page h2,
-.seller-page h3 {
+#ps-storefront .seller-page h1,
+#ps-storefront .seller-page h2,
+#ps-storefront .seller-page h3 {
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
-.seller-page p {
+#ps-storefront .seller-page p {
   line-height: 1.6;
   color: #334155;
 }
-.seller-page label {
+#ps-storefront .seller-page label {
   font-weight: 600;
   color: #12161d;
 }
-.seller-page button {
+#ps-storefront .seller-page button {
   font-family: inherit;
 }
 
