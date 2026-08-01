@@ -2284,11 +2284,11 @@
   min-height: 2.7rem;
   align-items: center;
   gap: 0.45rem;
-  border: 1px solid var(--ps-accent);
-  border-radius: 10px;
-  background: var(--ps-accent);
+  border: 1px solid var(--ps-line-strong);
+  border-radius: 9px;
+  background: var(--ps-paper);
   padding: 0 0.8rem;
-  color: var(--ps-ink, #12161d);
+  color: var(--ps-ink);
   font-size: 0.72rem;
   font-weight: 700;
   text-decoration: none;
