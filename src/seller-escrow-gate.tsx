@@ -87,6 +87,7 @@ export function SellerEscrowGate({ model, onChooseTier }: SellerEscrowGateProps)
       setConfirmingTier(option.tier)
       return
     }
+    setConfirmingTier(null)
     submit(option.tier)
   }
 
