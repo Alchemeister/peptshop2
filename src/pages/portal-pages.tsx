@@ -206,7 +206,7 @@ export function SellerPage(props: PageComponentProps) {
           <div className="ps-portal-card">
             <label className="ps-field-wide">Vendor name<input defaultValue="Sample Vendor Zero" /></label>
             <label className="ps-field-wide">Email<input defaultValue="vendor@peptshop.io" /></label>
-            <label className="ps-field-wide">Wallet address<input defaultValue="<vendor wallet address>" readOnly /></label>
+            <label className="ps-field-wide">Wallet address<input defaultValue="0x0000000000000000000000000000000000000000" readOnly /></label>
             <button type="button" className="ps-primary-action" onClick={() => props.actions.sellerAction('settings')}>Save settings</button>
           </div>
         </section>
