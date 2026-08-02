@@ -337,7 +337,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
 
       {/* ── Featured vendors ── */}
       {featuredVendors.length > 0 ? (
-        <section className="ps-home-products" style={{ paddingBlock: 'clamp(3rem, 6vw, 6rem)' }}>
+        <section className="ps-home-products" style={{ paddingBlock: 'clamp(2rem, 4vw, 4rem)' }}>
           <div className="ps-section-shell">
             <div className="ps-section-intro">
               <div>
@@ -347,7 +347,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
               <p>Identity checked before listing. Every vendor vetted before onboarding.</p>
             </div>
 
-            <div className="ps-vendor-directory" style={{ marginTop: '3rem' }}>
+            <div className="ps-vendor-directory" style={{ marginTop: '2rem' }}>
               {featuredVendors.map((vendor, index) => (
                 <VendorRow key={vendor.id} index={index + 1} vendor={vendor} navigate={actions.navigate} />
               ))}

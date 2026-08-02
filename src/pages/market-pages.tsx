@@ -22,7 +22,7 @@ import {
   Truck,
   X,
 } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PageComponentProps, ProductSummary, VendorSummary } from '../contracts'
 import { researchStudies, type ResearchStudy } from '../mock-data'
 import { FrontendLink } from '../navigation'
@@ -47,8 +47,11 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
   const [stockOnly, setStockOnly] = useState(false)
   const [regionFilter, setRegionFilter] = useState<'all' | 'us' | 'eu' | 'cn'>('all')
   const [regionOpen, setRegionOpen] = useState(false)
-  const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name')
+  const [sortBy, setSortBy] = useState<'popular' | 'name' | 'price-low' | 'price-high'>('popular')
   const [showTop, setShowTop] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(24)
+  const sentinelRef = useRef<HTMLDivElement>(null)
+
   const visibleProducts = useMemo(() => {
     const normalized = query.trim().toLowerCase()
     const filtered = models.products.filter((product) => {
@@ -64,9 +67,31 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
     return filtered.sort((left, right) => {
       if (sortBy === 'price-low') return (left.startingPrice ?? 999) - (right.startingPrice ?? 999)
       if (sortBy === 'price-high') return (right.startingPrice ?? 0) - (left.startingPrice ?? 0)
+      if (sortBy === 'popular') return (right.popularity ?? 0) - (left.popularity ?? 0)
       return left.name.localeCompare(right.name)
     })
   }, [models.products, query, stockOnly, sortBy, regionFilter])
+
+  // Reset visible count when filters change
+  useEffect(() => {
+    setVisibleCount(24)
+  }, [query, stockOnly, sortBy, regionFilter])
+
+  // Lazy load more cards when sentinel enters viewport
+  useEffect(() => {
+    const sentinel = sentinelRef.current
+    if (!sentinel) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setVisibleCount((prev) => prev + 24)
+        }
+      },
+      { rootMargin: '400px' },
+    )
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [visibleProducts.length])
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 600)
@@ -140,6 +165,7 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       {filterOpen ? (
         <div className="ps-filter-strip">
           <Filter size={16} />
+          <button type="button" className={sortBy === 'popular' ? 'is-active' : ''} onClick={() => setSortBy('popular')}>Sort <span>Popular</span></button>
           <button type="button" className={sortBy === 'name' ? 'is-active' : ''} onClick={() => setSortBy('name')}>Sort <span>A–Z</span></button>
           <button type="button" className={sortBy === 'price-low' ? 'is-active' : ''} onClick={() => setSortBy('price-low')}>Price <span>Low–High</span></button>
           <button type="button" className={sortBy === 'price-high' ? 'is-active' : ''} onClick={() => setSortBy('price-high')}>Price <span>High–Low</span></button>
@@ -147,11 +173,16 @@ export function CatalogPage({ actions, models }: PageComponentProps) {
       ) : null}
 
       {visibleProducts.length ? (
-        <div className="ps-catalog-grid" style={{ marginTop: '1.5rem' }}>
-          {visibleProducts.map((product) => (
-            <CatalogCard key={product.id} product={product} navigate={actions.navigate} />
-          ))}
-        </div>
+        <>
+          <div className="ps-catalog-grid" style={{ marginTop: '1.5rem' }}>
+            {visibleProducts.slice(0, visibleCount).map((product) => (
+              <CatalogCard key={product.id} product={product} navigate={actions.navigate} />
+            ))}
+          </div>
+          {visibleCount < visibleProducts.length && (
+            <div ref={sentinelRef} className="ps-catalog-sentinel" aria-hidden="true" />
+          )}
+        </>
       ) : (
         <div className="ps-empty-state">
           <Search size={24} />

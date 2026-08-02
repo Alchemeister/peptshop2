@@ -16,6 +16,7 @@ export type ProductSummary = {
   coaCount: number
   imageSrc: string
   availability: 'available' | 'watchlist'
+  popularity?: number
 }
 
 export type VendorSummary = {

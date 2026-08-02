@@ -201,6 +201,7 @@ function CartPage({ actions, models }: PageComponentProps) {
             <div className="ps-summary-line ps-summary-total"><dt>Total{paymentMethod === 'peerpay' && <small> includes 9% PeerPay fee</small>}</dt><dd>{money(total)}</dd></div>
           </dl>
           <button type="submit" disabled={!formValid} aria-disabled={!formValid} className={`ps-primary-action ps-summary-checkout${!formValid ? ' ps-btn-disabled' : ''}`} onClick={(e) => { e.preventDefault(); const form = document.querySelector('.ps-checkout-form') as HTMLFormElement | null; if (form && formValid) form.requestSubmit(); }}>Place order <ArrowRight size={17} /></button>
+          {!formValid && <p className="ps-summary-hint">Fill in delivery details and accept the terms to place your order.</p>}
           <p className="ps-summary-note"><LockKeyhole size={14} /> Encrypted checkout. Your details are used only to fulfill this order.</p>
         </aside>
       </div>
