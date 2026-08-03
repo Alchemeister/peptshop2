@@ -1,29 +1,47 @@
-# PeptShop frontend presentation
+# PeptShop: Peptide Marketplace
 
-> This repository owns presentation components for a research-compound marketplace interface.
+> PeptShop (peptshop.io) is an open marketplace for research-use-only peptides and compounds. It connects buyers with vetted independent suppliers, with public per-mg pricing, published certificates of analysis (COAs), crypto checkout, and platform-enforced vendor standards.
 
-## Scope
+PeptShop is not a vendor itself — it is a comparison and ordering platform. Suppliers list their own products, set wholesale prices, and handle fulfillment. PeptShop handles the storefront, payments, buyer protection, dispute resolution, and public evidence. All compounds are sold for research use only, not for human consumption. Buyers must be 21+.
 
-The frontend includes layouts for:
+## Marketplace Overview
 
-- Catalog and product comparison
-- Vendor directory and profiles
-- Public certificate-of-analysis presentation
-- Cart and checkout
-- Synthetic order lookup and status views
-- Informational and authentication pages
+- [PeptShop Home](https://www.peptshop.io/): Search-first homepage with popular compounds, featured products, and marketplace stats. Routes visitors into product detail pages for vendor comparison.
+- [All Compounds](https://www.peptshop.io/products): Full catalog of 80+ research peptides and compounds with availability status, COA counts, and vendor counts per product. Searchable and filterable by region and availability.
+- [Vendor Directory](https://www.peptshop.io/vendors): Lists every active supplier with country, rating, review count, fulfillment time, and published COA count. Each vendor has a profile with reviews and catalog.
+- [COA Library](https://www.peptshop.io/coas): Public archive of certificates of analysis. Searchable by vendor, product, and batch. Every COA is linked to the supplier and compound it verifies.
+- [Batch Verification](https://www.peptshop.io/verify): Tool to verify a batch against published COA records before purchase.
 
-All records bundled with this repository are synthetic presentation fixtures. Names, prices,
-ratings, orders, certificates, dates, and operational states are illustrative and must not be
-described as production marketplace facts.
+## Product Pages
 
-## Integration boundary
+- [Tirzepatide](https://www.peptshop.io/products/tirzepatide): Representative product page showing vendor offers, pack sizes, per-mg pricing, dosage options, COA links, and add-to-cart. All 80+ compounds follow this template.
+- [BPC-157](https://www.peptshop.io/products/bpc-157): Popular tissue repair peptide with multiple vendor offers.
+- [Semaglutide](https://www.peptshop.io/products/semaglutide): GLP-1 agonist with vendor comparison.
 
-The private application supplies reviewed view models and fixed callbacks. This repository does
-not contain database access, credentials, payment integrations, customer records, private
-algorithms, internal economics, incentive terms, or production order logic.
+Each product page shows: vendor offers sorted by price, pack sizes (vial quantities), per-mg and total pricing, COA availability per vendor, vendor ratings and fulfillment times, and cart controls.
 
-The protected production QA lane is documented in the repository README. It accepts only reserved
-synthetic values and keeps fake orders isolated from customer, payment, inventory, real-recipient
-notification, and fulfillment systems. Synthetic order events may send sanitized QA-only messages
-to a fixed email-provider test sink; the browser cannot select a recipient.
+## Vendor Pages
+
+- [Vendor Profile Example](https://www.peptshop.io/vendors/northstar-research): Each vendor has a profile with: country, COA count, completed orders, on-time shipping rate, median dispatch time, customer reviews (paginated), and full product catalog with pricing.
+
+## Buyer Resources
+
+- [FAQ](https://www.peptshop.io/faq): Explains PeptShop's role as a supplier-connection platform, buyer protections, transparent pricing, batch verification, shipping and dispute resolution, escrow leverage, supplier pause/offboarding standards, ordering risks, and recommended independent testing labs (Finnrick, Janoshik, Chromate, ILS Laboratories, Kovera Labs, TrustPointe Analytics).
+- [Shipping](https://www.peptshop.io/shipping): Shipping policies, regional availability, fulfillment times, and free shipping thresholds.
+- [Track an Order](https://www.peptshop.io/track): Order tracking by order ID.
+
+## Policies & Compliance
+
+- [Disclaimers](https://www.peptshop.io/disclaimers): Research-use-only policy covering marketplace scope, fulfillment responsibility, age limits (21+), liability caps, and prohibition against human consumption.
+- [Privacy Policy](https://www.peptshop.io/privacy): Describes what data is and is not collected, how merchants only see transactions they fulfill, the "no data sales" stance, access controls, and retention/removal rules.
+- [Terms](https://www.peptshop.io/terms): Marketplace terms of service.
+- [Contact](https://www.peptshop.io/contact): Directs researchers to support@peptshop.io for clarifications or data removal requests.
+
+## About
+
+- [About PeptShop](https://www.peptshop.io/about): Mission, marketplace model, and how PeptShop enforces vendor quality standards programmatically.
+- [Articles](https://www.peptshop.io/articles): Educational content on peptide research, COA interpretation, vendor evaluation, and marketplace workflows.
+
+## Optional
+
+- [Cart & Checkout](https://www.peptshop.io/cart): Crypto checkout flow with NOWPayments and PeerPay. Supports Bitcoin, Ethereum, Arbitrum, and other cryptocurrencies. Free shipping on orders over $400.

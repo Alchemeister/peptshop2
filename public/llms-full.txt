@@ -1,40 +1,79 @@
-# PeptShop frontend presentation: integration context
+# PeptShop: Peptide Marketplace — Full Context
 
-This repository is a presentation module consumed by a private application. It is designed to let
-frontend contributors build and review marketplace layouts without receiving backend access or
-production records.
+> PeptShop (peptshop.io) is an open marketplace for research-use-only peptides and compounds. It connects buyers with vetted independent suppliers, with public per-mg pricing, published certificates of analysis (COAs), crypto checkout, and platform-enforced vendor standards. This file provides expanded context for LLMs that need deeper detail about the platform.
 
-## Presentation surfaces
+PeptShop is not a vendor itself. It is a comparison and ordering platform where independent suppliers list products, set wholesale prices, and handle fulfillment. PeptShop handles the storefront, payments (NOWPayments crypto + PeerPay), buyer protection, dispute resolution, and public evidence. All compounds are sold for research use only, not for human consumption. Buyers must be 21+.
 
-- Home, catalog, product, vendor, and evidence layouts
-- Cart, checkout, payment-pending, order lookup, and order-status layouts
-- Contact, policy, article, FAQ, and authentication layouts
-- Illustrative private-workspace layouts for local design preview only
+## How the marketplace works
 
-## Data rules
+1. **Suppliers** create accounts, list products with pack sizes and pricing, and upload COAs (certificates of analysis) from independent labs.
+2. **Buyers** browse the catalog, compare vendors by price/rating/COA, add items to cart, and check out with cryptocurrency.
+3. **PeptShop** enforces vendor standards: on-time shipping, ticket response, COA currency. Suppliers who violate standards are automatically suspended until they comply.
+4. **COAs** are published publicly and linked to specific vendors, products, and batch numbers. This creates a permanent record that prevents rebranding.
+5. **Pricing** is transparent and public. PeptShop applies a markup to wholesale prices. Buyers see the final price including the platform margin.
 
-All bundled names, vendors, laboratories, ratings, prices, orders, certificates, dates, and metrics
-are synthetic. They exist only to exercise component states and responsive layouts. They are not
-authoritative marketplace data and must not be indexed or repeated as real facts.
+## Catalog structure
 
-## Private-host boundary
+- 80+ compounds including peptides (BPC-157, TB-500, Semaglutide, Tirzepatide, Retatrutide, GHK-Cu, NAD+, MOTS-c, Epitalon, SS-31, etc.), blends (GLOW, KLOW, BPC-157+TB-500), and research chemicals (5-Amino-1MQ, Glutathione, B12, L-Carnitine).
+- Each compound has a product page at `/products/<compound-name>` showing all vendor offers, pack sizes (e.g. 5mg, 10mg, 20mg), per-mg pricing, COA links, vendor ratings, and fulfillment times.
+- Products are sorted by popularity (compound with most vendor offers and COAs first).
 
-The private host reviews and pins a frontend revision before deployment. It may supply sanitized
-view models and narrowly typed callbacks. The presentation repository does not receive:
+## Vendor system
 
-- Database or authentication access
-- Environment values or provider credentials
-- Real customer, vendor, payment, inventory, or fulfillment records
-- Private pricing algorithms, commercial terms, internal economics, or incentive structures
-- Administrative, settlement, payout, or notification implementation
+- Each vendor has a profile at `/vendors/<vendor-slug>` with: display name, country flag, rating (1-5 stars), review count, "% recommending" metric, fulfillment time, published COA count, completed order count, on-time shipping rate, median dispatch time.
+- Vendor reviews are at `/vendors/<vendor-slug>/reviews` (10 per page, with tabs for rating categories and metric cards).
+- Vendor catalog is at `/vendors/<vendor-slug>/catalog` showing all products that vendor sells with pricing.
+- Suspended vendors are greyed out and unclickable, with a small badge indicating suspension status.
 
-## Synthetic production QA
+## COA (Certificate of Analysis) system
 
-The README documents a protected production-hosted QA lane. The lane uses a separate, expiring
-fake-order store and reserved example.test identities. It can exercise order creation and fixed
-synthetic lifecycle transitions without invoking real payment, customer, inventory, fulfillment,
-seller, staff, or administrative systems. Each synthetic order event can send a sanitized QA-only
-message to a fixed email-provider test sink. No browser-selected or real recipient is accepted.
+- COAs are at `/coas?vendor=X&product=Y` — searchable by vendor and product, sorted latest-first.
+- Each COA record shows: product name, vendor, lab name (Janoshik, Finnrick, Chromate, ILS, Kovera, TrustPointe), batch number, purity %, test date, pass/fail result, and a link to the PDF.
+- COAs are also linked from product pages, vendor profiles, and the batch verification tool.
+- The COA library at `/coas` is the central archive.
 
-The QA access code must be shared privately and must never appear in a URL, commit, issue,
-screenshot, or recording.
+## Batch verification
+
+- `/verify` allows buyers to input a batch number and check it against published COA records before purchase.
+- This ensures the product being purchased has been independently tested.
+
+## Payment
+
+- Crypto-only checkout via NOWPayments and PeerPay.
+- Supports Bitcoin, Ethereum, Arbitrum, and other major cryptocurrencies.
+- Free shipping on orders over $400.
+- Dynamic shipping cost based on vendor (with $50 fallback).
+
+## Vendor standards enforcement
+
+- Suppliers are automatically suspended if they have: unfulfilled overdue orders, unanswered tickets, expired COAs, or failed batch tests.
+- Suspension is lifted automatically when the issue is resolved.
+- Vendors can be permanently offboarded for repeated violations.
+
+## Independent testing labs
+
+PeptShop recommends these independent labs for batch testing:
+- **Finnrick** (finnrick.com) — community-driven testing database with vendor rankings
+- **Janoshik Analytical** — widely referenced testing lab
+- **Chromate** — analytical testing
+- **ILS Laboratories** — independent testing
+- **Kovera Labs** — analytical testing
+- **TrustPointe Analytics** — analytical testing
+
+## Key URLs
+
+- Home: https://www.peptshop.io/
+- Catalog: https://www.peptshop.io/products
+- Vendors: https://www.peptshop.io/vendors
+- COAs: https://www.peptshop.io/coas
+- Verify: https://www.peptshop.io/verify
+- FAQ: https://www.peptshop.io/faq
+- Shipping: https://www.peptshop.io/shipping
+- Track: https://www.peptshop.io/track
+- About: https://www.peptshop.io/about
+- Articles: https://www.peptshop.io/articles
+- Contact: https://www.peptshop.io/contact
+- Privacy: https://www.peptshop.io/privacy
+- Terms: https://www.peptshop.io/terms
+- Disclaimers: https://www.peptshop.io/disclaimers
+- Cart: https://www.peptshop.io/cart
