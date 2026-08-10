@@ -11,9 +11,26 @@ const path = require('path');
 const PORT = process.env.PORT || 8787;
 const EVENTS_DIR = path.join(__dirname, 'events');
 const BACKEND_WEBHOOK_URL = process.env.BACKEND_WEBHOOK_URL || '';
+const PEERPAY_WEBHOOK_SECRET = process.env.PEERPAY_WEBHOOK_SECRET || '';
 
 // Ensure events directory exists
 if (!fs.existsSync(EVENTS_DIR)) fs.mkdirSync(EVENTS_DIR, { recursive: true });
+
+// Verify PeerPay webhook signature using HMAC-SHA256
+function verifySignature(body, signature) {
+  if (!PEERPAY_WEBHOOK_SECRET) {
+    console.warn('⚠ PEERPAY_WEBHOOK_SECRET not set — skipping signature verification');
+    return true; // Allow through if no secret configured (dev mode)
+  }
+  if (!signature) return false;
+  const crypto = require('crypto');
+  const expected = crypto.createHmac('sha256', PEERPAY_WEBHOOK_SECRET).update(body).digest('hex');
+  try {
+    return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
+  } catch {
+    return false;
+  }
+}
 
 const server = http.createServer(async (req, res) => {
   // CORS + JSON helpers
@@ -51,6 +68,13 @@ const server = http.createServer(async (req, res) => {
     try {
       const payload = JSON.parse(body);
       const signature = req.headers['x-peerpay-signature'] || '';
+
+      // Verify webhook signature
+      if (!verifySignature(body, signature)) {
+        console.warn(`[${new Date().toISOString()}] PeerPay webhook: INVALID SIGNATURE — rejecting`);
+        return json(401, { error: 'Invalid signature' });
+      }
+
       const eventType = payload.type || payload.event || 'UNKNOWN';
       const eventId = payload.id || payload.orderId || `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
       const timestamp = new Date().toISOString();

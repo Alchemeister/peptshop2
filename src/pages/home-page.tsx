@@ -61,7 +61,6 @@ export function HomePage({ actions, models }: PageComponentProps) {
               href="/products"
               navigate={actions.navigate}
               className="ps-primary-action"
-              style={{ minHeight: '3.25rem', padding: '0 1.1rem' }}
             >
               Browse Catalog <ArrowRight size={16} />
             </FrontendLink>

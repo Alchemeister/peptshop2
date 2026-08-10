@@ -4,6 +4,7 @@ export type {
   PeptShopFrontendProps,
 } from './App'
 export { PeptShopFrontend } from './App'
+export { ErrorBoundary } from './error-boundary'
 export * from './admin-pricing'
 export * from './contracts'
 export { CommercePage, OrderFlowPage } from './pages/commerce-pages'

@@ -27,7 +27,7 @@ import {
   UserRoundPlus,
   Users,
 } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { AdminPricingSurface } from '../admin-pricing'
 import type { OrderSummary, PageComponentProps } from '../contracts'
 import { mockAdminPricingItems, mockAdminPricingVendors } from '../mock-data'
@@ -399,5 +399,36 @@ function SectionHeader({ title, detail, action }: { title: string; detail: strin
 }
 
 function OrderTable({ orders, mode }: { orders: OrderSummary[]; mode: 'seller' | 'admin' | 'staff' }) {
-  return <div className="ps-order-table" role="table"><div role="row"><span>Order</span><span>Customer</span><span>Status</span><span>Total</span><span>Updated</span><span /></div>{orders.map((order) => <div role="row" key={`${mode}-${order.id}`}><strong>{order.number}</strong><span>{order.customer}</span><span className={`ps-order-status ps-order-status-${order.status}`}>{order.status}</span><strong>${order.total.toFixed(2)}</strong><span>{order.updatedAt}</span><button type="button">Open <ArrowRight size={14} /></button></div>)}</div>
+  const [openId, setOpenId] = useState<string | null>(null)
+  return <div className="ps-order-table" role="table"><div role="row"><span>Order</span><span>Customer</span><span>Status</span><span>Total</span><span>Updated</span><span /></div>{orders.map((order) => {
+    const isOpen = openId === order.id
+    return <Fragment key={`${mode}-${order.id}`}>
+      <div role="row">
+        <strong>{order.number}</strong>
+        <span>{order.customer}</span>
+        <span className={`ps-order-status ps-order-status-${order.status}`}>{order.status}</span>
+        <strong>${order.total.toFixed(2)}</strong>
+        <span>{order.updatedAt}</span>
+        <button type="button" onClick={() => setOpenId(isOpen ? null : order.id)}>{isOpen ? 'Close' : 'Open'} {isOpen ? <ChevronDown size={14} /> : <ArrowRight size={14} />}</button>
+      </div>
+      {isOpen && <div role="row" className="ps-order-detail">
+        <div className="ps-order-detail-grid">
+          <div>
+            <h4>Items</h4>
+            <p>{order.itemSummary || 'No item details'}</p>
+            {order.vendor && <p className="ps-order-detail-vendor">Vendor: {order.vendor}</p>}
+          </div>
+          <div>
+            <h4>Ship to</h4>
+            <p>{order.customer}</p>
+            <p>{order.destination || '—'}</p>
+          </div>
+          <div>
+            <h4>Timeline</h4>
+            {(order.events || []).map((ev, i) => <p key={i}><span className={`ps-order-status ps-order-status-${ev.status}`}>{ev.status}</span> — {ev.at}</p>)}
+          </div>
+        </div>
+      </div>}
+    </Fragment>
+  })}</div>
 }

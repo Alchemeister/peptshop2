@@ -21,7 +21,6 @@ import { FrontendLink } from '../navigation'
 const money = (value: number) => `$${value.toFixed(2)}`
 
 export function CommercePage(props: PageComponentProps) {
-  if (props.pathname === '/cart') return <CartPage {...props} />
   return <CartPage {...props} />
 }
 

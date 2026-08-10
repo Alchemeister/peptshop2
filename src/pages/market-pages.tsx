@@ -247,7 +247,7 @@ export const productDetails: Record<
   'BAC Water': { cas: '100-51-6', formula: 'C₇H₈O', mw: '108.14', description: 'Bacteriostatic water for injection. 0.9% benzyl alcohol preservative allows multi-dose use for up to 30 days.' },
   'Acetic Acid': { cas: '64-19-7', formula: 'C₂H₄O₂', mw: '60.05', description: 'Reconstitution solvent for peptide vials. 0.9% bacteriostatic acetic acid for compounds sensitive to neutral pH.' },
   'BPC-157 / TB-500 Blend': { cas: 'N/A', formula: 'N/A', mw: 'N/A', description: 'Combined formulation of BPC-157 and TB-500. Studied for synergistic effects on fibroblast activity.' },
-  'CJC-1295': { cas: '446262-90-4', formula: 'C₁₆₅H₂₆₉N₄₇O₄₆', mw: '3647.2', description: 'Growth hormone releasing hormone analog. Studied for extended half-life via drug affinity complex.' },
+  'CJC-1295 (no DAC)': { cas: '446262-90-4', formula: 'C₁₆₅H₂₆₉N₄₇O₄₆', mw: '3647.2', description: 'Growth hormone releasing hormone analog. Studied for extended half-life via drug affinity complex.' },
   'GHRP-2': { cas: '158861-67-7', formula: 'C₄₅H₅₅N₉O₆', mw: '818.0', description: 'Growth hormone secretagogue. Studied for ghrelin receptor agonism and GH pulse amplification.' },
   'Melanotan II': { cas: '121062-08-6', formula: 'C₅₀H₆₉N₁₅O₉', mw: '1024.2', description: 'Synthetic analog of alpha-melanocyte stimulating hormone. Studied for melanocortin receptor binding affinity.' },
   'Hexarelin': { cas: '140703-51-1', formula: 'C₄₇H₅₈N₁₂O₆', mw: '887.0', description: 'Synthetic hexapeptide. Studied for ghrelin receptor agonism and GH secretagogue activity.' },
@@ -273,10 +273,10 @@ export const productDetails: Record<
   'GLOW': { cas: 'N/A', formula: 'N/A', mw: 'N/A', description: 'Combined stack of BPC-157, TB-500, and GHK-Cu. Studied for synergistic tissue repair and extracellular matrix signaling.' },
   'KLOW': { cas: 'N/A', formula: 'N/A', mw: 'N/A', description: 'Combined stack of BPC-157, TB-500, GHK-Cu, and KPV. Studied for synergistic tissue repair, matrix synthesis, and anti-inflammatory signaling.' },
   'Adamax': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Synthetic nootropic peptide. Studied for cognitive signaling and neuroplasticity pathways.' },
-  'P21': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Cerebrolysin-derived peptide. Studied for neurotrophic signaling and synaptic plasticity.' },
+  'P21 (cerebroprotein hydrolysate)': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Cerebrolysin-derived peptide. Studied for neurotrophic signaling and synaptic plasticity.' },
   'PE 22-28': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Synthetic melanocortin-derived peptide. Studied for cognitive signaling and neuroprotective pathways.' },
   'CJC-1295 (with DAC)': { cas: '51714-35-3', formula: 'C₁₅₂H₂₅₂N₄₄O₄₂', mw: '3366.9', description: 'Growth hormone releasing hormone analog with drug affinity complex. Studied for extended half-life and sustained GH secretion.' },
-  'CJC-1295 + Ipamorelin Blend': { cas: 'N/A', formula: 'N/A', mw: 'N/A', description: 'Combined formulation of CJC-1295 and ipamorelin. Studied for synergistic GH secretagogue signaling.' },
+  'CJC-1295 (no DAC) + Ipamorelin': { cas: 'N/A', formula: 'N/A', mw: 'N/A', description: 'Combined formulation of CJC-1295 and ipamorelin. Studied for synergistic GH secretagogue signaling.' },
   'GHRP-6': { cas: '87630-95-7', formula: 'C₄₆H₅₆N₁₂O₆', mw: '873.0', description: 'Growth hormone secretagogue. Studied for ghrelin receptor agonism and GH pulse amplification.' },
   'GDF-8': { cas: '306-08-1', formula: 'Pending', mw: 'Pending', description: 'Myostatin protein. Studied for negative regulation of skeletal muscle mass.' },
   'Somatropin (HGH)': { cas: '9002-72-6', formula: 'C₂₂₅H₃₆₀N₇₆O₆₇S', mw: '22125', description: 'Recombinant human growth hormone. Studied for metabolic signaling and growth factor activity.' },
@@ -301,8 +301,6 @@ export const productDetails: Record<
   'PBS Water': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Phosphate buffered saline solution. Used as reconstitution solvent for peptide compounds.' },
   'PNC-27': { cas: '1159861-00-3', formula: 'C₁₈₈H₂₉₃N₅₃O₄₄S', mw: '4032', description: 'Synthetic peptide. Studied for cancer cell membrane disruption via p53-dependent signaling.' },
   'FOX04': { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Forkhead box O4 transcription factor peptide. Studied for cellular stress response and apoptosis signaling.' },}
-
-const previewVendorOffers_REMOVED = true // Real vendors now come from models.vendors
 
 function VerifiedBadge({ size = 14 }: { size?: number }) {
   return (
@@ -472,14 +470,14 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <div className="ps-offer-vendor-info">
                           <h3>
                             {vendor.name}
-                            {vendor.status === 'trusted' && (vendor as any).verified ? <VerifiedBadge size={14} /> : null}
-                            <span className="ps-offer-rating" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0, verified: vendor.status === 'trusted' && Boolean((vendor as any).verified) }) }}>
+                            {vendor.status === 'trusted' && vendor.verified ? <VerifiedBadge size={14} /> : null}
+                                                        <span className="ps-offer-rating" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0, verified: vendor.status === 'trusted' && Boolean(vendor.verified) }) }}>
                               <Star size={15} /> {vendor.rating.toFixed(1)}
                             </span>
                           </h3>
                           <p><MapPin size={14} /> {vendor.location || 'Location pending'} · {vendor.fulfillment}</p>
                         </div>
-                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0, verified: vendor.status === 'trusted' && Boolean((vendor as any).verified) }) }}>
+                        <button type="button" className="ps-offer-coa-link" onClick={(e) => { e.stopPropagation(); setReviewVendor({ name: vendor.name, slug: vendor.slug, rating: vendor.rating, reviewCount: vendor.reviewCount ?? 0, verified: vendor.status === 'trusted' && Boolean(vendor.verified) }) }}>
                           Reviews
                         </button>
                       </div>
@@ -519,9 +517,8 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                         <button type="button" className="ps-add-to-cart-btn" onClick={() => {
                           setSelectedVendorId(vendor.id)
                           const vPrice = lookupVendorPrice(selectedDose, vendor.id)
-                          const activeQty = selectedVendorId === vendor.id ? quantity : 1
-                          const linePrice = (selectedPackSize === 20 ? vPrice * 1.9 : vPrice) * activeQty
-                          actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id, vendor.name, linePrice, `${selectedDose} · ${selectedPackSize} vials`, vendor.shippingCost ?? 12)
+                          const unitPrice = selectedPackSize === 20 ? vPrice * 1.9 : vPrice
+                          actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id, vendor.name, unitPrice, `${selectedDose} · ${selectedPackSize} vials`, vendor.shippingCost ?? 12)
                         }}>
                           <ShoppingBag size={17} /> Add ${(() => {
                             const vPrice = lookupVendorPrice(selectedDose, vendor.id)
@@ -723,7 +720,7 @@ function VendorRow({ vendor, index, navigate }: { vendor: VendorSummary; index: 
       <div className="ps-vendor-name"><h2>{vendor.name}</h2><p><MapPin size={14} /> {vendor.location || 'Location pending'}</p></div>
       <div className="ps-vendor-rating"><Star size={16} /><strong>{vendor.rating.toFixed(1)}</strong><span>{vendor.reviewCount} reviews</span></div>
       <div className="ps-vendor-fulfillment"><Clock3 size={15} /><span>Typical dispatch</span><strong>{vendor.fulfillment}</strong></div>
-      {vendor.status === 'trusted' && Boolean((vendor as any).verified) ? <span className={`ps-trust-label ps-trust-${vendor.status}`}><VerifiedBadge size={14} /> Verified vendor</span> : <span className="ps-trust-label ps-trust-pending">{vendor.status}</span>}
+      {vendor.status === 'trusted' && Boolean(vendor.verified) ? <span className={`ps-trust-label ps-trust-${vendor.status}`}><VerifiedBadge size={14} /> Verified vendor</span> : <span className="ps-trust-label ps-trust-pending">{vendor.status}</span>}
       <ArrowRight size={19} />
     </FrontendLink>
   )
@@ -791,7 +788,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
       <header className="ps-vendor-profile-head">
         <div className={`ps-vendor-profile-mark`}>{vendorInitials}</div>
         <div className="ps-vendor-profile-title">
-          {vendor?.status === 'trusted' && Boolean((vendor as any).verified) ? <span className="ps-trust-label ps-trust-trusted"><VerifiedBadge size={14} /> Verified vendor</span> : null}
+          {vendor?.status === 'trusted' && Boolean(vendor?.verified) ? <span className="ps-trust-label ps-trust-trusted"><VerifiedBadge size={14} /> Verified vendor</span> : null}
           <h1>{vendor?.name ?? 'Sample Vendor Zero'}</h1>
           <p><MapPin size={16} /> {vendor?.location ?? 'United States'} warehouse <span /> Active since 2024</p>
         </div>
@@ -800,7 +797,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
       <nav className="ps-subnav" aria-label="Vendor profile sections">
         <FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}`} navigate={actions.navigate} aria-current={!catalogMode && !reviewsMode ? 'page' : undefined}>Overview</FrontendLink>
         <FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}/catalog`} navigate={actions.navigate} aria-current={catalogMode ? 'page' : undefined}>Catalog</FrontendLink>
-        <FrontendLink href={`/coas?vendor=${encodeURIComponent(vendor?.name ?? '')}`} navigate={actions.navigate}>COAs <span>{(vendor as any)?.coaCount ?? 0}</span></FrontendLink>
+        <FrontendLink href={`/coas?vendor=${encodeURIComponent(vendor?.name ?? '')}`} navigate={actions.navigate}>COAs <span>{vendor?.coaCount ?? 0}</span></FrontendLink>
         <FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}/reviews`} navigate={actions.navigate} aria-current={reviewsMode ? 'page' : undefined}>Reviews <span>{vendor?.reviewCount ?? 0}</span></FrontendLink>
       </nav>
       {catalogMode ? (
@@ -843,7 +840,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
       ) : (
         <div className="ps-vendor-overview-grid">
           <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>{vendor?.location ?? 'US'} fulfillment with evidence linked at the batch level.</h2><p>{vendor?.name ?? 'This vendor'} ships from {vendor?.location ?? 'the US'} with {vendor?.fulfillment ?? '1–2 day'} dispatch. All listings include batch-level COA evidence.</p><div className="ps-button-row"><FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}/catalog`} navigate={actions.navigate} className="ps-primary-action">View catalog <ArrowRight size={17} /></FrontendLink><button type="button"><Bell size={16} /> Follow vendor</button></div></section>
-          <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>{vendor?.orderCount?.toLocaleString() ?? '2,310'}</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>{vendor?.fulfillment ?? '1–2 days'}</dd></div><div><dt>Published COAs</dt><dd>{(vendor as any)?.coaCount ?? 0}</dd></div></dl></aside>
+          <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>{vendor?.orderCount?.toLocaleString() ?? '2,310'}</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>{vendor?.fulfillment ?? '1–2 days'}</dd></div><div><dt>Published COAs</dt><dd>{vendor?.coaCount ?? 0}</dd></div></dl></aside>
           <section className="ps-vendor-policy"><h2>Fulfillment notes</h2><ul><li><Truck size={17} /><div><strong>Ships from {vendor?.location ?? 'USA'}</strong><span>Tracking supplied after dispatch.</span></div></li><li><CircleDollarSign size={17} /><div><strong>Transparent pack pricing</strong><span>Marketplace totals include PeptShop pricing rules.</span></div></li><li><FileCheck2 size={17} /><div><strong>Batch evidence</strong><span>Available certificates are attached to eligible listings.</span></div></li></ul></section>
           <section className="ps-vendor-reviews">
             <div className="ps-vendor-reviews-head">

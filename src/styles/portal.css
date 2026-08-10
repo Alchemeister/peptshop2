@@ -370,6 +370,45 @@
   color: #4f5965;
   font-size: 0.61rem;
   font-weight: 720;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+#ps-storefront .ps-order-table button:hover{
+  color: var(--ps-accent);
+}
+
+#ps-storefront .ps-order-detail{
+  display: block;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+#ps-storefront .ps-order-detail-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 768px){
+  #ps-storefront .ps-order-detail-grid{
+    grid-template-columns: 1fr;
+  }
+}
+#ps-storefront .ps-order-detail h4{
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8a8a8a;
+  margin: 0 0 0.35rem;
+}
+#ps-storefront .ps-order-detail p{
+  font-size: 0.78rem;
+  margin: 0 0 0.15rem;
+  color: #e8e8e8;
+}
+#ps-storefront .ps-order-detail-vendor{
+  color: var(--ps-accent) !important;
+  font-weight: 600;
 }
 
 #ps-storefront .ps-order-status{

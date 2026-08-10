@@ -35,6 +35,7 @@ export type VendorSummary = {
   regions?: Array<'us' | 'eu' | 'cn'>
   specialties: string[]
   status: 'trusted' | 'verified' | 'new'
+  verified?: boolean
   shippingCost?: number
 }
 

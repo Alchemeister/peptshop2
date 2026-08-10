@@ -156,7 +156,7 @@ export function ProductMarketplacePage({
           model.id,
           selection.offer.vendorId ?? undefined,
           selection.offer.vendorName,
-          selection.option.price * selection.quantity,
+          selection.option.price,
           `${selection.dosage.label} · ${selection.option.label}`,
         )
       }

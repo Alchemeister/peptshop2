@@ -1,6 +1,7 @@
 import { Check, ChevronUp, Copy, Moon, Route, Sun, X } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { CartLine, FrontendTheme, PeptShopActions, PeptShopViewModels } from './contracts'
+import { ErrorBoundary } from './error-boundary'
 import { mockModels } from './mock-data'
 import { CommercePage, OrderFlowPage } from './pages/commerce-pages'
 import { ApiDocsPage, ContentPage, LibraryPage } from './pages/content-pages'
@@ -206,10 +207,10 @@ export function PeptShopFrontend({
   return (
     <>
       {isPortal || route.family === 'api' ? (
-        <div id="ps-storefront" className="ps-app" data-theme={theme}>{page}</div>
+        <div id="ps-storefront" className="ps-app" data-theme={theme}><ErrorBoundary>{page}</ErrorBoundary></div>
       ) : (
         <StorefrontShell actions={actions} cartCount={cartCount} cartLines={cartLines} pathname={pathname} theme={theme}>
-          {page}
+          <ErrorBoundary>{page}</ErrorBoundary>
         </StorefrontShell>
       )}
 
