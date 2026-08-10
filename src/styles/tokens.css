@@ -253,6 +253,17 @@
   background: var(--ps-accent-hover);
 }
 
+#ps-storefront .ps-vendor-catalog-link{
+  border: 1px solid var(--ps-line);
+  background: transparent;
+  color: var(--ps-ink);
+}
+
+#ps-storefront .ps-vendor-catalog-link:hover{
+  border-color: var(--ps-accent);
+  color: var(--ps-accent);
+}
+
 #ps-storefront .ps-dark-link{
   border: 1px solid var(--ps-accent);
   background: var(--ps-accent);
