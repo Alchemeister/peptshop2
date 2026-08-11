@@ -28,19 +28,19 @@ function CartPage({ actions, models }: PageComponentProps) {
   const subtotal = models.cart.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0)
   // Group cart lines by vendor
   const vendorGroups = useMemo(() => {
-    const groups: Record<string, { vendorName: string; shippingCost: number; lines: CartLine[] }> = {}
+    const groups: Record<string, { vendorName: string; shippingCost: number; shippingBenefit: number; lines: CartLine[] }> = {}
     for (const line of models.cart) {
       const vName = line.vendor || 'Unassigned'
-      if (!groups[vName]) groups[vName] = { vendorName: vName, shippingCost: line.shippingCost ?? 12, lines: [] }
+      const vendor = models.vendors.find(v => v.name === vName)
+      if (!groups[vName]) groups[vName] = { vendorName: vName, shippingCost: line.shippingCost ?? vendor?.shippingCost ?? 0, shippingBenefit: vendor?.shippingBenefit ?? Infinity, lines: [] }
       groups[vName].lines.push(line)
     }
     return Object.values(groups)
   }, [models.cart])
-  // Dynamic shipping: uses vendor's configured shippingCost, free at $400+ per vendor
-  const FREE_SHIP_THRESHOLD = 400
+  // Dynamic shipping: uses vendor's configured shippingCost and free shipping threshold
   const totalShipping = vendorGroups.reduce((sum, g) => {
     const vendorSubtotal = g.lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
-    return sum + (vendorSubtotal >= FREE_SHIP_THRESHOLD ? 0 : g.shippingCost)
+    return sum + (vendorSubtotal >= g.shippingBenefit ? 0 : g.shippingCost)
   }, 0)
 
   // Track selected payment method for fee calculation
@@ -96,9 +96,9 @@ function CartPage({ actions, models }: PageComponentProps) {
             <div className="ps-cart-lines">
               {vendorGroups.map((group) => {
                 const vendorSubtotal = group.lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
-                const remaining = Math.max(0, FREE_SHIP_THRESHOLD - vendorSubtotal)
-                const progress = Math.min(100, (vendorSubtotal / FREE_SHIP_THRESHOLD) * 100)
-                const isFree = vendorSubtotal >= FREE_SHIP_THRESHOLD
+                const remaining = Math.max(0, group.shippingBenefit - vendorSubtotal)
+                const progress = Math.min(100, (vendorSubtotal / group.shippingBenefit) * 100)
+                const isFree = vendorSubtotal >= group.shippingBenefit
                 return (
                 <div key={group.vendorName} className="ps-cart-vendor-group">
                   <div className="ps-cart-vendor-head"><span className="ps-status-dot" /><strong>{group.vendorName}</strong></div>
@@ -188,7 +188,7 @@ function CartPage({ actions, models }: PageComponentProps) {
             <div className="ps-summary-line"><dt>Subtotal</dt><dd>{money(subtotal)}</dd></div>
             {vendorGroups.map((group) => {
               const vendorSubtotal = group.lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
-              const shipCost = vendorSubtotal >= FREE_SHIP_THRESHOLD ? 0 : group.shippingCost
+              const shipCost = vendorSubtotal >= group.shippingBenefit ? 0 : group.shippingCost
               return (
                 <div key={`ship-${group.vendorName}`} className="ps-summary-line">
                   <dt>Shipping <small>{group.vendorName}</small></dt>

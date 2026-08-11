@@ -518,7 +518,7 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
                           setSelectedVendorId(vendor.id)
                           const vPrice = lookupVendorPrice(selectedDose, vendor.id)
                           const unitPrice = selectedPackSize === 20 ? vPrice * 1.9 : vPrice
-                          actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id, vendor.name, unitPrice, `${selectedDose} · ${selectedPackSize} vials`, vendor.shippingCost ?? 12)
+                          actions.addToCart(source?.id ?? 'product-bpc-157', vendor.id, vendor.name, unitPrice, `${selectedDose} · ${selectedPackSize} vials`, vendor.shippingCost ?? 0)
                         }}>
                           <ShoppingBag size={17} /> Add ${(() => {
                             const vPrice = lookupVendorPrice(selectedDose, vendor.id)

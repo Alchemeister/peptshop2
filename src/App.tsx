@@ -132,7 +132,7 @@ export function PeptShopFrontend({
       const vName = vendorName ?? models.vendors.find((v) => v.id === vendorId)?.name ?? vendorId ?? 'Sample Vendor'
       const vId = vendorId ?? 'default'
       const lineId = `${productId}-${vId}`
-      const ship = shippingCost ?? models.vendors.find((v) => v.id === vendorId)?.shippingCost ?? 12
+      const ship = shippingCost ?? models.vendors.find((v) => v.id === vendorId)?.shippingCost ?? 0
       setCartLines((prev) => {
         const existing = prev.find((l) => l.id === lineId)
         if (existing) {
@@ -209,7 +209,7 @@ export function PeptShopFrontend({
       {isPortal || route.family === 'api' ? (
         <div id="ps-storefront" className="ps-app" data-theme={theme}><ErrorBoundary>{page}</ErrorBoundary></div>
       ) : (
-        <StorefrontShell actions={actions} cartCount={cartCount} cartLines={cartLines} pathname={pathname} theme={theme}>
+        <StorefrontShell actions={actions} cartCount={cartCount} cartLines={cartLines} pathname={pathname} theme={theme} vendors={models.vendors}>
           <ErrorBoundary>{page}</ErrorBoundary>
         </StorefrontShell>
       )}

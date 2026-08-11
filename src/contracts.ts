@@ -37,6 +37,7 @@ export type VendorSummary = {
   status: 'trusted' | 'verified' | 'new'
   verified?: boolean
   shippingCost?: number
+  shippingBenefit?: number
 }
 
 export type CoaSummary = {

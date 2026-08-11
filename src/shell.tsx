@@ -9,7 +9,7 @@ import {
   X,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import type { CartLine, FrontendTheme, PeptShopActions } from './contracts'
+import type { CartLine, FrontendTheme, PeptShopActions, VendorSummary } from './contracts'
 import { FrontendLink, routeIsActive } from './navigation'
 
 const navItems = [
@@ -26,6 +26,7 @@ type StorefrontShellProps = {
   children: React.ReactNode
   pathname: string
   theme: FrontendTheme
+  vendors: VendorSummary[]
 }
 
 export function StorefrontShell({
@@ -35,6 +36,7 @@ export function StorefrontShell({
   children,
   pathname,
   theme,
+  vendors,
 }: StorefrontShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -129,7 +131,8 @@ export function StorefrontShell({
                         }
                         return Object.entries(groups).map(([vendorName, lines]) => {
                           const groupSubtotal = lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
-                          const freeShipThreshold = 400
+                          const vendor = vendors.find(v => v.name === vendorName)
+                          const freeShipThreshold = vendor?.shippingBenefit ?? Infinity
                           const progress = Math.min(100, (groupSubtotal / freeShipThreshold) * 100)
                           return (
                             <div key={vendorName} className="ps-cart-drawer-vendor">
@@ -174,8 +177,11 @@ export function StorefrontShell({
                         }
                         const totalShipping = Object.values(groups).reduce((sum, lines) => {
                           const vs = lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0)
-                          const shipCost = lines[0]?.shippingCost ?? 50
-                          return sum + (vs >= 400 ? 0 : shipCost)
+                          const vendorName = lines[0]?.vendor ?? ''
+                          const vendor = vendors.find(v => v.name === vendorName)
+                          const shipCost = lines[0]?.shippingCost ?? vendor?.shippingCost ?? 0
+                          const freeThreshold = vendor?.shippingBenefit ?? Infinity
+                          return sum + (vs >= freeThreshold ? 0 : shipCost)
                         }, 0)
                         return (
                           <>
