@@ -29,6 +29,22 @@
 - A passing TypeScript build is not a working feature.
 - Verify subagent self-reports against the actual DOM.
 
+## Engineering Rules
+
+These rules apply to every task unless explicitly overridden. Bias: caution over speed on non-trivial work.
+
+1. **Think Before Coding** — State assumptions. If uncertain, ask. Present multiple interpretations when ambiguous. Push back when simpler exists. Stop when confused.
+2. **Simplicity First** — Minimum code that solves the problem. Nothing speculative. No abstractions for single-use code.
+3. **Surgical Changes** — Touch only what you must. Don't "improve" adjacent code. Match existing style.
+4. **Goal-Driven Execution** — Define success criteria. Loop until verified. Don't follow steps — define success and iterate.
+5. **Use the model only for judgment calls** — Classification, drafting, summarization, extraction. NOT routing, retries, deterministic transforms. If code can answer, code answers.
+6. **Surface conflicts, don't average them** — If two patterns contradict, pick one (more recent / more tested). Explain why. Flag the other for cleanup.
+7. **Read before you write** — Read exports, immediate callers, shared utilities before adding code. "Looks orthogonal" is dangerous.
+8. **Tests verify intent, not just behavior** — Tests must encode WHY behavior matters. A test that can't fail when business logic changes is wrong.
+9. **Checkpoint after every significant step** — Summarize what was done, what's verified, what's left. If you lose track, stop and restate.
+10. **Match the codebase's conventions, even if you disagree** — Conformance > taste. If a convention is harmful, surface it. Don't fork silently.
+11. **Fail loud** — "Completed" is wrong if anything was skipped silently. "Tests pass" is wrong if any were skipped. Default to surfacing uncertainty.
+
 ## Payment
 - NOWPayments for crypto. PeerPay (pay.peer.xyz) with 9% fee baked into total.
 - Webhooks: Express port 8787 + CF Worker.
