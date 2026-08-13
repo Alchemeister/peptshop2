@@ -45,6 +45,14 @@ These rules apply to every task unless explicitly overridden. Bias: caution over
 10. **Match the codebase's conventions, even if you disagree** — Conformance > taste. If a convention is harmful, surface it. Don't fork silently.
 11. **Fail loud** — "Completed" is wrong if anything was skipped silently. "Tests pass" is wrong if any were skipped. Default to surfacing uncertainty.
 
+## GLM-5.2 Coding Practices
+- Frame tasks as production PR reviews, not casual requests.
+- Read full repo context at once — GLM-5.2 has 1M token context, use it.
+- Define success criteria upfront and loop until verified (goal-driven, not step-driven).
+- Batch independent reads/searches in one turn — don't go file-by-file.
+- Next.js Server Actions (admin buttons, tab switches, form submits) CANNOT be triggered via JS `.click()` or CDP `Runtime.evaluate`. Only real user clicks or `Input.dispatchMouseEvent` at exact coordinates work. Don't waste turns trying.
+- Don't go down rabbit holes. If blocked, say so directly and try a different approach.
+
 ## Payment
 - NOWPayments for crypto. PeerPay (pay.peer.xyz) with 9% fee baked into total.
 - Webhooks: Express port 8787 + CF Worker.
