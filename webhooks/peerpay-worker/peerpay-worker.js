@@ -21,6 +21,33 @@ export default {
       const signature = request.headers.get('x-peerpay-signature') || '';
       const eventType = payload.type || payload.event || 'UNKNOWN';
 
+      // Verify webhook signature
+      if (!env.PEERPAY_WEBHOOK_SECRET) {
+        console.error('FATAL: PEERPAY_WEBHOOK_SECRET not set — rejecting webhook');
+        return new Response(JSON.stringify({ error: 'Webhook secret not configured' }), {
+          status: 503, headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      if (!signature) {
+        return new Response(JSON.stringify({ error: 'Missing signature' }), {
+          status: 401, headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      const enc = new TextEncoder();
+      const key = await crypto.subtle.importKey(
+        'raw', enc.encode(env.PEERPAY_WEBHOOK_SECRET),
+        { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+      );
+      const expectedSig = Array.from(new Uint8Array(
+        await crypto.subtle.sign('HMAC', key, enc.encode(rawBody))
+      )).map(b => b.toString(16).padStart(2, '0')).join('');
+      if (signature !== expectedSig) {
+        console.error('PeerPay webhook: INVALID SIGNATURE — rejecting');
+        return new Response(JSON.stringify({ error: 'Invalid signature' }), {
+          status: 401, headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
       // Log the event
       console.log(`[PeerPay Webhook] Event: ${eventType}`, JSON.stringify(payload));
 

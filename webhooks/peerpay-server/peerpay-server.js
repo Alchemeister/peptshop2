@@ -19,8 +19,8 @@ if (!fs.existsSync(EVENTS_DIR)) fs.mkdirSync(EVENTS_DIR, { recursive: true });
 // Verify PeerPay webhook signature using HMAC-SHA256
 function verifySignature(body, signature) {
   if (!PEERPAY_WEBHOOK_SECRET) {
-    console.warn('⚠ PEERPAY_WEBHOOK_SECRET not set — skipping signature verification');
-    return true; // Allow through if no secret configured (dev mode)
+    console.error('FATAL: PEERPAY_WEBHOOK_SECRET not set — rejecting all webhooks');
+    return false;
   }
   if (!signature) return false;
   const crypto = require('crypto');
@@ -35,7 +35,7 @@ function verifySignature(body, signature) {
 const server = http.createServer(async (req, res) => {
   // CORS + JSON helpers
   const json = (code, data) => {
-    res.writeHead(code, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+    res.writeHead(code, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'none' });
     res.end(JSON.stringify(data));
   };
 
@@ -44,20 +44,9 @@ const server = http.createServer(async (req, res) => {
     return json(200, { ok: true, service: 'peptshop-peerpay-webhook', events: countEvents() });
   }
 
-  // View stored events (for debugging)
-  if (req.method === 'GET' && req.url === '/events') {
-    const events = listEvents();
-    return json(200, { events, count: events.length });
-  }
-
-  // View single event
-  if (req.method === 'GET' && req.url.startsWith('/events/')) {
-    const id = req.url.split('/')[2];
-    const filePath = path.join(EVENTS_DIR, `${id}.json`);
-    if (fs.existsSync(filePath)) {
-      return json(200, JSON.parse(fs.readFileSync(filePath, 'utf8')));
-    }
-    return json(404, { error: 'Event not found' });
+  // Events endpoint removed — webhook payloads contain payment data, not publicly readable
+  if (req.method === 'GET' && (req.url === '/events' || req.url.startsWith('/events/'))) {
+    return json(403, { error: 'Forbidden' });
   }
 
   // Webhook receiver endpoint
