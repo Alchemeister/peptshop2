@@ -50,7 +50,7 @@ These rules apply to every task unless explicitly overridden. Bias: caution over
 - Read full repo context at once — GLM-5.2 has 1M token context, use it.
 - Define success criteria upfront and loop until verified (goal-driven, not step-driven).
 - Batch independent reads/searches in one turn — don't go file-by-file.
-- Next.js Server Actions (admin buttons, tab switches, form submits) CANNOT be triggered via JS `.click()` or CDP `Runtime.evaluate`. Only real user clicks or `Input.dispatchMouseEvent` at exact coordinates work. Don't waste turns trying.
+- Next.js Server Actions: JS `.click()` does NOT work. Use `Input.dispatchMouseEvent` (mousePressed + mouseReleased) at exact element coordinates from `getBoundingClientRect()`, or navigate via URL params like `?tab=upload`. Always try URL navigation first, then CDP mouse events at precise coordinates. Don't give up after one method fails.
 - Don't go down rabbit holes. If blocked, say so directly and try a different approach.
 
 ## Payment
