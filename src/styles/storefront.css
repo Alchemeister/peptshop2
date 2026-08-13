@@ -2270,20 +2270,27 @@
 
 #ps-storefront .ps-compact-product-list > a{
   display: grid;
-  min-height: 5.5rem;
-  grid-template-columns: 3rem minmax(10rem, 1fr) minmax(7rem, 0.6fr) minmax(5rem, 0.5fr) minmax(6rem, 0.5fr) auto;
+  min-height: 4.5rem;
+  grid-template-columns: minmax(10rem, 1fr) minmax(6rem, 0.5fr) minmax(5rem, 0.4fr) auto;
   gap: 1rem;
   align-items: center;
   border-bottom: 1px solid var(--ps-line);
   color: var(--ps-ink);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   text-decoration: none;
+  padding: 0.5rem 0;
+  transition: background 0.15s;
 }
-
-#ps-storefront .ps-compact-product-list img{
-  width: 2.5rem;
-  height: 3.5rem;
-  object-fit: contain;
+#ps-storefront .ps-compact-product-list > a:hover{
+  background: color-mix(in srgb, var(--ps-accent) 6%, transparent);
+}
+#ps-storefront .ps-compact-product-list > a > strong{
+  font-size: 0.95rem;
+}
+#ps-storefront .ps-compact-product-list > a > b{
+  font-size: 0.9rem;
+  color: var(--ps-ink);
+  white-space: nowrap;
 }
 
 #ps-storefront .ps-compact-product-list span{
@@ -6966,4 +6973,105 @@
 /* Footnote — readable */
 #ps-storefront .seller-mandatory-escrow-modal__footnote {
   color: #87919d;
+}
+
+/* === 0x Vendor Page Overrides === */
+/* Style 0x's Tailwind vendor page to match our design */
+
+/* Vendor page container - match our max-width and spacing */
+#ps-storefront .ps-private-surface > div > div > div > div > div[class*="mx-auto"] {
+  max-width: 1200px !important;
+  width: 100% !important;
+}
+
+/* Vendor name heading - match our size */
+#ps-storefront .ps-private-surface h1 {
+  font-size: 2.5rem !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Back link - style like our ps-back-link */
+#ps-storefront .ps-private-surface a[href*="/vendors"]:not([href*="/vendors/"]) {
+  color: var(--ps-muted) !important;
+  font-size: 0.85rem !important;
+}
+
+/* Tab buttons - style like our ps-subnav */
+#ps-storefront .ps-private-surface [class*="inline-flex"][class*="items-center"][class*="gap"] > a[href*="/vendors/"] {
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  color: var(--ps-muted) !important;
+  transition: all 0.15s !important;
+}
+
+#ps-storefront .ps-private-surface [class*="inline-flex"][class*="items-center"][class*="gap"] > a[href*="/vendors/"]:hover {
+  background: color-mix(in srgb, var(--ps-accent) 10%, transparent) !important;
+  color: var(--ps-ink) !important;
+}
+
+/* Active tab */
+#ps-storefront .ps-private-surface [aria-current="page"] {
+  background: color-mix(in srgb, var(--ps-accent) 15%, transparent) !important;
+  color: var(--ps-ink) !important;
+}
+
+/* Stats row - add card styling */
+#ps-storefront .ps-private-surface [class*="grid"][class*="gap"][class*="border"] {
+  padding: 1rem !important;
+  border-radius: 0.75rem !important;
+  background: var(--ps-surface) !important;
+}
+
+/* Catalog button - match our orange */
+#ps-storefront .ps-private-surface [class*="bg-"][class*="text-"][class*="rounded"] > a,
+#ps-storefront .ps-private-surface a[class*="bg-black"],
+#ps-storefront .ps-private-surface a[class*="bg-\\[#"] {
+  background: var(--ps-accent) !important;
+  color: var(--ps-ink) !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+}
+
+/* Vendor catalog table - better spacing and cards */
+#ps-storefront .ps-private-surface [class*="grid-cols"] {
+  gap: 0.5rem !important;
+}
+
+#ps-storefront .ps-private-surface [class*="border-b"][class*="border-\\["]:not([class*="dark:border"]) {
+  border-color: var(--ps-line) !important;
+}
+
+/* Out of stock badge */
+#ps-storefront .ps-private-surface [class*="text-"][class*="font-medium"]:where([class*="amber"], [class*="red"], [class*="orange"]) {
+  padding: 0.15rem 0.5rem !important;
+  border-radius: 0.25rem !important;
+  font-size: 0.75rem !important;
+}
+
+/* Price text - make it stand out */
+#ps-storefront .ps-private-surface [class*="text-"][class*="font-bold"]:where([class*="slate-900"], [class*="dark:text-white"]) {
+  color: var(--ps-ink) !important;
+  font-size: 1rem !important;
+}
+
+/* Empty state cards - match our card style */
+#ps-storefront .ps-private-surface [class*="rounded"][class*="bg-"][class*="p-"] {
+  border-radius: 0.75rem !important;
+}
+
+/* Search input on vendor catalog */
+#ps-storefront .ps-private-surface input[type="search"] {
+  border-radius: 0.5rem !important;
+  border-color: var(--ps-line) !important;
+  background: var(--ps-surface) !important;
+  color: var(--ps-ink) !important;
+}
+
+#ps-storefront .ps-private-surface input[type="search"]:focus {
+  border-color: var(--ps-accent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ps-accent) 15%, transparent) !important;
 }

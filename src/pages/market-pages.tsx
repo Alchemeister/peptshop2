@@ -804,9 +804,9 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
         <div className="ps-vendor-catalog">
           <div className="ps-vendor-catalog-head"><div><span className="ps-kicker">Vendor catalog</span><h2>Available from {vendor?.name ?? 'Vendor'}</h2></div><label><Search size={16} /><input placeholder="Search this catalog" /></label></div>
           <div className="ps-compact-product-list">
-            {models.products.filter((product) => product.availability === 'available').slice(0, 5).map((product) => (
+            {models.products.filter((product) => product.availability === 'available').map((product) => (
               <FrontendLink key={product.id} href={`/products/${product.slug}`} navigate={actions.navigate}>
-                <strong>{product.name}</strong><span>{product.formats[0]}</span>{product.coaCount > 0 ? <span>{`${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}`}</span> : null}<b>${product.startingPrice != null ? `$${product.startingPrice.toFixed(2)}/mg` : '—'}</b><ArrowRight size={17} />
+                <strong>{product.name}</strong><span>{product.formats[0]}</span>{product.coaCount > 0 ? <span>{`${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}`}</span> : null}<b>{product.startingPrice != null ? `$${product.startingPrice.toFixed(2)}/mg` : '—'}</b><ArrowRight size={17} />
               </FrontendLink>
             ))}
           </div>
