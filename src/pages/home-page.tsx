@@ -176,8 +176,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
               >
                 <div className="ps-catalog-card-visual">
                   <img src={product.imageSrc} alt={`${product.name} vial`} />
-                  <i>{product.coaCount === 0 ? 'No COAs yet' : `${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}`}</i>
-                  {product.coaCount === 0 ? <small className="ps-catalog-card-disclaimer">*Illustrative</small> : null}
+                  <i>{product.coaCount > 0 ? `${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}` : null}</i>
                 </div>
                 <div className="ps-catalog-card-copy">
                   <h2>{product.name}</h2>

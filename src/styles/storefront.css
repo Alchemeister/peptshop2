@@ -1218,12 +1218,12 @@
   font-size: 0.72rem;
 }
 #ps-storefront .ps-offer-vendor-info p:not(:empty) + .ps-offer-status::before{
-  content: " · ";
-  color: var(--ps-line-strong);
+  content: "";
 }
 #ps-storefront .ps-offer-vendor-info p:not(:empty) + .ps-offer-status{
-  margin-top: -1.05rem;
+  margin-top: 0.25rem;
   margin-left: 0;
+  display: block;
 }
 
 #ps-storefront .ps-offer-verified-badge{
