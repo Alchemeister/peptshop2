@@ -99,7 +99,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
                   <p>
                     {heroProduct.startingPrice === null
                       ? '—'
-                      : `$${(heroProduct.startingPrice / (Number.parseInt(heroProduct.formats[0] ?? '5', 10) * 10)).toFixed(2)}`}
+                      : `$${heroProduct.startingPrice.toFixed(2)}`}
                     {heroProduct.startingPrice !== null && <small>/mg</small>}
                   </p>
                   <p>
@@ -184,7 +184,7 @@ export function HomePage({ actions, models }: PageComponentProps) {
                   <div>
                     <span>{product.vendorCount ? `${product.vendorCount} ${product.vendorCount === 1 ? 'vendor' : 'vendors'}` : 'Join watchlist'}</span>
                     {(() => { const r = product.regions ?? (product.vendorCount >= 3 ? ['us', 'eu'] : product.vendorCount >= 1 ? ['us'] : []); return r.length ? <small className="ps-region-badge">{r.map(x => x.toUpperCase()).join(' · ')}</small> : null; })()}
-                    <strong>{product.startingPrice === null ? 'No live offers' : `$${(product.startingPrice / (Number.parseInt(product.formats[0] ?? '5', 10) * 10)).toFixed(2)}/mg`}</strong>
+                    <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
                   </div>
                 </div>
               </FrontendLink>

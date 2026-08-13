@@ -129,7 +129,7 @@ export function SellerPage(props: PageComponentProps) {
             <thead><tr><th>Product</th><th>Format</th><th>Price</th><th>Status</th></tr></thead>
             <tbody>
               {props.models.products.slice(0, 8).map((p) => (
-                <tr key={p.id}><td><strong>{p.name}</strong></td><td>{p.formats?.join(', ') || '—'}</td><td>{p.startingPrice != null ? `$${(p.startingPrice / (Number.parseInt(p.formats?.[0] ?? '5', 10) * 10)).toFixed(2)}/mg` : '—'}</td><td><span className="ps-status-dot" /> Active</td></tr>
+                <tr key={p.id}><td><strong>{p.name}</strong></td><td>{p.formats?.join(', ') || '—'}</td><td>{p.startingPrice != null ? `$${p.startingPrice.toFixed(2)}/mg` : '—'}</td><td><span className="ps-status-dot" /> Active</td></tr>
               ))}
             </tbody>
           </table>

@@ -209,7 +209,7 @@ function CatalogCard({ product, navigate }: { product: ProductSummary; navigate:
         <div>
           <span>{product.vendorCount ? `${product.vendorCount} ${product.vendorCount === 1 ? 'vendor' : 'vendors'}` : 'Join watchlist'}</span>
           {(() => { const r = product.regions ?? (product.vendorCount >= 3 ? ['us', 'eu'] : product.vendorCount >= 1 ? ['us'] : []); return r.length ? <small className="ps-region-badge">{r.map(x => x.toUpperCase()).join(' · ')}</small> : null; })()}
-          <strong>{product.startingPrice === null ? 'No live offers' : `$${(product.startingPrice / (Number.parseInt(product.formats[0] ?? '5', 10) * 10)).toFixed(2)}/mg`}</strong>
+          <strong>{product.startingPrice === null ? 'No live offers' : `$${product.startingPrice.toFixed(2)}/mg`}</strong>
         </div>
         <i className="ps-catalog-coa-badge">{product.coaCount > 0 ? `${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}` : null}</i>
       </div>
@@ -806,7 +806,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
           <div className="ps-compact-product-list">
             {models.products.filter((product) => product.availability === 'available').slice(0, 5).map((product) => (
               <FrontendLink key={product.id} href={`/products/${product.slug}`} navigate={actions.navigate}>
-                <strong>{product.name}</strong><span>{product.formats[0]}</span>{product.coaCount > 0 ? <span>{`${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}`}</span> : null}<b>${product.startingPrice != null ? `$${(product.startingPrice / (Number.parseInt(product.formats[0] ?? '5', 10) * 10)).toFixed(2)}/mg` : '—'}</b><ArrowRight size={17} />
+                <strong>{product.name}</strong><span>{product.formats[0]}</span>{product.coaCount > 0 ? <span>{`${product.coaCount} COA${product.coaCount === 1 ? '' : 's'}`}</span> : null}<b>${product.startingPrice != null ? `$${product.startingPrice.toFixed(2)}/mg` : '—'}</b><ArrowRight size={17} />
               </FrontendLink>
             ))}
           </div>
