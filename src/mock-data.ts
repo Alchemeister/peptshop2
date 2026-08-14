@@ -20,7 +20,7 @@ export const mockModels: PeptShopViewModels = {
     },
     {
       id: 'p2',
-      name: 'Tirzepatide',
+      name: 'GLP-2',
             slug: 'tirzepatide',
             category: 'Metabolic',
             formats: ['2 mg', '5 mg', '10 mg'],
@@ -98,8 +98,8 @@ export const mockModels: PeptShopViewModels = {
     },
     {
       id: 'p8',
-      name: 'Retatrutide',
-            slug: 'retatrutide',
+      name: 'GLP-3',
+      slug: 'retatrutide',
             category: 'Metabolic',
             formats: ['2 mg', '5 mg', '10 mg'],
             startingPrice: 35,
@@ -267,8 +267,8 @@ export const mockModels: PeptShopViewModels = {
     },
     {
       id: 'p21',
-      name: 'Semaglutide',
-            slug: 'semaglutide',
+      name: 'GLP-1',
+      slug: 'semaglutide',
             category: 'Metabolic',
             formats: ['2 mg', '5 mg'],
             startingPrice: 48,
