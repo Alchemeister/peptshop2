@@ -1213,17 +1213,14 @@
   gap: 0.35rem;
 }
 #ps-storefront .ps-offer-vendor-info .ps-offer-status{
-  margin-top: 0;
+  margin-top: 0.25rem;
+  margin-left: 0;
+  display: block;
   color: var(--ps-muted);
   font-size: 0.72rem;
 }
 #ps-storefront .ps-offer-vendor-info p:not(:empty) + .ps-offer-status::before{
   content: "";
-}
-#ps-storefront .ps-offer-vendor-info p:not(:empty) + .ps-offer-status{
-  margin-top: 0.25rem;
-  margin-left: 0;
-  display: block;
 }
 
 #ps-storefront .ps-offer-verified-badge{
