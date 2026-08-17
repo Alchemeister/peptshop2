@@ -42,13 +42,13 @@ import {
   VendorOfferOptionFrame,
 } from '../product-page'
 
-export function CatalogPage({ actions, models }: PageComponentProps) {
-  const [query, setQuery] = useState('')
+export function CatalogPage({ actions, models, query: urlQuery }: PageComponentProps) {
+  const [query, setQuery] = useState(urlQuery.get('q') ?? '')
   const [filterOpen, setFilterOpen] = useState(false)
   const [stockOnly, setStockOnly] = useState(false)
   const [regionFilter, setRegionFilter] = useState<'all' | 'us' | 'eu' | 'cn'>('all')
   const [regionOpen, setRegionOpen] = useState(false)
-  const [sortBy, setSortBy] = useState<'popular' | 'name' | 'price-low' | 'price-high'>('popular')
+  const [sortBy, setSortBy] = useState<'popular' | 'name' | 'price-low' | 'price-high'>('name')
   const [showTop, setShowTop] = useState(false)
   const [visibleCount, setVisibleCount] = useState(24)
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -348,7 +348,7 @@ function ResearchLibrary({ slug, productName }: { slug: string; productName: str
               target="_blank"
               rel="noopener noreferrer"
             >
-              Open
+              Show study
               <ArrowRight size={14} strokeWidth={1.8} />
             </a>
           </article>
@@ -389,9 +389,9 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
 
   // Use real vendors from models — same ones on the Vendors page
   const allVendors = models.vendors
-  const priceMultipliers: Record<string, number> = { 'vendor-northstar': 1, 'vendor-retalux': 1.08, 'vendor-axiom': 0.94, 'vendor-sample-zero': 0.85 }
-  const vendorPurity: Record<string, number> = { 'vendor-northstar': 99.2, 'vendor-retalux': 99.0, 'vendor-axiom': 99.1, 'vendor-sample-zero': 98.8 }
-  const vendorBatchPrefix: Record<string, string> = { 'vendor-northstar': 'NS', 'vendor-retalux': 'RX', 'vendor-axiom': 'AX', 'vendor-sample-zero': 'SZ' }
+  const priceMultipliers: Record<string, number> = { 'vendor-northstar': 1, 'vendor-retalux': 1.08, 'vendor-axiom': 0.94 }
+  const vendorPurity: Record<string, number> = { 'vendor-northstar': 99.2, 'vendor-retalux': 99.0, 'vendor-axiom': 99.1 }
+  const vendorBatchPrefix: Record<string, string> = { 'vendor-northstar': 'NS', 'vendor-retalux': 'RX', 'vendor-axiom': 'AX' }
 
   // Deterministic presentation math only. It is not derived from private pricing or marketplace rules.
   const lookupVendorPrice = (dose: string, vendorId: string): number => {
@@ -720,7 +720,7 @@ function VendorRow({ vendor, index, navigate }: { vendor: VendorSummary; index: 
       <div className="ps-vendor-monogram">{vendor.name.split(' ').map((part) => part[0]).join('').slice(0, 2)}</div>
       <div className="ps-vendor-name"><h2>{vendor.name}</h2><p><MapPin size={14} /> {vendor.location || 'Location pending'}</p></div>
       <div className="ps-vendor-rating"><Star size={16} /><strong>{vendor.rating.toFixed(1)}</strong><span>{vendor.reviewCount} reviews</span></div>
-      <div className="ps-vendor-fulfillment"><Clock3 size={15} /><span>Typical dispatch</span><strong>{vendor.fulfillment}</strong></div>
+      <div className="ps-vendor-fulfillment"><Clock3 size={15} /><span>Typical dispatch</span><strong>{vendor.fulfillment}</strong><small>Shipping ${vendor.shippingCost ?? 0}</small></div>
       {vendor.status === 'trusted' && Boolean(vendor.verified) ? <span className={`ps-trust-label ps-trust-${vendor.status}`}><VerifiedBadge size={14} /> Verified vendor</span> : <span className="ps-trust-label ps-trust-pending">{vendor.status}</span>}
       <ArrowRight size={19} />
     </FrontendLink>

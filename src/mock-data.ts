@@ -1046,7 +1046,7 @@ export const mockModels: PeptShopViewModels = {
       status: 'trusted',
       orderCount: 2310,
       specialties: ['BPC-157', 'TB-500', 'Healing & Recovery'],
-      shippingCost: 50,
+      shippingCost: 12,
     },
     {
       id: 'vendor-retalux',
@@ -1060,7 +1060,7 @@ export const mockModels: PeptShopViewModels = {
       status: 'trusted',
       orderCount: 1680,
       specialties: ['Tirzepatide', 'Semaglutide', 'GLP-1 Agonists'],
-      shippingCost: 50,
+      shippingCost: 15,
     },
     {
       id: 'vendor-axiom',
@@ -1074,21 +1074,7 @@ export const mockModels: PeptShopViewModels = {
       status: 'trusted',
       orderCount: 1120,
       specialties: ['NAD+', 'MOTS-c', 'Cellular & Metabolic'],
-      shippingCost: 50,
-    },
-    {
-      id: 'vendor-sample-zero',
-      name: 'Sample Vendor Zero',
-      slug: 'sample-vendor-zero',
-      location: 'United States',
-      rating: 4.5,
-      reviewCount: 42,
-      coaCount: 8,
-      fulfillment: '1–3 days',
-      status: 'trusted',
-      orderCount: 530,
-      specialties: ['BPC-157', 'GHK-Cu', 'Healing & Recovery'],
-      shippingCost: 50,
+      shippingCost: 18,
     },
   ],
   coas: [
@@ -1253,7 +1239,7 @@ export const mockModels: PeptShopViewModels = {
       total: 140,
       status: 'paid',
       updatedAt: '8 minutes ago',
-      vendor: 'Sample Vendor Zero',
+      vendor: 'Northstar Research',
       itemSummary: 'BPC-157 · 5 mg · 10 vials',
       destination: 'Austin, TX',
       events: [
@@ -1267,7 +1253,7 @@ export const mockModels: PeptShopViewModels = {
       total: 225,
       status: 'paid',
       updatedAt: '23 minutes ago',
-      vendor: 'Sample Vendor Zero',
+      vendor: 'Northstar Research',
       itemSummary: 'GHK-Cu · 50 mg · 3 vials',
       destination: 'Portland, OR',
       events: [
@@ -1281,7 +1267,7 @@ export const mockModels: PeptShopViewModels = {
       total: 85,
       status: 'review',
       updatedAt: '1 hour ago',
-      vendor: 'Sample Vendor Zero',
+      vendor: 'Northstar Research',
       itemSummary: 'TB-500 · 10 mg · 5 vials',
       destination: 'Testville, NY',
       events: [
@@ -1296,7 +1282,7 @@ export const mockModels: PeptShopViewModels = {
       total: 310,
       status: 'shipped',
       updatedAt: '3 hours ago',
-      vendor: 'Sample Vendor Zero',
+      vendor: 'Northstar Research',
       itemSummary: 'Semaglutide · 5 mg · 2 vials',
       destination: 'Denver, CO',
       events: [
@@ -1311,7 +1297,7 @@ export const mockModels: PeptShopViewModels = {
       total: 165,
       status: 'shipped',
       updatedAt: 'Yesterday',
-      vendor: 'Sample Vendor Zero',
+      vendor: 'Northstar Research',
       itemSummary: 'NAD+ · 500 mg · 1 vial',
       destination: 'Seattle, WA',
       events: [
@@ -1326,7 +1312,7 @@ export const mockModels: PeptShopViewModels = {
       total: 95,
       status: 'delivered',
       updatedAt: '2 days ago',
-      vendor: 'Sample Vendor Zero',
+      vendor: 'Northstar Research',
       itemSummary: 'PT-141 · 10 mg · 2 vials',
       destination: 'Miami, FL',
       events: [

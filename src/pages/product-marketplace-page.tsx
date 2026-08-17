@@ -55,19 +55,16 @@ export function ProductMarketplacePage({
       'vendor-axiom': 0.94,
       'vendor-northstar': 1,
       'vendor-retalux': 1.08,
-      'vendor-sample-zero': 0.85,
     }
     const vendorBatchPrefix: Record<string, string> = {
       'vendor-axiom': 'AX',
       'vendor-northstar': 'NS',
       'vendor-retalux': 'RX',
-      'vendor-sample-zero': 'SZ',
     }
     const vendorPurity: Record<string, number> = {
       'vendor-axiom': 99.1,
       'vendor-northstar': 99.2,
       'vendor-retalux': 99,
-      'vendor-sample-zero': 99,
     }
     const lookupVendorPrice = (dose: string, vendorId: string) => {
       const doseValue = Number.parseInt(dose, 10) || 5

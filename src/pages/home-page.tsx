@@ -15,7 +15,7 @@ import { FrontendLink } from '../navigation'
 
 export function HomePage({ actions, models }: PageComponentProps) {
   // Hand-picked popular products (by marketplace relevance, not just vendor count)
-  const popularSlugs = ['pt-141', 'nad', 'tesamorelin', 'ghk-cu', 'retatrutide', 'semaglutide']
+  const popularSlugs = ['pt-141', 'nad+', 'tesamorelin', 'ghk-cu', 'retatrutide', 'semaglutide']
   const popularProducts = popularSlugs
     .map((slug) => models.products.find((p) => p.slug === slug))
     .filter((p): p is NonNullable<typeof p> => p !== undefined)
