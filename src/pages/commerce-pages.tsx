@@ -15,6 +15,7 @@ import {
   WalletCards,
 } from 'lucide-react'
 import { useMemo, useState, useEffect, useRef } from 'react'
+import { safeDecode } from '../contracts'
 import type { CartLine, OrderDisplayStatus, PageComponentProps } from '../contracts'
 import { FrontendLink } from '../navigation'
 
@@ -279,7 +280,7 @@ function OrderStatusDetail({
   pathname,
 }: Pick<PageComponentProps, 'actions' | 'models' | 'pathname'>) {
   const encodedNumber = pathname.split('/').filter(Boolean).at(-1) ?? ''
-  const requestedNumber = decodeURIComponent(encodedNumber).toUpperCase()
+  const requestedNumber = safeDecode(encodedNumber).toUpperCase()
   const order =
     requestedNumber === 'PREVIEW'
       ? models.orders[0]

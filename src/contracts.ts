@@ -2,6 +2,22 @@ import type { ReactNode } from 'react'
 
 export type FrontendTheme = 'light' | 'dark'
 
+/** Decode a URL segment safely — malformed percent-encoding returns the raw string instead of throwing. */
+export function safeDecode(segment: string): string {
+  try {
+    return decodeURIComponent(segment)
+  } catch {
+    return segment
+  }
+}
+
+/** Allowlist external hrefs to http/https — blocks javascript: and other schemes. */
+export function safeExternalHref(href: string | null | undefined): string | undefined {
+  if (!href) return undefined
+  if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('#')) return href
+  return undefined
+}
+
 export type ProductSummary = {
   id: string
   name: string

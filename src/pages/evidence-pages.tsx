@@ -9,6 +9,7 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { safeExternalHref } from '../contracts'
 import type { PageComponentProps } from '../contracts'
 import { FrontendLink } from '../navigation'
 
@@ -53,9 +54,9 @@ export function EvidencePage({ actions, models, pathname, query }: PageComponent
             <div><span className="ps-mobile-label">Laboratory</span><strong>{coa.lab}</strong></div>
             <div><span className="ps-mobile-label">Tested</span><strong>{coa.testedAt}</strong></div>
             <div><span className="ps-mobile-label">Result</span><span className="ps-purity-result"><CheckCircle2 size={15} /> {coa.purity}</span></div>
-            {coa.href ? (
+            {safeExternalHref(coa.href) ? (
               <a
-                href={coa.href}
+                href={safeExternalHref(coa.href)}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Open ${coa.product} certificate`}

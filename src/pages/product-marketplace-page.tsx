@@ -1,5 +1,6 @@
 import { Check, Star, TrendingUp, X, FileCheck2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { safeDecode } from '../contracts'
 import type { PageComponentProps } from '../contracts'
 import { type ProductMarketplaceModel, type ProductMarketplaceOffer, ProductMarketplaceView } from '../product-marketplace-view'
 import {
@@ -14,7 +15,7 @@ const parseProductName = (pathname: string) => {
   const prefix = routePrefixes.find((candidate) => pathname.includes(candidate))
   if (!prefix) return ''
 
-  return decodeURIComponent(pathname.split(prefix)[1]?.split('?')[0] ?? '')
+  return safeDecode(pathname.split(prefix)[1]?.split('?')[0] ?? '')
 }
 
 export function ProductMarketplacePage({

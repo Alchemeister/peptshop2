@@ -11,6 +11,7 @@ import {
   Truck,
 } from 'lucide-react'
 import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import { safeExternalHref } from './contracts'
 import { researchStudies, type ResearchStudy } from './mock-data'
 import {
   ProductBackControlFrame,
@@ -369,12 +370,12 @@ export function ProductMarketplaceView({
                             {activeOption.dispatchLabel || offer.fulfillment || 'Pending'}
                           </span>
                           {activeOption.coaHref || onCoa ? (
-                            activeOption.coaHref ? (
+                            safeExternalHref(activeOption.coaHref) ? (
                               <a
                                 className="ps-offer-coa-link"
-                                href={activeOption.coaHref}
+                                href={safeExternalHref(activeOption.coaHref)}
                                 target="_blank"
-                                rel="noreferrer"
+                                rel="noopener noreferrer"
                               >
                                 <FileCheck2 size={13} /> {activeOption.coaLabel || 'COA'}
                               </a>
@@ -525,7 +526,7 @@ function ResearchLibrarySection({ slug, productName }: { slug: string; productNa
           {studies.map((study, i) => (
             <a
               key={study.id}
-              href={study.url}
+              href={safeExternalHref(study.url)}
               className="ps-research-card"
               target="_blank"
               rel="noopener noreferrer"

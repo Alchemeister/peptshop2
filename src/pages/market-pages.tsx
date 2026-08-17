@@ -23,6 +23,7 @@ import {
   X,
 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { safeDecode, safeExternalHref } from '../contracts'
 import type { PageComponentProps, ProductSummary, VendorSummary } from '../contracts'
 import { researchStudies, type ResearchStudy } from '../mock-data'
 import { FrontendLink } from '../navigation'
@@ -342,7 +343,7 @@ function ResearchLibrary({ slug, productName }: { slug: string; productName: str
               </div>
             </div>
             <a
-              href={study.url}
+              href={safeExternalHref(study.url)}
               className="ps-research-study-open"
               target="_blank"
               rel="noopener noreferrer"
@@ -376,11 +377,11 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   // Parse product name from URL — supports both /catalog/:name and /products/:slug
   let productName = ''
   if (pathname.includes('/catalog/')) {
-    productName = decodeURIComponent(pathname.split('/catalog/')[1]?.split('?')[0] ?? '')
+    productName = safeDecode(pathname.split('/catalog/')[1]?.split('?')[0] ?? '')
   } else if (pathname.includes('/products/')) {
-    productName = decodeURIComponent(pathname.split('/products/')[1]?.split('?')[0] ?? '')
+    productName = safeDecode(pathname.split('/products/')[1]?.split('?')[0] ?? '')
   } else if (pathname.includes('/peptides/')) {
-    productName = decodeURIComponent(pathname.split('/peptides/')[1]?.split('?')[0] ?? '')
+    productName = safeDecode(pathname.split('/peptides/')[1]?.split('?')[0] ?? '')
   }
   const source = models.products.find((p) => p.name === productName || p.slug === productName) ?? models.products.find((p) => p.name === 'BPC-157')!
   const details = productDetails[source?.name ?? ''] ?? { cas: 'Pending', formula: 'Pending', mw: 'Pending', description: 'Research compound available from vetted suppliers with transparent per-mg pricing and batch-level evidence.' }
@@ -772,7 +773,7 @@ const REVIEWS_PER_PAGE = 10
 
 export function VendorPage({ actions, models, pathname }: PageComponentProps) {
   // Extract vendor slug from URL
-  const slug = decodeURIComponent(pathname.split('/vendors/')[1]?.split('/')[0] ?? '')
+  const slug = safeDecode(pathname.split('/vendors/')[1]?.split('/')[0] ?? '')
   const vendor = models.vendors.find((v) => v.slug === slug) ?? models.vendors[0]
   const catalogMode = pathname.endsWith('/catalog')
   const reviewsMode = pathname.endsWith('/reviews')

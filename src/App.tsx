@@ -65,7 +65,12 @@ export function PeptShopFrontend({
   const [cartLines, setCartLines] = useState<CartLine[]>(() => {
     try {
       const saved = localStorage.getItem('peptshop-cart')
-      if (saved) return JSON.parse(saved)
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (Array.isArray(parsed) && parsed.every((line) => line && typeof line === 'object' && typeof line.id === 'string' && typeof line.product === 'string' && typeof line.quantity === 'number' && typeof line.unitPrice === 'number')) {
+          return parsed as CartLine[]
+        }
+      }
     } catch { /* ignore */ }
     return models.cart ?? []
   })
