@@ -1047,7 +1047,7 @@ export const mockModels: PeptShopViewModels = {
       orderCount: 2310,
       specialties: ['BPC-157', 'TB-500', 'Healing & Recovery'],
       shippingCost: 50,
-    } as any,
+    },
     {
       id: 'vendor-retalux',
       name: 'Retalux',
@@ -1061,7 +1061,7 @@ export const mockModels: PeptShopViewModels = {
       orderCount: 1680,
       specialties: ['Tirzepatide', 'Semaglutide', 'GLP-1 Agonists'],
       shippingCost: 50,
-    } as any,
+    },
     {
       id: 'vendor-axiom',
       name: 'Axiom Peptides',
@@ -1075,7 +1075,7 @@ export const mockModels: PeptShopViewModels = {
       orderCount: 1120,
       specialties: ['NAD+', 'MOTS-c', 'Cellular & Metabolic'],
       shippingCost: 50,
-    } as any,
+    },
     {
       id: 'vendor-sample-zero',
       name: 'Sample Vendor Zero',
@@ -1089,7 +1089,7 @@ export const mockModels: PeptShopViewModels = {
       orderCount: 530,
       specialties: ['BPC-157', 'GHK-Cu', 'Healing & Recovery'],
       shippingCost: 50,
-    } as any,
+    },
   ],
   coas: [
     {

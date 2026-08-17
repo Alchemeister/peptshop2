@@ -703,7 +703,7 @@ export function VendorsPage({ actions, models }: PageComponentProps) {
         </div>
         <dl>
           <div><dt>Total vendors</dt><dd>{models.vendors.length}</dd></div>
-          <div><dt>Total COAs published</dt><dd>{models.vendors.reduce((sum, v) => sum + ((v as any)?.coaCount ?? 0), 0)}</dd></div>
+          <div><dt>Total COAs published</dt><dd>{models.vendors.reduce((sum, v) => sum + (v.coaCount ?? 0), 0)}</dd></div>
           <div><dt>Average rating</dt><dd>{(models.vendors.reduce((sum, v) => sum + v.rating, 0) / Math.max(1, models.vendors.length)).toFixed(1)}★</dd></div>
           <div><dt>Total reviews</dt><dd>{models.vendors.reduce((sum, v) => sum + v.reviewCount, 0).toLocaleString()}</dd></div>
         </dl>

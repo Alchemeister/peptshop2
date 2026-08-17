@@ -528,7 +528,7 @@ function ResearchLibrarySection({ slug, productName }: { slug: string; productNa
               href={study.url}
               className="ps-research-card"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <h3 className="ps-research-card-title">{study.title}</h3>
               <div className="ps-research-card-date">{study.date}</div>
