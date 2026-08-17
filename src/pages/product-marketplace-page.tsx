@@ -68,11 +68,10 @@ export function ProductMarketplacePage({
     }
     const lookupVendorPrice = (dose: string, vendorId: string) => {
       const doseValue = Number.parseInt(dose, 10) || 5
-      const baseDose = Number.parseInt(dosageLabels[0] ?? '', 10) || 5
-      const basePrice = Math.max(1, source?.startingPrice ?? 20)
+      const perMg = source?.startingPrice ?? 0
       return (
         Math.round(
-          basePrice * Math.max(1, doseValue / baseDose) * (priceMultipliers[vendorId] ?? 1) * 100,
+          perMg * doseValue * 10 * (priceMultipliers[vendorId] ?? 1) * 100,
         ) / 100
       )
     }

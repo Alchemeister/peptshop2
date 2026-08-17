@@ -396,9 +396,8 @@ export function ProductPage({ actions, models, query, theme, pathname }: PageCom
   // Deterministic presentation math only. It is not derived from private pricing or marketplace rules.
   const lookupVendorPrice = (dose: string, vendorId: string): number => {
     const doseNum = parseInt(dose) || 5
-    const baseDose = parseInt(source?.formats[0] ?? '5') || 5
-    const basePrice = Math.max(1, source?.startingPrice ?? 20)
-    return Math.round(basePrice * Math.max(1, doseNum / baseDose) * (priceMultipliers[vendorId] ?? 1) * 100) / 100
+    const perMg = source?.startingPrice ?? 0
+    return Math.round(perMg * doseNum * 10 * (priceMultipliers[vendorId] ?? 1) * 100) / 100
   }
 
   // Generate dose-specific batch number
@@ -779,6 +778,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
   const reviewsMode = pathname.endsWith('/reviews')
   const vendorInitials = vendor?.name?.split(' ').map((part) => part[0]).join('').slice(0, 2) ?? 'NR'
   const [reviewPage, setReviewPage] = useState(0)
+  const [following, setFollowing] = useState(false)
   const totalReviews = vendor?.reviewCount ?? 184
   const totalPages = Math.ceil(totalReviews / REVIEWS_PER_PAGE)
   const paginatedReviews = VENDOR_REVIEWS.slice(reviewPage * REVIEWS_PER_PAGE, (reviewPage + 1) * REVIEWS_PER_PAGE)
@@ -840,7 +840,7 @@ export function VendorPage({ actions, models, pathname }: PageComponentProps) {
         </div>
       ) : (
         <div className="ps-vendor-overview-grid">
-          <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>{vendor?.location ?? 'US'} fulfillment with evidence linked at the batch level.</h2><p>{vendor?.name ?? 'This vendor'} ships from {vendor?.location ?? 'the US'} with {vendor?.fulfillment ?? '1–2 day'} dispatch. All listings include batch-level COA evidence.</p><div className="ps-button-row"><FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}/catalog`} navigate={actions.navigate} className="ps-vendor-catalog-link">View catalog <ArrowRight size={17} /></FrontendLink><button type="button"><Bell size={16} /> Follow vendor</button></div></section>
+          <section className="ps-vendor-story"><span className="ps-kicker">At a glance</span><h2>{vendor?.location ?? 'US'} fulfillment with evidence linked at the batch level.</h2><p>{vendor?.name ?? 'This vendor'} ships from {vendor?.location ?? 'the US'} with {vendor?.fulfillment ?? '1–2 day'} dispatch. All listings include batch-level COA evidence.</p><div className="ps-button-row"><FrontendLink href={`/vendors/${vendor?.slug ?? 'sample-vendor-zero'}/catalog`} navigate={actions.navigate} className="ps-vendor-catalog-link">View catalog <ArrowRight size={17} /></FrontendLink><button type="button" onClick={() => setFollowing((value) => !value)} aria-pressed={following}>{following ? <Check size={16} /> : <Bell size={16} />} {following ? 'Following' : 'Follow vendor'}</button></div></section>
           <aside className="ps-vendor-facts"><dl><div><dt>Completed orders</dt><dd>{vendor?.orderCount?.toLocaleString() ?? '2,310'}</dd></div><div><dt>On-time shipping</dt><dd>98.6%</dd></div><div><dt>Median dispatch</dt><dd>{vendor?.fulfillment ?? '1–2 days'}</dd></div><div><dt>Published COAs</dt><dd>{vendor?.coaCount ?? 0}</dd></div></dl></aside>
           <section className="ps-vendor-policy"><h2>Fulfillment notes</h2><ul><li><Truck size={17} /><div><strong>Ships from {vendor?.location ?? 'USA'}</strong><span>Tracking supplied after dispatch.</span></div></li><li><CircleDollarSign size={17} /><div><strong>Transparent pack pricing</strong><span>Marketplace totals include PeptShop pricing rules.</span></div></li><li><FileCheck2 size={17} /><div><strong>Batch evidence</strong><span>Available certificates are attached to eligible listings.</span></div></li></ul></section>
           <section className="ps-vendor-reviews">
