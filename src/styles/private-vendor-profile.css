@@ -1,0 +1,234 @@
+/*
+ * Live vendor profiles are rendered by the private application because their
+ * reviews and COAs are live data. The palette remains designer-owned here.
+ * Adjust the role aliases below to recolor /vendors/:vendor without changing
+ * the private data adapter or its standalone behavior.
+ */
+#ps-storefront #ps-vendor-profile {
+  --ps-vendor-profile-canvas: var(--ps-canvas);
+  --ps-vendor-profile-paper: var(--ps-paper);
+  --ps-vendor-profile-surface: var(--ps-surface);
+  --ps-vendor-profile-ink: var(--ps-ink);
+  --ps-vendor-profile-muted: var(--ps-muted);
+  --ps-vendor-profile-faint: var(--ps-faint);
+  --ps-vendor-profile-line: var(--ps-line);
+  --ps-vendor-profile-line-strong: var(--ps-line-strong);
+  --ps-vendor-profile-accent: var(--ps-accent);
+  --ps-vendor-profile-accent-hover: var(--ps-accent-hover);
+  --ps-vendor-profile-accent-soft: var(--ps-accent-soft);
+  --ps-vendor-profile-success: var(--ps-success);
+  --ps-vendor-profile-danger: var(--ps-danger);
+  --ps-vendor-profile-danger-soft: var(--ps-danger-soft);
+  --ps-vendor-profile-action: var(--ps-deep);
+  --ps-vendor-profile-action-hover: color-mix(
+    in srgb,
+    var(--ps-deep) 88%,
+    var(--ps-accent)
+  );
+  --ps-vendor-profile-action-text: var(--ps-accent);
+  background: var(--ps-vendor-profile-canvas);
+  color: var(--ps-vendor-profile-ink);
+}
+
+/* Keep the generic private-surface bridge from turning the profile canvas and
+   animated tab viewport into paper/surface blocks. */
+#ps-storefront #ps-vendor-profile[class*="min-h-screen"] {
+  background: var(--ps-vendor-profile-canvas);
+}
+
+#ps-storefront #ps-vendor-profile [class~="overflow-hidden"] {
+  background: transparent;
+  color: inherit;
+}
+
+#ps-storefront #ps-vendor-profile .ps-private-vendor-profile__summary {
+  border-color: var(--ps-vendor-profile-line);
+  background: var(--ps-vendor-profile-surface);
+}
+
+/* Legacy private markup exposes its former palette as utility classes. Map
+   those roles to the shared storefront tokens until the data surface can be
+   replaced by a fully designer-rendered component. */
+#ps-storefront #ps-vendor-profile [class~="text-[#0F172A]"],
+#ps-storefront #ps-vendor-profile [class~="text-[#1E293B]"],
+#ps-storefront #ps-vendor-profile [class~="text-[#334155]"] {
+  color: var(--ps-vendor-profile-ink);
+}
+
+#ps-storefront #ps-vendor-profile [class~="text-[#475569]"] {
+  color: var(--ps-vendor-profile-muted);
+}
+
+#ps-storefront #ps-vendor-profile [class~="text-[#64748B]"],
+#ps-storefront #ps-vendor-profile [class~="text-[#CBD5E1]"] {
+  color: var(--ps-vendor-profile-faint);
+}
+
+#ps-storefront #ps-vendor-profile [class~="text-[#6F1D2C]"],
+#ps-storefront #ps-vendor-profile [class~="text-[#A84A55]"],
+#ps-storefront #ps-vendor-profile [class~="text-[#FBB1B7]"],
+#ps-storefront #ps-vendor-profile [class~="text-[#f0b3b8]"],
+#ps-storefront #ps-vendor-profile [class~="text-[#f6cdd1]"],
+#ps-storefront #ps-vendor-profile [class~="text-amber-500"],
+#ps-storefront #ps-vendor-profile [class~="text-amber-300"] {
+  color: var(--ps-vendor-profile-accent);
+}
+
+#ps-storefront #ps-vendor-profile [class~="text-emerald-500"],
+#ps-storefront #ps-vendor-profile [class~="text-emerald-300"],
+#ps-storefront #ps-vendor-profile [class~="text-green-400"] {
+  color: var(--ps-vendor-profile-success);
+}
+
+#ps-storefront #ps-vendor-profile [class~="text-red-400"],
+#ps-storefront #ps-vendor-profile [class~="text-red-700"] {
+  color: var(--ps-vendor-profile-danger);
+}
+
+#ps-storefront #ps-vendor-profile [class~="border-[#CBD5E1]"],
+#ps-storefront #ps-vendor-profile [class~="border-[#CBD5E1]/60"],
+#ps-storefront #ps-vendor-profile [class~="border-[#E2E8F0]"] {
+  border-color: var(--ps-vendor-profile-line);
+}
+
+#ps-storefront #ps-vendor-profile [class~="border-[#D9AC9C]"] {
+  border-color: var(--ps-vendor-profile-accent);
+}
+
+#ps-storefront #ps-vendor-profile [class~="bg-white"],
+#ps-storefront #ps-vendor-profile [class~="bg-white/70"] {
+  background: var(--ps-vendor-profile-paper);
+}
+
+#ps-storefront #ps-vendor-profile [class~="bg-[#FFF7ED]"],
+#ps-storefront #ps-vendor-profile [class~="bg-[#0F172A]/5"],
+#ps-storefront #ps-vendor-profile [class~="bg-[#0F172A]/10"],
+#ps-storefront #ps-vendor-profile [class~="bg-[#E2E8F0]/50"],
+#ps-storefront #ps-vendor-profile [class~="bg-[#E2E8F0]/60"] {
+  background: var(--ps-vendor-profile-surface);
+}
+
+#ps-storefront #ps-vendor-profile [class~="rounded-xl"][class~="bg-transparent"] {
+  background: var(--ps-vendor-profile-paper);
+}
+
+#ps-storefront #ps-vendor-profile [class~="bg-gray-700/60"],
+#ps-storefront #ps-vendor-profile [class~="bg-gray-700/70"],
+#ps-storefront #ps-vendor-profile [class~="bg-gray-700/80"] {
+  background: var(--ps-vendor-profile-line-strong);
+}
+
+#ps-storefront #ps-vendor-profile [class~="bg-[#F6E7DE]"] {
+  background: var(--ps-vendor-profile-accent-soft);
+}
+
+#ps-storefront #ps-vendor-profile [class~="text-[#7A4A38]"] {
+  color: var(--ps-vendor-profile-ink);
+}
+
+#ps-storefront #ps-vendor-profile :is(input, select, textarea) {
+  border-color: var(--ps-vendor-profile-line);
+  background: var(--ps-vendor-profile-paper);
+  color: var(--ps-vendor-profile-ink);
+}
+
+#ps-storefront #ps-vendor-profile :is(input, select, textarea)::placeholder {
+  color: var(--ps-vendor-profile-faint);
+}
+
+#ps-storefront #ps-vendor-profile :is(input, select, textarea):focus {
+  border-color: var(--ps-vendor-profile-accent);
+  box-shadow: 0 0 0 2px var(--ps-vendor-profile-accent-soft);
+}
+
+#ps-storefront #ps-vendor-profile .tab-toggle-list {
+  border-color: var(--ps-vendor-profile-line-strong);
+  background: var(--ps-vendor-profile-surface);
+}
+
+#ps-storefront #ps-vendor-profile .tab-toggle-list::before,
+#ps-storefront .light #ps-vendor-profile .tab-toggle-list::before {
+  border-color: var(--ps-vendor-profile-line);
+  background: var(--ps-vendor-profile-paper);
+  box-shadow: var(--ps-shadow-soft);
+}
+
+#ps-storefront #ps-vendor-profile .tab-toggle-list [role="tab"] {
+  color: var(--ps-vendor-profile-muted);
+}
+
+#ps-storefront #ps-vendor-profile .tab-toggle-list [role="tab"][data-state="active"] {
+  color: var(--ps-vendor-profile-ink);
+}
+
+#ps-storefront #ps-vendor-profile :is(button, a)[class~="border-[#CBD5E1]"] {
+  border-color: var(--ps-vendor-profile-line-strong);
+  background: var(--ps-vendor-profile-paper);
+  color: var(--ps-vendor-profile-ink);
+}
+
+#ps-storefront #ps-vendor-profile :is(button, a)[class~="border-[#CBD5E1]"]:hover {
+  border-color: var(--ps-vendor-profile-accent);
+  background: var(--ps-vendor-profile-accent-soft);
+  color: var(--ps-vendor-profile-ink);
+}
+
+#ps-storefront #ps-vendor-profile :is(button, a)[class~="bg-[#0F172A]"] {
+  border-color: var(--ps-vendor-profile-action);
+  background: var(--ps-vendor-profile-action);
+  color: var(--ps-vendor-profile-action-text);
+}
+
+#ps-storefront #ps-vendor-profile :is(button, a)[class~="bg-[#0F172A]"]:hover,
+#ps-storefront #ps-vendor-profile button[class~="hover:bg-[#0F172A]"]:hover {
+  border-color: var(--ps-vendor-profile-action-hover);
+  background: var(--ps-vendor-profile-action-hover);
+  color: var(--ps-vendor-profile-action-text);
+}
+
+#ps-storefront #ps-vendor-profile .vendor-profile-notify-button {
+  border-color: var(--ps-vendor-profile-line-strong);
+  background: var(--ps-vendor-profile-paper);
+  color: var(--ps-vendor-profile-muted);
+}
+
+#ps-storefront #ps-vendor-profile .vendor-profile-notify-button:hover {
+  border-color: var(--ps-vendor-profile-accent);
+  background: var(--ps-vendor-profile-accent-soft);
+  color: var(--ps-vendor-profile-ink);
+}
+
+#ps-storefront #ps-vendor-profile .vendor-profile-notify-button:hover .vendor-profile-notify-bell {
+  fill: var(--ps-vendor-profile-accent);
+  color: var(--ps-vendor-profile-accent);
+}
+
+#ps-storefront #ps-vendor-profile a:not([class~="bg-[#0F172A]"]):hover,
+#ps-storefront #ps-vendor-profile button[class~="underline"]:hover {
+  color: var(--ps-vendor-profile-accent-hover);
+}
+
+#ps-storefront #ps-vendor-profile [class~="decoration-[#0F172A]/30"] {
+  text-decoration-color: var(--ps-vendor-profile-line-strong);
+}
+
+#ps-storefront #ps-vendor-profile :is(table, thead, thead tr) {
+  border-color: var(--ps-vendor-profile-line);
+}
+
+#ps-storefront #ps-vendor-profile thead,
+#ps-storefront #ps-vendor-profile thead tr,
+#ps-storefront #ps-vendor-profile thead th {
+  background: var(--ps-vendor-profile-surface);
+  color: var(--ps-vendor-profile-muted);
+}
+
+#ps-storefront #ps-vendor-profile tbody td {
+  border-color: var(--ps-vendor-profile-line);
+  background: var(--ps-vendor-profile-paper);
+  color: var(--ps-vendor-profile-ink);
+}
+
+#ps-storefront #ps-vendor-profile tbody tr:hover td {
+  background: var(--ps-vendor-profile-accent-soft);
+}
